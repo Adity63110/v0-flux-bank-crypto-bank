@@ -34,16 +34,28 @@ export default function FluxBank() {
   const [withdrawAmount, setWithdrawAmount] = useState("")
   const [borrowAmount, setBorrowAmount] = useState("")
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
     if (username.trim()) {
-      const hexChars = "0123456789abcdef"
-      let address = "0x"
-      for (let i = 0; i < 40; i++) {
-        address += hexChars[Math.floor(Math.random() * 16)]
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username }),
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to login');
+        }
+        
+        setWalletAddress(data.wallet_address)
+        setIsSignedIn(true)
+      } catch (error: any) {
+        console.error('Login failed:', error);
+        alert(`Authentication failed: ${error.message}`);
       }
-      setWalletAddress(address)
-      setIsSignedIn(true)
     }
   }
 

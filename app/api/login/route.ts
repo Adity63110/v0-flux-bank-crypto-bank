@@ -17,8 +17,8 @@ export async function POST(request: Request) {
       .single();
 
     if (fetchError && fetchError.code !== 'PGRST116') {
-      console.error('Database error:', fetchError);
-      return NextResponse.json({ error: 'Database connection error' }, { status: 500 });
+      console.error('Database error details:', fetchError);
+      return NextResponse.json({ error: `Database error: ${fetchError.message}` }, { status: 500 });
     }
 
     if (existingUser) {

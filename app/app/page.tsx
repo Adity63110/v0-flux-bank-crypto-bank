@@ -35,6 +35,23 @@ export default function FluxBank() {
   const [withdrawAmount, setWithdrawAmount] = useState("")
   const [borrowAmount, setBorrowAmount] = useState("")
 
+  // Persistence check
+  useState(() => {
+    if (typeof window !== "undefined") {
+      const savedUser = localStorage.getItem("fluxbank_user")
+      if (savedUser) {
+        try {
+          const { username: sUsername, walletAddress: sWalletAddress } = JSON.parse(savedUser)
+          setUsername(sUsername)
+          setWalletAddress(sWalletAddress)
+          setIsSignedIn(true)
+        } catch (e) {
+          localStorage.removeItem("fluxbank_user")
+        }
+      }
+    }
+  })
+
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
     if (username.trim() && password.trim()) {
@@ -53,11 +70,25 @@ export default function FluxBank() {
         
         setWalletAddress(data.wallet_address)
         setIsSignedIn(true)
+        
+        // Save to localStorage
+        localStorage.setItem("fluxbank_user", JSON.stringify({
+          username: data.username,
+          walletAddress: data.wallet_address
+        }))
       } catch (error: any) {
         console.error('Login failed:', error);
         alert(`Authentication failed: ${error.message}`);
       }
     }
+  }
+
+  const handleSignOut = () => {
+    localStorage.removeItem("fluxbank_user")
+    setIsSignedIn(false)
+    setUsername("")
+    setPassword("")
+    setWalletAddress("")
   }
 
   if (!isSignedIn) {
@@ -142,7 +173,7 @@ export default function FluxBank() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setIsSignedIn(false)}
+              onClick={handleSignOut}
               className="text-muted-foreground hover:text-foreground"
             >
               Sign Out

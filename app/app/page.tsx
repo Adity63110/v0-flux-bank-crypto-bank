@@ -1,27 +1,7 @@
-"use client"
+import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft, Copy, CheckCircle2 } from "lucide-react"
+import { QRCodeSVG } from "qrcode.react"
 
-import type React from "react"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-
-const CRYPTO_OPTIONS = [
-  { name: "Bitcoin", symbol: "BTC", color: "#F7931A" },
-  { name: "Ethereum", symbol: "ETH", color: "#627EEA" },
-  { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F" },
-  { name: "Solana", symbol: "SOL", color: "#14F195" },
-  { name: "USDC", symbol: "USDC", color: "#2775CA" },
-  { name: "USDT", symbol: "USDT", color: "#26A17B" },
-  { name: "Tron", symbol: "TRX", color: "#FF0013" },
-  { name: "Cardano", symbol: "ADA", color: "#0033AD" },
-]
+const ADMIN_WALLET_ADDRESS = "8o11wa4qBX8ivTdmXUAyuvo2wTfncADNaMvvzKBcWcDe"
 
 export default function FluxBank() {
   const [username, setUsername] = useState("")
@@ -29,11 +9,14 @@ export default function FluxBank() {
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [walletAddress, setWalletAddress] = useState("")
   const [showBorrowModal, setShowBorrowModal] = useState(false)
+  const [showDepositModal, setShowDepositModal] = useState(false)
+  const [depositStep, setDepositStep] = useState(1)
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null)
 
   const [depositAmount, setDepositAmount] = useState("")
   const [withdrawAmount, setWithdrawAmount] = useState("")
   const [borrowAmount, setBorrowAmount] = useState("")
+  const [isDepositing, setIsDepositing] = useState(false)
 
   // Persistence check
   useState(() => {
@@ -89,6 +72,28 @@ export default function FluxBank() {
     setUsername("")
     setPassword("")
     setWalletAddress("")
+  }
+
+  const handleDepositSubmit = async () => {
+    if (!depositAmount || isNaN(parseFloat(depositAmount))) return;
+    
+    setIsDepositing(true)
+    try {
+      const response = await fetch('/api/deposit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, amount: depositAmount }),
+      });
+      
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to submit deposit');
+      
+      setDepositStep(3)
+    } catch (error: any) {
+      alert(`Deposit failed: ${error.message}`);
+    } finally {
+      setIsDepositing(false)
+    }
   }
 
   if (!isSignedIn) {
@@ -326,7 +331,10 @@ export default function FluxBank() {
                       onChange={(e) => setDepositAmount(e.target.value)}
                       className="border-muted-foreground/20 focus-visible:ring-flux"
                     />
-                    <Button disabled className="bg-flux hover:bg-flux/90 text-black px-6">
+                    <Button 
+                      onClick={() => setShowDepositModal(true)}
+                      className="bg-flux hover:bg-flux/90 text-black px-6"
+                    >
                       <ArrowDownLeft className="h-4 w-4 mr-1" />
                       Deposit
                     </Button>
@@ -373,6 +381,87 @@ export default function FluxBank() {
           </CardContent>
         </Card>
       </main>
+
+      {/* Deposit Modal */}
+      {showDepositModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <Card className="w-full max-w-md border-flux/20 shadow-2xl overflow-hidden">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <CardTitle>Deposit FLUX</CardTitle>
+                <Button variant="ghost" size="icon" onClick={() => { setShowDepositModal(false); setDepositStep(1); }}>
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {depositStep === 1 && (
+                <div className="space-y-6 text-center">
+                  <div className="flex justify-center p-4 bg-white rounded-xl">
+                    <QRCodeSVG value={ADMIN_WALLET_ADDRESS} size={200} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-sm text-muted-foreground">Send FLUX to this address:</Label>
+                    <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg border border-border/40">
+                      <code className="text-xs font-mono break-all text-left flex-1">{ADMIN_WALLET_ADDRESS}</code>
+                      <Button variant="ghost" size="icon" onClick={() => navigator.clipboard.writeText(ADMIN_WALLET_ADDRESS)}>
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <Button onClick={() => setDepositStep(2)} className="w-full bg-flux hover:bg-flux/90 text-black h-11">
+                    I've Sent the Funds
+                  </Button>
+                </div>
+              )}
+
+              {depositStep === 2 && (
+                <div className="space-y-4">
+                  <div className="text-center space-y-2">
+                    <h3 className="font-semibold text-lg">Confirm Amount</h3>
+                    <p className="text-sm text-muted-foreground">Please enter the exact amount you sent.</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Amount Sent (FLUX)</Label>
+                    <Input 
+                      type="number" 
+                      value={depositAmount} 
+                      onChange={(e) => setDepositAmount(e.target.value)}
+                      className="h-11 border-muted-foreground/20"
+                    />
+                  </div>
+                  <Button 
+                    onClick={handleDepositSubmit} 
+                    disabled={isDepositing}
+                    className="w-full bg-flux hover:bg-flux/90 text-black h-11"
+                  >
+                    {isDepositing ? "Submitting..." : "Done"}
+                  </Button>
+                </div>
+              )}
+
+              {depositStep === 3 && (
+                <div className="py-8 text-center space-y-4">
+                  <div className="flex justify-center">
+                    <div className="h-16 w-16 rounded-full bg-flux/10 flex items-center justify-center">
+                      <CheckCircle2 className="h-10 w-10 text-flux" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold">Deposit in Progress</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Your deposit is being verified. Funds will appear on your dashboard once confirmed.
+                    </p>
+                  </div>
+                  <Button onClick={() => { setShowDepositModal(false); setDepositStep(1); }} className="w-full variant-outline h-11">
+                    Close
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {showBorrowModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">

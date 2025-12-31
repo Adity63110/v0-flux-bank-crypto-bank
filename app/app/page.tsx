@@ -1,7 +1,30 @@
+"use client"
+
+import type React from "react"
+
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft, Copy, CheckCircle2 } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 import { QRCodeSVG } from "qrcode.react"
 
 const ADMIN_WALLET_ADDRESS = "8o11wa4qBX8ivTdmXUAyuvo2wTfncADNaMvvzKBcWcDe"
+
+const CRYPTO_OPTIONS = [
+  { name: "Bitcoin", symbol: "BTC", color: "#F7931A" },
+  { name: "Ethereum", symbol: "ETH", color: "#627EEA" },
+  { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F" },
+  { name: "Solana", symbol: "SOL", color: "#14F195" },
+  { name: "USDC", symbol: "USDC", color: "#2775CA" },
+  { name: "USDT", symbol: "USDT", color: "#26A17B" },
+  { name: "Tron", symbol: "TRX", color: "#FF0013" },
+  { name: "Cardano", symbol: "ADA", color: "#0033AD" },
+]
 
 export default function FluxBank() {
   const [username, setUsername] = useState("")
@@ -19,7 +42,7 @@ export default function FluxBank() {
   const [isDepositing, setIsDepositing] = useState(false)
 
   // Persistence check
-  useState(() => {
+  useEffect(() => {
     if (typeof window !== "undefined") {
       const savedUser = localStorage.getItem("fluxbank_user")
       if (savedUser) {
@@ -33,7 +56,7 @@ export default function FluxBank() {
         }
       }
     }
-  })
+  }, [])
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()

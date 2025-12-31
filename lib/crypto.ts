@@ -9,6 +9,13 @@ const encryptionSecret = process.env.ENCRYPTION_SECRET!;
 export const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 /**
+ * Hashes a password using SHA256
+ */
+export const hashPassword = (password: string): string => {
+  return CryptoJS.SHA256(password + encryptionSecret).toString();
+};
+
+/**
  * Encrypts a private key using AES
  */
 export const encryptPrivateKey = (privateKey: string): string => {

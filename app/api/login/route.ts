@@ -1,18 +1,24 @@
 import { NextResponse } from 'next/server';
-import { supabase, generateSolanaWallet, encryptPrivateKey } from '@/lib/crypto';
+import { supabase, generateSolanaWallet, encryptPrivateKey, hashPassword } from '@/lib/crypto';
 
 export async function POST(request: Request) {
   try {
-    const { username } = await request.json();
+    const { username, password } = await request.json();
 
     if (!username || typeof username !== 'string') {
       return NextResponse.json({ error: 'Username is required' }, { status: 400 });
     }
 
+    if (!password || typeof password !== 'string') {
+      return NextResponse.json({ error: 'Password is required' }, { status: 400 });
+    }
+
+    const hashedPassword = hashPassword(password);
+
     // 1. Check if user exists
     const { data: existingUser, error: fetchError } = await supabase
       .from('users')
-      .select('username, wallet_address')
+      .select('username, wallet_address, password_hash')
       .eq('username', username)
       .single();
 
@@ -22,6 +28,9 @@ export async function POST(request: Request) {
     }
 
     if (existingUser) {
+      if (existingUser.password_hash !== hashedPassword) {
+        return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+      }
       return NextResponse.json({
         username: existingUser.username,
         wallet_address: existingUser.wallet_address
@@ -38,6 +47,7 @@ export async function POST(request: Request) {
       .insert([
         {
           username,
+          password_hash: hashedPassword,
           wallet_address: publicKey,
           encrypted_private_key: encryptedKey,
         }

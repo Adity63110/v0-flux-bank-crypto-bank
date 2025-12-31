@@ -25,6 +25,7 @@ const CRYPTO_OPTIONS = [
 
 export default function FluxBank() {
   const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [walletAddress, setWalletAddress] = useState("")
   const [showBorrowModal, setShowBorrowModal] = useState(false)
@@ -36,12 +37,12 @@ export default function FluxBank() {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (username.trim()) {
+    if (username.trim() && password.trim()) {
       try {
         const response = await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username }),
+          body: JSON.stringify({ username, password }),
         });
         
         const data = await response.json();
@@ -93,7 +94,21 @@ export default function FluxBank() {
                   className="h-11 border-muted-foreground/20 focus-visible:ring-flux"
                   required
                 />
-                <p className="text-xs text-muted-foreground">{"A new wallet will be created for you automatically"}</p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-sm font-medium">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-11 border-muted-foreground/20 focus-visible:ring-flux"
+                  required
+                />
+                <p className="text-xs text-muted-foreground">{"A new wallet will be created if this is your first visit"}</p>
               </div>
               <Button type="submit" className="w-full h-11 bg-flux hover:bg-flux/90 text-black font-medium">
                 Sign In

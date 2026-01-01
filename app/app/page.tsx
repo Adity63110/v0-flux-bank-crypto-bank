@@ -19,7 +19,7 @@ const CRYPTO_OPTIONS = [
   { name: "Bitcoin", symbol: "BTC", color: "#F7931A", logo: "/cryptos/btc.png" },
   { name: "Ethereum", symbol: "ETH", color: "#627EEA", logo: "/cryptos/eth.png" },
   { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F", logo: "/cryptos/bsc.png" },
-  { name: "Solana", symbol: "SOL", color: "#14F195", logo: "/cryptos/sol.jpg" },
+  { name: "Solana", symbol: "SOL", color: "#14F195", logo: "/cryptos/sol.png" },
   { name: "USDC", symbol: "USDC", color: "#2775CA", logo: "/cryptos/usdc.png" },
   { name: "USDT", symbol: "USDT", color: "#26A17B", logo: "/cryptos/usdt.png" },
   { name: "Tron", symbol: "TRX", color: "#FF0013", logo: "/cryptos/tron.png" },

@@ -16,14 +16,14 @@ import { QRCodeSVG } from "qrcode.react"
 const ADMIN_WALLET_ADDRESS = "8o11wa4qBX8ivTdmXUAyuvo2wTfncADNaMvvzKBcWcDe"
 
 const CRYPTO_OPTIONS = [
-  { name: "Bitcoin", symbol: "BTC", color: "#F7931A", logo: "/stock_images/bitcoin_logo,_btc_cr_79badba8.jpg" },
-  { name: "Ethereum", symbol: "ETH", color: "#627EEA", logo: "/stock_images/ethereum_logo,_eth_c_5256b7af.jpg" },
-  { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F", logo: "/stock_images/bnb_smart_chain_logo_b8bfcfc4.jpg" },
-  { name: "Solana", symbol: "SOL", color: "#14F195", logo: "/stock_images/solana_logo,_sol_cry_ed9c71d4.jpg" },
-  { name: "USDC", symbol: "USDC", color: "#2775CA", logo: "/stock_images/usdc_coin_logo,_stab_ee870b54.jpg" },
-  { name: "USDT", symbol: "USDT", color: "#26A17B", logo: "/stock_images/usdt_tether_logo,_st_d8b901f2.jpg" },
-  { name: "Tron", symbol: "TRX", color: "#FF0013", logo: null },
-  { name: "Cardano", symbol: "ADA", color: "#0033AD", logo: null },
+  { name: "Bitcoin", symbol: "BTC", color: "#F7931A", logo: "/cryptos/btc.png" },
+  { name: "Ethereum", symbol: "ETH", color: "#627EEA", logo: "/cryptos/eth.png" },
+  { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F", logo: "/cryptos/bsc.png" },
+  { name: "Solana", symbol: "SOL", color: "#14F195", logo: "/cryptos/sol.jpg" },
+  { name: "USDC", symbol: "USDC", color: "#2775CA", logo: "/cryptos/usdc.png" },
+  { name: "USDT", symbol: "USDT", color: "#26A17B", logo: "/cryptos/usdt.png" },
+  { name: "Tron", symbol: "TRX", color: "#FF0013", logo: "/cryptos/tron.png" },
+  { name: "Ton", symbol: "TON", color: "#0088CC", logo: "/cryptos/ton.png" },
 ]
 
 export default function FluxBank() {

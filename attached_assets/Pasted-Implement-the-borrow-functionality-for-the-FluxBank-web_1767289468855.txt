@@ -1,0 +1,121 @@
+Implement the borrow functionality for the FluxBank web app with a dedicated borrowing page, dynamic price-based limits, and shared transaction history.
+
+Navigation:
+
+Add a hamburger menu (three lines) at the top-left of the app.
+
+Menu items:
+
+Dashboard (main page)
+
+Borrow
+
+Deposit
+
+Stake
+
+Clicking Borrow or the Borrow button on the dashboard should redirect to the same Borrow page.
+
+Borrow Page Flow:
+
+Step 1: Select Asset
+
+Display a list/dropdown of supported cryptocurrencies.
+
+Selecting a coin sets it as the borrowing asset.
+
+Step 2: Enter Amount
+
+Show:
+
+User’s Flux token balance
+
+Current USD price of Flux
+
+Current USD price of the selected crypto
+
+Calculate maximum borrowable amount dynamically:
+
+Max Borrow = 30% of (Flux balance × Flux price) ÷ Selected crypto price
+
+Display:
+
+“Max you can borrow: X [crypto]”
+
+Input field should:
+
+Prevent values above the max
+
+Update in real time using current crypto prices
+
+Step 3: Submit Borrow Request
+
+When user submits:
+
+Do NOT send funds immediately
+
+Record the borrow request as pending
+
+Transaction Recording:
+
+Add the borrow request to a Recent Transactions panel at the bottom of the Borrow page.
+
+Also show the same Recent Transactions panel on the main dashboard.
+
+Transactions must include:
+
+Type: Deposit / Borrow
+
+Asset
+
+Amount
+
+Status: Pending / Approved / Rejected
+
+Timestamp
+
+Database Tables:
+
+transactions
+
+id (uuid)
+
+user_id (uuid)
+
+type (deposit, borrow)
+
+asset (text)
+
+amount (numeric)
+
+status (pending, approved, rejected)
+
+created_at (timestamp)
+
+Price Handling:
+
+Fetch real-time prices from a crypto price API.
+
+Cache prices briefly to avoid excessive requests.
+
+Prices must be used only for calculation, not execution.
+
+UX Requirements:
+
+Step-based UI with progress indicator
+
+Clear max borrow warning
+
+Disabled submit button if amount exceeds limit
+
+Smooth page transitions
+
+Result:
+
+Users can request crypto loans backed by Flux tokens
+
+Borrow limits are transparent and price-aware
+
+All actions appear in a unified transaction history
+
+System is ready for future admin approval or automated loan execution

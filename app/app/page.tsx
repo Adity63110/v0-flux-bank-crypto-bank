@@ -40,6 +40,21 @@ export default function FluxBank() {
   const [withdrawAmount, setWithdrawAmount] = useState("")
   const [borrowAmount, setBorrowAmount] = useState("")
   const [isDepositing, setIsDepositing] = useState(false)
+  const [fluxBalance, setFluxBalance] = useState("0.00")
+
+  // Fetch real balance
+  const fetchBalance = async () => {
+    if (!username) return;
+    try {
+      const response = await fetch(`/api/user/balance?username=${username}`)
+      if (response.ok) {
+        const data = await response.json()
+        setFluxBalance(data.balance.toFixed(2))
+      }
+    } catch (error) {
+      console.error("Error fetching balance:", error)
+    }
+  }
 
   // Persistence check
   useEffect(() => {
@@ -57,6 +72,14 @@ export default function FluxBank() {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (isSignedIn) {
+      fetchBalance()
+      const interval = setInterval(fetchBalance, 10000) // Refresh every 10s
+      return () => clearInterval(interval)
+    }
+  }, [isSignedIn, username])
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -227,10 +250,10 @@ export default function FluxBank() {
           <Card className="border-border/40">
             <CardHeader className="pb-3">
               <CardDescription className="text-xs">FLUX Balance</CardDescription>
-              <CardTitle className="text-3xl font-bold">0.00</CardTitle>
+              <CardTitle className="text-3xl font-bold">{fluxBalance}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">≈ $0.00</p>
+              <p className="text-xs text-muted-foreground">≈ ${fluxBalance}</p>
             </CardContent>
           </Card>
 

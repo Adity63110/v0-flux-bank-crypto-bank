@@ -28,7 +28,7 @@ export async function POST(request: Request) {
           username: username,
           amount: parseFloat(amount),
           status: 'pending',
-          created_at: new_string Date().toISOString()
+          created_at: new Date().toISOString()
         }
       ])
       .select()

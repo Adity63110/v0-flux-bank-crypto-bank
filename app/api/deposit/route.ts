@@ -25,9 +25,10 @@ export async function POST(request: Request) {
       .from('deposits')
       .insert([
         {
-          user_id: user.id,
+          username: username,
           amount: parseFloat(amount),
           status: 'pending',
+          created_at: new_string Date().toISOString()
         }
       ])
       .select()

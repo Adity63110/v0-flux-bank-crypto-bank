@@ -16,14 +16,14 @@ import { QRCodeSVG } from "qrcode.react"
 const ADMIN_WALLET_ADDRESS = "8o11wa4qBX8ivTdmXUAyuvo2wTfncADNaMvvzKBcWcDe"
 
 const CRYPTO_OPTIONS = [
-  { name: "Bitcoin", symbol: "BTC", color: "#F7931A" },
-  { name: "Ethereum", symbol: "ETH", color: "#627EEA" },
-  { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F" },
-  { name: "Solana", symbol: "SOL", color: "#14F195" },
-  { name: "USDC", symbol: "USDC", color: "#2775CA" },
-  { name: "USDT", symbol: "USDT", color: "#26A17B" },
-  { name: "Tron", symbol: "TRX", color: "#FF0013" },
-  { name: "Cardano", symbol: "ADA", color: "#0033AD" },
+  { name: "Bitcoin", symbol: "BTC", color: "#F7931A", logo: "/stock_images/bitcoin_logo,_btc_cr_79badba8.jpg" },
+  { name: "Ethereum", symbol: "ETH", color: "#627EEA", logo: "/stock_images/ethereum_logo,_eth_c_5256b7af.jpg" },
+  { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F", logo: "/stock_images/bnb_smart_chain_logo_b8bfcfc4.jpg" },
+  { name: "Solana", symbol: "SOL", color: "#14F195", logo: "/stock_images/solana_logo,_sol_cry_ed9c71d4.jpg" },
+  { name: "USDC", symbol: "USDC", color: "#2775CA", logo: "/stock_images/usdc_coin_logo,_stab_ee870b54.jpg" },
+  { name: "USDT", symbol: "USDT", color: "#26A17B", logo: "/stock_images/usdt_tether_logo,_st_d8b901f2.jpg" },
+  { name: "Tron", symbol: "TRX", color: "#FF0013", logo: null },
+  { name: "Cardano", symbol: "ADA", color: "#0033AD", logo: null },
 ]
 
 export default function FluxBank() {
@@ -541,11 +541,23 @@ export default function FluxBank() {
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div
-                        className="h-10 w-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                        style={{ backgroundColor: crypto.color }}
-                      >
-                        {crypto.symbol.slice(0, 2)}
+                      <div className="h-10 w-10 rounded-full flex items-center justify-center overflow-hidden border border-border/40">
+                        {crypto.logo ? (
+                          <Image
+                            src={crypto.logo}
+                            alt={crypto.name}
+                            width={40}
+                            height={40}
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div
+                            className="h-full w-full flex items-center justify-center text-white font-bold text-sm"
+                            style={{ backgroundColor: crypto.color }}
+                          >
+                            {crypto.symbol.slice(0, 2)}
+                          </div>
+                        )}
                       </div>
                       <div>
                         <div className="font-semibold">{crypto.name}</div>

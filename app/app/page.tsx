@@ -268,7 +268,7 @@ export default function FluxBank() {
           </Card>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-2 mb-8">
           {/* Borrow Section */}
           <Card className="border-border/40">
             <CardHeader>

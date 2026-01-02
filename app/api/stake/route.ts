@@ -60,11 +60,11 @@ export async function POST(req: Request) {
 
     let updateData = {}
     if (type === "stake") {
-      if (userData.balance < numAmount) {
+      if ((userData.balance || 0) < numAmount) {
         return NextResponse.json({ error: "Insufficient balance to stake" }, { status: 400 })
       }
       updateData = {
-        balance: userData.balance - numAmount,
+        balance: (userData.balance || 0) - numAmount,
         staked_balance: (userData.staked_balance || 0) + numAmount
       }
     } else if (type === "unstake") {
@@ -75,29 +75,22 @@ export async function POST(req: Request) {
         staked_balance: (userData.staked_balance || 0) - numAmount,
         balance: (userData.balance || 0) + numAmount
       }
-      
-      // Update balances immediately for unstake
-      const { error: updateError } = await supabase
-        .from("users")
-        .update(updateData)
-        .eq("username", username)
-      
-      if (updateError) throw updateError
-
-      // Log as transaction
-      await supabase.from("transactions").insert([{
-        username,
-        type: "unstake",
-        asset: "FLUX",
-        amount: numAmount,
-        status: "completed",
-        description: `Unstaked ${numAmount} FLUX`
-      }])
     } else {
       return NextResponse.json({ error: "Invalid operation type" }, { status: 400 })
     }
 
-    // 1. Record the request
+    // 1. Update user balances first (transactional)
+    const { error: updateError } = await supabase
+      .from("users")
+      .update(updateData)
+      .eq("username", username)
+    
+    if (updateError) {
+      console.error("Balance update error:", updateError)
+      throw new Error(`Failed to update balances: ${updateError.message}`)
+    }
+
+    // 2. Record the history in staking_requests
     const { data: requestData, error: requestError } = await supabase
       .from("staking_requests")
       .insert([{
@@ -109,29 +102,23 @@ export async function POST(req: Request) {
       }])
       .select()
 
-    if (requestError) throw requestError
+    if (requestError) {
+      console.error("Staking request record error:", requestError)
+      // We don't throw here to avoid failing the user's balance update, but we should log it
+    }
 
-    // 2. Update user balances if it's a stake (immediate for better UX)
-    if (type === "stake") {
-      const { error: updateError } = await supabase
-        .from("users")
-        .update({
-          balance: userData.balance - numAmount,
-          staked_balance: (userData.staked_balance || 0) + numAmount
-        })
-        .eq("username", username)
-      
-      if (updateError) throw updateError
-      
-      // Also log as transaction
-      await supabase.from("transactions").insert([{
-        username,
-        type: "stake",
-        asset: "FLUX",
-        amount: numAmount,
-        status: "completed",
-        description: `Staked ${numAmount} FLUX for ${lock_period}`
-      }])
+    // 3. Log as transaction
+    const { error: transactionError } = await supabase.from("transactions").insert([{
+      username,
+      type,
+      asset: "FLUX",
+      amount: numAmount,
+      status: "completed",
+      description: type === "stake" ? `Staked ${numAmount} FLUX for ${lock_period}` : `Unstaked ${numAmount} FLUX`
+    }])
+
+    if (transactionError) {
+      console.error("Transaction log error:", transactionError)
     }
 
     return NextResponse.json({ success: true, data: requestData })

@@ -9,12 +9,14 @@ import Image from "next/image"
 import Link from "next/link"
 
 const BORROW_OPTIONS = [
-  { name: "Bitcoin", symbol: "BTC", ltv: "30%", apr: "4.5%", logo: "/cryptos/btc.png" },
-  { name: "Ethereum", symbol: "ETH", ltv: "30%", apr: "4.8%", logo: "/cryptos/eth.png" },
-  { name: "BNB Smart Chain", symbol: "BSC", ltv: "25%", apr: "5.2%", logo: "/cryptos/bsc.png" },
-  { name: "Solana", symbol: "SOL", ltv: "20%", apr: "6.0%", logo: "/cryptos/sol.png" },
-  { name: "USDC", symbol: "USDC", ltv: "50%", apr: "3.5%", logo: "/cryptos/usdc.png" },
-  { name: "USDT", symbol: "USDT", ltv: "50%", apr: "3.5%", logo: "/cryptos/usdt.png" },
+  { name: "Bitcoin", symbol: "BTC", ltv: "30%", apr: "5%", logo: "/cryptos/btc.png" },
+  { name: "Ethereum", symbol: "ETH", ltv: "30%", apr: "5%", logo: "/cryptos/eth.png" },
+  { name: "BNB Smart Chain", symbol: "BSC", ltv: "30%", apr: "5%", logo: "/cryptos/bsc.png" },
+  { name: "Solana", symbol: "SOL", ltv: "30%", apr: "5%", logo: "/cryptos/sol.png" },
+  { name: "USDC", symbol: "USDC", ltv: "30%", apr: "5%", logo: "/cryptos/usdc.png" },
+  { name: "USDT", symbol: "USDT", ltv: "30%", apr: "5%", logo: "/cryptos/usdt.png" },
+  { name: "Tron", symbol: "TRX", ltv: "30%", apr: "5%", logo: "/cryptos/tron.png" },
+  { name: "Ton", symbol: "TON", ltv: "30%", apr: "5%", logo: "/cryptos/ton.png" },
 ]
 
 export default function BorrowPage() {
@@ -55,7 +57,13 @@ export default function BorrowPage() {
             <Card key={option.symbol} className="border-border/40 hover:border-flux/50 transition-all cursor-pointer group">
               <CardHeader className="flex flex-row items-center gap-4">
                 <div className="h-12 w-12 rounded-full border-2 border-flux/20 bg-background flex items-center justify-center overflow-hidden">
-                   <div className="font-bold text-xs text-flux">{option.symbol}</div>
+                   <Image 
+                     src={option.logo} 
+                     alt={option.name} 
+                     width={48} 
+                     height={48} 
+                     className="object-cover"
+                   />
                 </div>
                 <div className="flex-1">
                   <CardTitle>{option.name}</CardTitle>
@@ -72,6 +80,12 @@ export default function BorrowPage() {
                   <div className="space-y-1">
                     <p className="text-muted-foreground">Interest (APR)</p>
                     <p className="font-bold">{option.apr}</p>
+                  </div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-border/40">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-muted-foreground">Max Borrowable</span>
+                    <span className="font-bold text-flux">Available after deposit</span>
                   </div>
                 </div>
               </CardContent>

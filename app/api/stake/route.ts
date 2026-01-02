@@ -71,6 +71,28 @@ export async function POST(req: Request) {
       if ((userData.staked_balance || 0) < numAmount) {
         return NextResponse.json({ error: "Insufficient staked balance to unstake" }, { status: 400 })
       }
+      updateData = {
+        staked_balance: (userData.staked_balance || 0) - numAmount,
+        balance: (userData.balance || 0) + numAmount
+      }
+      
+      // Update balances immediately for unstake
+      const { error: updateError } = await supabase
+        .from("users")
+        .update(updateData)
+        .eq("username", username)
+      
+      if (updateError) throw updateError
+
+      // Log as transaction
+      await supabase.from("transactions").insert([{
+        username,
+        type: "unstake",
+        asset: "FLUX",
+        amount: numAmount,
+        status: "completed",
+        description: `Unstaked ${numAmount} FLUX`
+      }])
     } else {
       return NextResponse.json({ error: "Invalid operation type" }, { status: 400 })
     }

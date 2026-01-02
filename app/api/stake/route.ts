@@ -74,7 +74,7 @@ export async function POST(req: Request) {
         username,
         amount: numAmount,
         type,
-        status: "completed", // Auto-approve for now for demo
+        status: type === 'stake' ? "completed" : "pending", 
         lock_period: type === 'stake' ? lock_period : null
       }])
       .select()

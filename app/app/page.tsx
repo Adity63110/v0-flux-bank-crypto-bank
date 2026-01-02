@@ -312,7 +312,7 @@ export default function FluxBank() {
               <CardTitle className="text-3xl font-bold">{fluxBalance}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">≈ ${fluxBalance}</p>
+              <p className="text-xs text-muted-foreground">≈ ${(parseFloat(fluxBalance) * 0.000012).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })}</p>
             </CardContent>
           </Card>
 
@@ -345,11 +345,11 @@ export default function FluxBank() {
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Collateral Value</span>
-                  <span className="font-medium">$0.00</span>
+                  <span className="font-medium">${(parseFloat(fluxBalance) * 0.000012).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Max Borrow (30%)</span>
-                  <span className="font-medium text-flux">$0.00</span>
+                  <span className="font-medium text-flux">${(parseFloat(fluxBalance) * 0.000012 * 0.3).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Currently Borrowed</span>

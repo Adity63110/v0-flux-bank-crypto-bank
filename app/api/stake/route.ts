@@ -5,9 +5,32 @@ const supabaseUrl = process.env.SUPABASE_URL!
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey)
 
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url)
+    const username = searchParams.get("username")
+
+    if (!username) {
+      return NextResponse.json({ error: "Username is required" }, { status: 400 })
+    }
+
+    const { data, error } = await supabase
+      .from("staking_requests")
+      .select("*")
+      .eq("username", username)
+      .order("created_at", { ascending: false })
+
+    if (error) throw error
+
+    return NextResponse.json({ history: data || [] })
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+}
+
 export async function POST(req: Request) {
   try {
-    const { username, amount, type } = await req.json()
+    const { username, amount, type, lock_period } = await req.json()
 
     if (!username || !amount || !type) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
@@ -40,9 +63,6 @@ export async function POST(req: Request) {
       if ((userData.staked_balance || 0) < numAmount) {
         return NextResponse.json({ error: "Insufficient staked balance to unstake" }, { status: 400 })
       }
-      // Note: In a real app, unstaking might have a cooldown. 
-      // For now, we'll record it as a request.
-      // But based on user requirements, let's just record the request for now.
     } else {
       return NextResponse.json({ error: "Invalid operation type" }, { status: 400 })
     }
@@ -54,14 +74,14 @@ export async function POST(req: Request) {
         username,
         amount: numAmount,
         type,
-        status: "pending"
+        status: "completed", // Auto-approve for now for demo
+        lock_period: type === 'stake' ? lock_period : null
       }])
       .select()
 
     if (requestError) throw requestError
 
     // 2. Update user balances if it's a stake (immediate for better UX)
-    // For unstake, we usually wait for the cooldown, so we won't update balance yet.
     if (type === "stake") {
       const { error: updateError } = await supabase
         .from("users")
@@ -77,7 +97,7 @@ export async function POST(req: Request) {
         asset: "FLUX",
         amount: numAmount,
         status: "completed",
-        description: `Staked ${numAmount} FLUX`
+        description: `Staked ${numAmount} FLUX (${lock_period})`
       }])
     }
 

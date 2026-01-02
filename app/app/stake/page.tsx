@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowLeft, Zap, Lock, Info, TrendingUp, Wallet, Shield } from "lucide-react"
+import { ArrowLeft, Zap, Lock, Info, TrendingUp, Wallet, Shield, History } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -17,20 +17,31 @@ export default function StakingPage() {
   const [pendingRewards, setPendingRewards] = useState(0)
   const [stakeAmount, setStakeAmount] = useState("")
   const [unstakeAmount, setUnstakeAmount] = useState("")
+  const [lockPeriod, setLockPeriod] = useState("1week")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [activeTab, setActiveTab] = useState("stake")
+  const [stakingHistory, setStakingHistory] = useState<any[]>([])
 
   const estimatedAPY = "12.5%"
   const unstakingPeriod = "7 Days"
 
   const fetchUserData = async (user: string) => {
     try {
-      const response = await fetch(`/api/user/balance?username=${user}`)
-      if (response.ok) {
-        const data = await response.json()
+      const [balanceRes, historyRes] = await Promise.all([
+        fetch(`/api/user/balance?username=${user}`),
+        fetch(`/api/stake?username=${user}`)
+      ])
+      
+      if (balanceRes.ok) {
+        const data = await balanceRes.json()
         setFluxBalance(data.balance || 0)
         setStakedBalance(data.staked_balance || 0)
         setPendingRewards(data.pending_rewards || 0)
+      }
+
+      if (historyRes.ok) {
+        const data = await historyRes.json()
+        setStakingHistory(data.history || [])
       }
     } catch (error) {
       console.error("Error fetching data:", error)
@@ -56,7 +67,8 @@ export default function StakingPage() {
         body: JSON.stringify({
           username,
           amount: stakeAmount,
-          type: "stake"
+          type: "stake",
+          lock_period: lockPeriod
         }),
       })
 
@@ -212,6 +224,29 @@ export default function StakingPage() {
                     </div>
                   </div>
 
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">Select Lock Period</Label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { id: "1week", label: "1 Week" },
+                        { id: "1month", label: "1 Month" },
+                        { id: "1year", label: "1 Year" },
+                      ].map((p) => (
+                        <button
+                          key={p.id}
+                          onClick={() => setLockPeriod(p.id)}
+                          className={`py-2 px-3 rounded-lg border text-sm transition-all ${
+                            lockPeriod === p.id 
+                              ? "bg-flux/20 border-flux text-flux font-bold" 
+                              : "bg-background/50 border-border/40 hover:border-flux/50"
+                          }`}
+                        >
+                          {p.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-4 rounded-xl bg-background/50 border border-border/40">
                       <p className="text-xs text-muted-foreground mb-1">Daily Rewards</p>
@@ -220,8 +255,8 @@ export default function StakingPage() {
                       </p>
                     </div>
                     <div className="p-4 rounded-xl bg-background/50 border border-border/40">
-                      <p className="text-xs text-muted-foreground mb-1">Lock Period</p>
-                      <p className="font-bold">None</p>
+                      <p className="text-xs text-muted-foreground mb-1">Selected Period</p>
+                      <p className="font-bold capitalize">{lockPeriod.replace("1", "1 ")}</p>
                     </div>
                   </div>
 
@@ -289,6 +324,55 @@ export default function StakingPage() {
             </TabsContent>
           </Tabs>
         </div>
+
+        {/* Stake History */}
+        <Card className="border-border/40 bg-card/30 backdrop-blur-sm overflow-hidden">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="text-xl font-bold flex items-center gap-2">
+                <History className="h-5 w-5 text-flux" />
+                Stake History
+              </CardTitle>
+              <CardDescription>Your recent staking activities</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            {stakingHistory.length > 0 ? (
+              <div className="divide-y divide-border/40">
+                {stakingHistory.map((item) => (
+                  <div key={item.id} className="p-4 flex items-center justify-between hover:bg-muted/10 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
+                        item.type === 'stake' ? 'bg-flux/10 text-flux' : 'bg-amber-500/10 text-amber-500'
+                      }`}>
+                        {item.type === 'stake' ? <Lock className="h-5 w-5" /> : <Shield className="h-5 w-5" />}
+                      </div>
+                      <div>
+                        <p className="font-semibold capitalize">{item.type}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(item.created_at).toLocaleDateString()} • {item.lock_period ? item.lock_period.replace('1', '1 ') : 'No lock'}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-lg">{item.amount.toLocaleString()} FLUX</p>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                        item.status === 'completed' ? 'bg-flux/10 text-flux' : 'bg-amber-500/10 text-amber-500'
+                      }`}>
+                        {item.status}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="py-12 text-center text-muted-foreground">
+                <History className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                <p>No staking history found</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </main>
     </div>
   )

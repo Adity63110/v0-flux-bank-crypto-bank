@@ -320,7 +320,7 @@ export default function StakingPage() {
 
                   <Button 
                     variant="outline"
-                    className="w-full h-14 text-lg font-bold border-flux/30 hover:bg-flux/5"
+                    className="w-full h-14 text-lg font-bold border-flux/30 hover:bg-flux/5 hover:text-flux"
                     disabled={!unstakeAmount || parseFloat(unstakeAmount) <= 0 || parseFloat(unstakeAmount) > stakedBalance || isSubmitting}
                     onClick={handleUnstake}
                   >

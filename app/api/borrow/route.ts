@@ -19,13 +19,13 @@ export async function POST(req: Request) {
     // 1. Get user and current settings
     const [{ data: userData, error: userError }, { data: settingsData, error: settingsError }] = await Promise.all([
       supabase.from("users").select("balance").eq("username", username).single(),
-      supabase.from("settings").select("flux_price").single()
+      supabase.from("global_settings").select("value").eq("key", "flux_price").single()
     ])
 
     if (userError || !userData) throw new Error("User not found")
-    if (settingsError || !settingsData) throw new Error("Settings not found")
+    if (settingsError || !settingsData) throw new Error("Global settings not found")
 
-    const fluxPrice = settingsData.flux_price
+    const fluxPrice = parseFloat(settingsData.value)
     const collateralRequired = (numAmount * 3000) / (fluxPrice * 0.3) // Example logic, but let's just use simple reduction for now as requested
     // The user said "after borrow the balance is reduced". This usually means the collateral is "locked" or "spent".
     // I will reduce the balance by the equivalent collateral amount or a placeholder for now to satisfy the "balance is reduced" requirement.

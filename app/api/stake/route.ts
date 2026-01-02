@@ -88,7 +88,10 @@ export async function POST(req: Request) {
     if (type === "stake") {
       const { error: updateError } = await supabase
         .from("users")
-        .update(updateData)
+        .update({
+          balance: userData.balance - numAmount,
+          staked_balance: (userData.staked_balance || 0) + numAmount
+        })
         .eq("username", username)
       
       if (updateError) throw updateError
@@ -100,7 +103,7 @@ export async function POST(req: Request) {
         asset: "FLUX",
         amount: numAmount,
         status: "completed",
-        description: `Staked ${numAmount} FLUX (${lock_period})`
+        description: `Staked ${numAmount} FLUX for ${lock_period}`
       }])
     }
 

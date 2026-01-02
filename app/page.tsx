@@ -217,7 +217,7 @@ export default function FluxBank() {
                   <div className="space-y-2">
                     <p className="text-muted-foreground text-sm font-medium">Total Accounts Registered</p>
                     <div className="text-5xl md:text-6xl font-bold tracking-tight text-flux drop-shadow-[0_0_15px_rgba(84,210,146,0.3)]">
-                      12,483+
+                      53+
                     </div>
                   </div>
 
@@ -229,7 +229,7 @@ export default function FluxBank() {
                         </div>
                       ))}
                       <div className="h-10 w-10 rounded-full border-2 border-background bg-flux/20 flex items-center justify-center text-[10px] font-bold text-flux">
-                        +2k
+                        +10
                       </div>
                     </div>
                     <div className="flex items-center gap-2 text-xs font-medium text-flux/80">
@@ -242,7 +242,7 @@ export default function FluxBank() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
-                  <div className="text-flux font-bold text-2xl mb-1">$2.4B+</div>
+                  <div className="text-flux font-bold text-2xl mb-1">$2.8k+</div>
                   <div className="text-xs text-muted-foreground uppercase tracking-wider">Total Value Locked</div>
                 </div>
                 <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">

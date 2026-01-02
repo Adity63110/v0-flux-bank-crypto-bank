@@ -1,0 +1,70 @@
+Design an interactive “About FluxBank” column/section for the FluxBank homepage that explains the platform in a modern, engaging, and trust-focused way.
+
+The section should feel like a story + product explainer, not a static wall of text, and match FluxBank’s premium fintech + Web3 aesthetic using the accent color #54d292.
+
+Layout
+
+Use a two-column responsive layout:
+
+Left Column – About FluxBank (Interactive)
+
+• Large heading:
+“About FluxBank”
+• Subheading:
+A New Kind of Crypto Bank
+• Short intro paragraph explaining FluxBank’s mission:
+
+FluxBank is a next-generation crypto bank that lets users unlock liquidity without selling their assets. By using Flux as collateral, users can borrow across major blockchains while keeping full visibility and control.
+
+• Below the intro, display interactive info blocks or tabs (clickable or hover-activated):
+
+Interactive Blocks:
+
+1. Why FluxBank
+• Borrow without selling
+• Transparent, price-aware limits
+• Built like a real bank, powered by crypto
+
+2. How It Works
+• Sign up and receive an instant wallet
+• Deposit Flux as collateral
+• Borrow supported assets based on real-time prices
+• Requests are recorded and processed securely
+
+3. What Makes It Different
+• Bank-style UX instead of complex DeFi dashboards
+• Unified transaction history
+• Manual + automated safety checks
+
+Each block should animate smoothly when selected, with a subtle glow or underline effect.
+
+Right Column – Visual / Motion Element
+
+• Animated illustration or visual container
+• Central Flux logo with a soft neon glow
+• Surrounding icons representing supported blockchains and assets
+• Light floating or pulse animations to convey activity and liquidity
+• Glassmorphism panel or gradient background for depth
+
+UX & Interaction Requirements
+
+• Smooth transitions between info blocks
+• Clear active state indicators
+• Keyboard and mobile friendly
+• Subtle hover glow using Flux green
+• Clean spacing for readability
+
+Visual Style
+
+• Futuristic, minimal, premium fintech
+• Dark-mode first
+• Soft gradients and glow, never harsh
+• Inspired by modern neobanks and Web3 platforms
+
+Purpose
+
+This section should:
+• Explain FluxBank in under 30 seconds
+• Build trust and clarity
+• Reduce confusion for first-time users
+• Feel interactive and alive, not static

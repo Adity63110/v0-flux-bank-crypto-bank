@@ -5,7 +5,7 @@ import { useState } from "react"
 import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Lock, TrendingUp, Wallet, ArrowRight, Zap, Shield } from "lucide-react"
+import { Lock, TrendingUp, Wallet, ArrowRight, Zap, Shield, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -118,6 +118,25 @@ export default function FluxBank() {
               >
                 Learn How It Works
               </Button>
+            </div>
+
+            {/* Stats Card */}
+            <div className="pt-12 flex justify-center animate-fade-in-delay-2">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-flux/20 to-flux/10 rounded-3xl blur-xl opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <div className="relative flex items-center gap-6 px-8 py-6 rounded-2xl bg-background/40 backdrop-blur-xl border border-flux/20 shadow-[0_0_20px_rgba(84,210,146,0.1)] group-hover:shadow-[0_0_30px_rgba(84,210,146,0.2)] group-hover:border-flux/40 transition-all duration-500">
+                  <div className="h-14 w-14 rounded-xl bg-flux/10 flex items-center justify-center border border-flux/20">
+                    <Users className="h-7 w-7 text-flux" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs font-medium uppercase tracking-widest text-flux/70 mb-1">Total Accounts Registered</p>
+                    <div className="flex items-baseline gap-1">
+                      <h3 className="text-4xl font-bold tracking-tighter tabular-nums">12,483</h3>
+                      <span className="text-xl font-bold text-flux">+</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

@@ -58,20 +58,33 @@ export async function POST(req: Request) {
     if (borrowError) throw borrowError
 
     // 3. Insert transaction record
-    const { error: txError } = await supabase
-      .from("transactions")
-      .insert([
-        {
-          username,
-          type: "borrow",
-          asset: crypto,
-          amount: numAmount,
-          status: "pending",
-          description: `Borrowed ${numAmount} ${crypto} to ${address.slice(0, 6)}...`
-        },
-      ])
+    try {
+      const txData: any = {
+        username,
+        type: "borrow",
+        asset: crypto,
+        amount: numAmount,
+        status: "pending",
+      }
+      
+      // Only add description if it's likely to succeed, or handle error gracefully
+      txData.description = `Borrowed ${numAmount} ${crypto} to ${address.slice(0, 6)}...`
 
-    if (txError) console.error("Transaction log error:", txError)
+      const { error: txError } = await supabase
+        .from("transactions")
+        .insert([txData])
+
+      if (txError) {
+        console.error("Transaction log error (attempt 1):", txError)
+        // Retry without description if that was the error
+        if (txError.message.includes("description")) {
+          delete txData.description
+          await supabase.from("transactions").insert([txData])
+        }
+      }
+    } catch (e) {
+      console.error("Critical transaction logging failure:", e)
+    }
 
     return NextResponse.json({ success: true, data: borrowData, newBalance })
   } catch (error: any) {

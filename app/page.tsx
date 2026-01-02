@@ -186,6 +186,66 @@ export default function FluxBank() {
           </div>
         </section>
 
+        {/* New Specialty Section */}
+        <section className="container mx-auto px-4 py-20 bg-muted/30 relative overflow-hidden">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+                Borrow Any Major Crypto <br />
+                <span className="text-flux">with Flux</span>
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Use your Flux tokens as collateral to unlock liquidity across the entire crypto ecosystem. 
+                Borrow seamlessly without selling your assets.
+              </p>
+              <div className="flex flex-wrap gap-2 pt-2">
+                {["BTC", "BNB (BSC)", "USDT", "USDC", "TON", "TRON", "SOLANA"].map((asset) => (
+                  <span 
+                    key={asset} 
+                    className="px-3 py-1.5 rounded-full bg-flux/10 border border-flux/20 text-flux text-xs font-semibold tracking-wide uppercase shadow-[0_0_15px_rgba(84,210,146,0.1)]"
+                  >
+                    {asset}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative h-[400px] flex items-center justify-center">
+              <div className="absolute inset-0 bg-flux/5 rounded-full blur-3xl" />
+              <div className="relative w-full h-full flex items-center justify-center">
+                {CRYPTO_OPTIONS.filter(c => ["BTC", "ETH", "BSC", "SOL", "USDC", "USDT", "TRX"].includes(c.symbol)).map((crypto, i) => (
+                  <div
+                    key={crypto.symbol}
+                    className="absolute transition-all duration-[3000ms] ease-in-out hover:scale-110"
+                    style={{
+                      animation: `float ${3 + i * 0.5}s ease-in-out infinite alternate`,
+                      left: `${50 + 35 * Math.cos((i * 51.4 * Math.PI) / 180)}%`,
+                      top: `${50 + 35 * Math.sin((i * 51.4 * Math.PI) / 180)}%`,
+                      transform: 'translate(-50%, -50%)',
+                    }}
+                  >
+                    <div 
+                      className="h-14 w-14 md:h-16 md:w-16 rounded-full border-2 border-flux/30 bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-[0_0_20px_rgba(84,210,146,0.2)] hover:shadow-[0_0_30px_rgba(84,210,146,0.4)] hover:border-flux transition-all cursor-pointer overflow-hidden"
+                    >
+                      <div className="font-bold text-xs text-flux">{crypto.symbol}</div>
+                    </div>
+                  </div>
+                ))}
+                {/* Center Flux Logo */}
+                <div className="z-10 h-20 w-20 md:h-24 md:w-24 rounded-full border-2 border-flux bg-background flex items-center justify-center shadow-[0_0_40px_rgba(84,210,146,0.3)] animate-pulse">
+                  <Image src="/fluxbank-logo.png" alt="Flux" width={48} height={48} className="object-contain" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <style jsx>{`
+            @keyframes float {
+              from { transform: translate(-50%, -40%); }
+              to { transform: translate(-50%, -60%); }
+            }
+          `}</style>
+        </section>
+
         <section className="container mx-auto px-4 py-20 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Built for Trust & Speed</h2>

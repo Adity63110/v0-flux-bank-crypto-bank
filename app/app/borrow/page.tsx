@@ -26,9 +26,8 @@ export default function BorrowPage() {
   const [selectedAsset, setSelectedAsset] = useState<typeof BORROW_OPTIONS[0] | null>(null)
   const [step, setStep] = useState(1)
   const [borrowAmount, setBorrowAmount] = useState("")
+  const [fluxBalance, setFluxBalance] = useState(0)
   
-  // Mock Flux balance and price (Real-time updates would fetch these)
-  const fluxBalance = 50000 
   const fluxPrice = 0.000012 
   
   const calculateMaxBorrow = (asset: typeof BORROW_OPTIONS[0]) => {
@@ -37,11 +36,24 @@ export default function BorrowPage() {
     return maxBorrowUSD / asset.price
   }
 
+  const fetchBalance = async (user: string) => {
+    try {
+      const response = await fetch(`/api/user/balance?username=${user}`)
+      if (response.ok) {
+        const data = await response.json()
+        setFluxBalance(data.balance)
+      }
+    } catch (error) {
+      console.error("Error fetching balance:", error)
+    }
+  }
+
   useEffect(() => {
     const savedUser = localStorage.getItem("fluxbank_user")
     if (savedUser) {
       const { username: sUsername } = JSON.parse(savedUser)
       setUsername(sUsername)
+      fetchBalance(sUsername)
     }
   }, [])
 

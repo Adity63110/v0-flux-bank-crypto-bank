@@ -27,6 +27,7 @@ export default function BorrowPage() {
   const [step, setStep] = useState(1)
   const [borrowAmount, setBorrowAmount] = useState("")
   const [destinationAddress, setDestinationAddress] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [fluxBalance, setFluxBalance] = useState(0)
   const [fluxPrice, setFluxPrice] = useState(0.000012)
 
@@ -70,9 +71,36 @@ export default function BorrowPage() {
     }
   }, [])
 
-  const handleSelectAsset = (asset: (typeof BORROW_OPTIONS)[0]) => {
-    setSelectedAsset(asset)
-    setStep(2)
+  const handleBorrow = async () => {
+    if (!selectedAsset || !borrowAmount || !destinationAddress) return
+    
+    setIsSubmitting(true)
+    try {
+      const response = await fetch("/api/borrow", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          crypto: selectedAsset.symbol,
+          amount: borrowAmount,
+          address: destinationAddress,
+        }),
+      })
+
+      const data = await response.json()
+      if (response.ok) {
+        alert("Borrow request submitted successfully! It will be reviewed shortly.")
+        setStep(1)
+        setBorrowAmount("")
+        setDestinationAddress("")
+      } else {
+        throw new Error(data.error || "Failed to submit borrow request")
+      }
+    } catch (error: any) {
+      alert(`Error: ${error.message}`)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (step === 2 && selectedAsset) {
@@ -172,9 +200,10 @@ export default function BorrowPage() {
 
               <Button
                 className="w-full h-14 text-lg font-bold bg-flux hover:bg-flux/90"
-                disabled={!borrowAmount || parseFloat(borrowAmount) <= 0 || !destinationAddress}
+                disabled={!borrowAmount || parseFloat(borrowAmount) <= 0 || !destinationAddress || isSubmitting}
+                onClick={handleBorrow}
               >
-                Continue to Borrow
+                {isSubmitting ? "Submitting..." : "Continue to Borrow"}
               </Button>
             </CardContent>
           </Card>

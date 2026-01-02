@@ -10,14 +10,14 @@ import Image from "next/image"
 import Link from "next/link"
 
 const CRYPTO_OPTIONS = [
-  { name: "Bitcoin", symbol: "BTC", color: "#F7931A" },
-  { name: "Ethereum", symbol: "ETH", color: "#627EEA" },
-  { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F" },
-  { name: "Solana", symbol: "SOL", color: "#14F195" },
-  { name: "USDC", symbol: "USDC", color: "#2775CA" },
-  { name: "USDT", symbol: "USDT", color: "#26A17B" },
-  { name: "Tron", symbol: "TRX", color: "#FF0013" },
-  { name: "Cardano", symbol: "ADA", color: "#0033AD" },
+  { name: "Bitcoin", symbol: "BTC", color: "#F7931A", logo: "/cryptos/btc.png" },
+  { name: "Ethereum", symbol: "ETH", color: "#627EEA", logo: "/cryptos/eth.png" },
+  { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F", logo: "/cryptos/bsc.png" },
+  { name: "Solana", symbol: "SOL", color: "#14F195", logo: "/cryptos/sol.png" },
+  { name: "USDC", symbol: "USDC", color: "#2775CA", logo: "/cryptos/usdc.png" },
+  { name: "USDT", symbol: "USDT", color: "#26A17B", logo: "/cryptos/usdt.png" },
+  { name: "Tron", symbol: "TRX", color: "#FF0013", logo: "/cryptos/tron.png" },
+  { name: "Ton", symbol: "TON", color: "#0088CC", logo: "/cryptos/ton.png" },
 ]
 
 export default function FluxBank() {
@@ -213,21 +213,31 @@ export default function FluxBank() {
             <div className="relative h-[400px] flex items-center justify-center">
               <div className="absolute inset-0 bg-flux/5 rounded-full blur-3xl" />
               <div className="relative w-full h-full flex items-center justify-center">
-                {CRYPTO_OPTIONS.filter(c => ["BTC", "ETH", "BSC", "SOL", "USDC", "USDT", "TRX"].includes(c.symbol)).map((crypto, i) => (
+                {CRYPTO_OPTIONS.filter(c => ["BTC", "ETH", "BSC", "SOL", "USDC", "USDT", "TRX", "TON"].includes(c.symbol)).map((crypto, i) => (
                   <div
                     key={crypto.symbol}
                     className="absolute transition-all duration-[3000ms] ease-in-out hover:scale-110"
                     style={{
                       animation: `float ${3 + i * 0.5}s ease-in-out infinite alternate`,
-                      left: `${50 + 35 * Math.cos((i * 51.4 * Math.PI) / 180)}%`,
-                      top: `${50 + 35 * Math.sin((i * 51.4 * Math.PI) / 180)}%`,
+                      left: `${50 + 35 * Math.cos((i * 45 * Math.PI) / 180)}%`,
+                      top: `${50 + 35 * Math.sin((i * 45 * Math.PI) / 180)}%`,
                       transform: 'translate(-50%, -50%)',
                     }}
                   >
                     <div 
                       className="h-14 w-14 md:h-16 md:w-16 rounded-full border-2 border-flux/30 bg-background/80 backdrop-blur-sm flex items-center justify-center shadow-[0_0_20px_rgba(84,210,146,0.2)] hover:shadow-[0_0_30px_rgba(84,210,146,0.4)] hover:border-flux transition-all cursor-pointer overflow-hidden"
                     >
-                      <div className="font-bold text-xs text-flux">{crypto.symbol}</div>
+                      {crypto.logo ? (
+                        <Image
+                          src={crypto.logo}
+                          alt={crypto.name}
+                          width={64}
+                          height={64}
+                          className="object-cover w-full h-full"
+                        />
+                      ) : (
+                        <div className="font-bold text-xs text-flux">{crypto.symbol}</div>
+                      )}
                     </div>
                   </div>
                 ))}

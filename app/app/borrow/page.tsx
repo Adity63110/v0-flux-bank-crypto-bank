@@ -29,7 +29,7 @@ export default function BorrowPage() {
   
   // Mock Flux balance and price (Real-time updates would fetch these)
   const fluxBalance = 50000 
-  const fluxPrice = 0.12 
+  const fluxPrice = 0.000012 
   
   const calculateMaxBorrow = (asset: typeof BORROW_OPTIONS[0]) => {
     const collateralValue = fluxBalance * fluxPrice

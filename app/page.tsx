@@ -123,70 +123,9 @@ export default function FluxBank() {
         </section>
         {/* </CHANGE> */}
 
-        <section className="container mx-auto px-4 py-20">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Core Features</h2>
-
-          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            <Card className="border-flux/20 bg-gradient-to-br from-flux/5 to-transparent hover:shadow-lg hover:shadow-flux/10 transition-all duration-300">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-flux/10 flex items-center justify-center mb-2">
-                  <Lock className="h-6 w-6 text-flux" />
-                </div>
-                <CardTitle className="text-2xl">Borrow Any Crypto</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  Borrow supported cryptocurrencies by locking Flux tokens as collateral. Borrow up to 30% of collateral
-                  value.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="border-flux/20 bg-gradient-to-br from-flux/5 to-transparent hover:shadow-lg hover:shadow-flux/10 transition-all duration-300">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-flux/10 flex items-center justify-center mb-2">
-                  <TrendingUp className="h-6 w-6 text-flux" />
-                </div>
-                <CardTitle className="text-2xl">Stake Your Flux</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  Stake Flux tokens to earn yield while supporting the FluxBank ecosystem.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="border-flux/20 bg-gradient-to-br from-flux/5 to-transparent hover:shadow-lg hover:shadow-flux/10 transition-all duration-300">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-flux/10 flex items-center justify-center mb-2">
-                  <Wallet className="h-6 w-6 text-flux" />
-                </div>
-                <CardTitle className="text-2xl">Instant Wallet Creation</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  Sign in with a username and instantly receive a secure wallet. No seed phrase required at signup.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="border-flux/20 bg-gradient-to-br from-flux/5 to-transparent hover:shadow-lg hover:shadow-flux/10 transition-all duration-300">
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-flux/10 flex items-center justify-center mb-2">
-                  <ArrowRight className="h-6 w-6 text-flux" />
-                </div>
-                <CardTitle className="text-2xl">Deposit & Withdraw Anytime</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">
-                  Full control over your assets with fast deposits and withdrawals.
-                </CardDescription>
-              </CardContent>
-            </Card>
-          </div>
         </section>
 
-        {/* New Specialty Section */}
+        {/* Specialty Section */}
         <section className="container mx-auto px-4 py-20 bg-muted/30 relative overflow-hidden">
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -255,6 +194,9 @@ export default function FluxBank() {
             }
           `}</style>
         </section>
+
+        <section className="container mx-auto px-4 py-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Core Features</h2>
 
         <section className="container mx-auto px-4 py-20 text-center">
           <div className="max-w-3xl mx-auto">

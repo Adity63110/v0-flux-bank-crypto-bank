@@ -23,27 +23,28 @@ const BORROW_OPTIONS = [
 
 export default function BorrowPage() {
   const [username, setUsername] = useState("")
-  const [selectedAsset, setSelectedAsset] = useState<typeof BORROW_OPTIONS[0] | null>(null)
+  const [selectedAsset, setSelectedAsset] = useState<(typeof BORROW_OPTIONS)[0] | null>(null)
   const [step, setStep] = useState(1)
   const [borrowAmount, setBorrowAmount] = useState("")
+  const [destinationAddress, setDestinationAddress] = useState("")
   const [fluxBalance, setFluxBalance] = useState(0)
   const [fluxPrice, setFluxPrice] = useState(0.000012)
-  
-  const calculateMaxBorrow = (asset: typeof BORROW_OPTIONS[0]) => {
+
+  const calculateMaxBorrow = (asset: (typeof BORROW_OPTIONS)[0]) => {
     const collateralValue = fluxBalance * fluxPrice
-    const maxBorrowUSD = collateralValue * 0.30
+    const maxBorrowUSD = collateralValue * 0.3
     return maxBorrowUSD / asset.price
   }
 
   const fetchPrice = async () => {
     try {
-      const response = await fetch('/api/settings');
+      const response = await fetch("/api/settings")
       if (response.ok) {
-        const data = await response.json();
-        setFluxPrice(data.flux_price);
+        const data = await response.json()
+        setFluxPrice(data.flux_price)
       }
     } catch (error) {
-      console.error("Error fetching price:", error);
+      console.error("Error fetching price:", error)
     }
   }
 
@@ -69,14 +70,14 @@ export default function BorrowPage() {
     }
   }, [])
 
-  const handleSelectAsset = (asset: typeof BORROW_OPTIONS[0]) => {
+  const handleSelectAsset = (asset: (typeof BORROW_OPTIONS)[0]) => {
     setSelectedAsset(asset)
     setStep(2)
   }
 
   if (step === 2 && selectedAsset) {
     const maxBorrow = calculateMaxBorrow(selectedAsset)
-    
+
     return (
       <div className="min-h-screen bg-background text-foreground">
         <header className="border-b border-border/40 backdrop-blur-sm sticky top-0 z-50 bg-background/80">
@@ -112,20 +113,26 @@ export default function BorrowPage() {
                 </div>
                 <div className="p-4 rounded-xl bg-background/50 border border-border/40">
                   <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Price Info (USD)</p>
-                  <p className="text-sm">FLUX: <span className="font-bold text-flux">${fluxPrice}</span></p>
-                  <p className="text-sm">{selectedAsset.symbol}: <span className="font-bold text-flux">${selectedAsset.price}</span></p>
+                  <p className="text-sm">
+                    FLUX: <span className="font-bold text-flux">${fluxPrice}</span>
+                  </p>
+                  <p className="text-sm">
+                    {selectedAsset.symbol}: <span className="font-bold text-flux">${selectedAsset.price}</span>
+                  </p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div className="flex justify-between items-end">
-                  <Label htmlFor="amount" className="text-sm font-medium">Borrow Amount ({selectedAsset.symbol})</Label>
+                  <Label htmlFor="amount" className="text-sm font-medium">
+                    Borrow Amount ({selectedAsset.symbol})
+                  </Label>
                   <span className="text-xs text-muted-foreground">
                     Max: <span className="text-flux font-bold">{maxBorrow.toFixed(6)} {selectedAsset.symbol}</span>
                   </span>
                 </div>
                 <div className="relative">
-                  <Input 
+                  <Input
                     id="amount"
                     type="number"
                     placeholder="0.00"
@@ -142,15 +149,30 @@ export default function BorrowPage() {
                     {selectedAsset.symbol}
                   </div>
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="destination" className="text-sm font-medium">
+                  Enter your {selectedAsset.symbol} wallet address
+                </Label>
+                <Input
+                  id="destination"
+                  type="text"
+                  placeholder={`Paste your ${selectedAsset.symbol} address here`}
+                  value={destinationAddress}
+                  onChange={(e) => setDestinationAddress(e.target.value)}
+                  className="h-12 border-flux/30 focus-visible:ring-flux"
+                  required
+                />
                 <p className="text-xs text-muted-foreground flex items-center gap-1.5">
                   <Info className="h-3.5 w-3.5 text-flux" />
-                  Your 30% LTV is protected. You cannot borrow more than the collateral limit.
+                  Ensure this address is correct. FluxBank is not responsible for funds sent to wrong addresses.
                 </p>
               </div>
 
-              <Button 
+              <Button
                 className="w-full h-14 text-lg font-bold bg-flux hover:bg-flux/90"
-                disabled={!borrowAmount || parseFloat(borrowAmount) <= 0}
+                disabled={!borrowAmount || parseFloat(borrowAmount) <= 0 || !destinationAddress}
               >
                 Continue to Borrow
               </Button>
@@ -185,20 +207,14 @@ export default function BorrowPage() {
 
         <div className="grid gap-4 md:grid-cols-2">
           {BORROW_OPTIONS.map((option) => (
-            <Card 
-              key={option.symbol} 
+            <Card
+              key={option.symbol}
               className="border-border/40 hover:border-flux/50 transition-all cursor-pointer group"
               onClick={() => handleSelectAsset(option)}
             >
               <CardHeader className="flex flex-row items-center gap-4">
                 <div className="h-12 w-12 rounded-full border-2 border-flux/20 bg-background flex items-center justify-center overflow-hidden">
-                   <Image 
-                     src={option.logo} 
-                     alt={option.name} 
-                     width={48} 
-                     height={48} 
-                     className="object-cover"
-                   />
+                  <Image src={option.logo} alt={option.name} width={48} height={48} className="object-cover" />
                 </div>
                 <div className="flex-1">
                   <CardTitle>{option.name}</CardTitle>

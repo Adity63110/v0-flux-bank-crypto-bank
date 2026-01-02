@@ -49,23 +49,59 @@ export default function StakingPage() {
   const handleStake = async () => {
     if (!stakeAmount || parseFloat(stakeAmount) <= 0) return
     setIsSubmitting(true)
-    // Implementation for staking API
-    setTimeout(() => {
-      alert("Staking request submitted!")
+    try {
+      const response = await fetch("/api/stake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          amount: stakeAmount,
+          type: "stake"
+        }),
+      })
+
+      const data = await response.json()
+      if (response.ok) {
+        alert("Staking request submitted successfully!")
+        setStakeAmount("")
+        fetchUserData(username)
+      } else {
+        throw new Error(data.error || "Failed to stake")
+      }
+    } catch (error: any) {
+      alert(`Error: ${error.message}`)
+    } finally {
       setIsSubmitting(false)
-      setStakeAmount("")
-    }, 1000)
+    }
   }
 
   const handleUnstake = async () => {
     if (!unstakeAmount || parseFloat(unstakeAmount) <= 0) return
     setIsSubmitting(true)
-    // Implementation for unstaking API
-    setTimeout(() => {
-      alert("Unstaking request submitted!")
+    try {
+      const response = await fetch("/api/stake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          amount: unstakeAmount,
+          type: "unstake"
+        }),
+      })
+
+      const data = await response.json()
+      if (response.ok) {
+        alert("Unstaking request submitted! Please wait for the cooldown period.")
+        setUnstakeAmount("")
+        fetchUserData(username)
+      } else {
+        throw new Error(data.error || "Failed to unstake")
+      }
+    } catch (error: any) {
+      alert(`Error: ${error.message}`)
+    } finally {
       setIsSubmitting(false)
-      setUnstakeAmount("")
-    }, 1000)
+    }
   }
 
   return (

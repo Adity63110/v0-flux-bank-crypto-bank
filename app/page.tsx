@@ -111,13 +111,15 @@ export default function FluxBank() {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-flux/20 text-lg px-8 h-14 hover:bg-flux/5 bg-transparent hover:border-flux/40 transition-all duration-300"
-              >
-                Learn How It Works
-              </Button>
+              <Link href="/app?mode=guest">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-flux/20 text-lg px-8 h-14 hover:bg-flux/5 bg-transparent hover:border-flux/40 transition-all duration-300"
+                >
+                  Learn How It Works
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

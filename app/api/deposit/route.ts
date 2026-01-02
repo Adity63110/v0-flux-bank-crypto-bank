@@ -39,6 +39,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Failed to record deposit' }, { status: 500 });
     }
 
+    // 3. Record in transactions table
+    await supabase.from('transactions').insert([
+      {
+        username: username,
+        type: 'deposit',
+        asset: 'FLUX',
+        amount: parseFloat(amount),
+        status: 'pending',
+        created_at: new Date().toISOString()
+      }
+    ]);
+
     return NextResponse.json({ message: 'Deposit submitted', deposit });
 
   } catch (error) {

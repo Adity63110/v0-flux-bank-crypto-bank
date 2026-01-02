@@ -41,6 +41,21 @@ export default function FluxBank() {
   const [borrowAmount, setBorrowAmount] = useState("")
   const [isDepositing, setIsDepositing] = useState(false)
   const [fluxBalance, setFluxBalance] = useState("0.00")
+  const [transactions, setTransactions] = useState<any[]>([])
+
+  // Fetch transactions
+  const fetchTransactions = async () => {
+    if (!username) return;
+    try {
+      const response = await fetch(`/api/transactions?username=${username}`)
+      if (response.ok) {
+        const data = await response.json()
+        setTransactions(data.transactions)
+      }
+    } catch (error) {
+      console.error("Error fetching transactions:", error)
+    }
+  }
 
   // Fetch real balance
   const fetchBalance = async () => {
@@ -76,7 +91,11 @@ export default function FluxBank() {
   useEffect(() => {
     if (isSignedIn) {
       fetchBalance()
-      const interval = setInterval(fetchBalance, 10000) // Refresh every 10s
+      fetchTransactions()
+      const interval = setInterval(() => {
+        fetchBalance()
+        fetchTransactions()
+      }, 10000) // Refresh every 10s
       return () => clearInterval(interval)
     }
   }, [isSignedIn, username])
@@ -417,13 +436,41 @@ export default function FluxBank() {
             <CardDescription>Your recent activity</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="h-16 w-16 rounded-full bg-muted/30 flex items-center justify-center mb-4">
-                <Wallet className="h-8 w-8 text-muted-foreground" />
+            {transactions.length > 0 ? (
+              <div className="space-y-4">
+                {transactions.map((tx) => (
+                  <div key={tx.id} className="flex items-center justify-between p-3 border border-border/40 rounded-lg bg-muted/20">
+                    <div className="flex items-center gap-3">
+                      <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
+                        tx.type === 'deposit' ? 'bg-flux/10 text-flux' : 'bg-red-500/10 text-red-500'
+                      }`}>
+                        {tx.type === 'deposit' ? <ArrowDownLeft className="h-5 w-5" /> : <ArrowUpRight className="h-5 w-5" />}
+                      </div>
+                      <div>
+                        <div className="font-semibold capitalize">{tx.type}</div>
+                        <div className="text-xs text-muted-foreground">{new Date(tx.created_at).toLocaleString()}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold">{tx.amount} {tx.asset}</div>
+                      <div className={`text-xs ${
+                        tx.status === 'pending' ? 'text-amber-500' : tx.status === 'approved' ? 'text-flux' : 'text-red-500'
+                      }`}>
+                        {tx.status.charAt(0).toUpperCase() + tx.status.slice(1)}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <p className="text-sm text-muted-foreground">No transactions yet</p>
-              <p className="text-xs text-muted-foreground mt-1">Your activity will appear here</p>
-            </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="h-16 w-16 rounded-full bg-muted/30 flex items-center justify-center mb-4">
+                  <Wallet className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <p className="text-sm text-muted-foreground">No transactions yet</p>
+                <p className="text-xs text-muted-foreground mt-1">Your activity will appear here</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </main>

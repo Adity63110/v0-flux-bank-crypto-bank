@@ -82,7 +82,7 @@ export default function BorrowPage() {
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-background/50 border border-border/40">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Your Collateral</p>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Your Balance</p>
                   <p className="text-lg font-bold">{fluxBalance.toLocaleString()} FLUX</p>
                   <p className="text-sm text-flux">${(fluxBalance * fluxPrice).toLocaleString()} USD</p>
                 </div>

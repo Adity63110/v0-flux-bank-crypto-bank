@@ -124,7 +124,7 @@ export default function FluxBank() {
         {/* </CHANGE> */}
 
         {/* Specialty Section */}
-        <section className="container mx-auto px-4 py-20 bg-muted/30 relative overflow-hidden">
+        <section className="container mx-auto px-4 py-20 relative overflow-hidden">
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">

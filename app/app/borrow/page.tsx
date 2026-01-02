@@ -71,6 +71,11 @@ export default function BorrowPage() {
     }
   }, [])
 
+  const handleSelectAsset = (asset: (typeof BORROW_OPTIONS)[0]) => {
+    setSelectedAsset(asset)
+    setStep(2)
+  }
+
   const handleBorrow = async () => {
     if (!selectedAsset || !borrowAmount || !destinationAddress) return
     

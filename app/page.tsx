@@ -127,25 +127,25 @@ export default function FluxBank() {
         {/* </CHANGE> */}
 
         <section className="container mx-auto px-4 py-20 relative overflow-hidden">
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-            {/* Left Column – About FluxBank (Interactive) */}
-            <div className="space-y-8 animate-fade-in">
+          <div className="max-w-4xl mx-auto space-y-12">
+            {/* About FluxBank (Centered Content) */}
+            <div className="text-center space-y-6 animate-fade-in">
               <div className="space-y-4">
                 <h3 className="text-flux font-semibold uppercase tracking-widest text-sm">A New Kind of Crypto Bank</h3>
                 <h2 className="text-5xl md:text-6xl font-bold tracking-tight">About FluxBank</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed max-w-xl">
+                <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
                   FluxBank is a next-generation crypto bank that lets users unlock liquidity without selling their assets. By using Flux as collateral, users can borrow across major blockchains while keeping full visibility and control.
                 </p>
               </div>
 
-              <div className="space-y-4">
+              <div className="grid md:grid-cols-3 gap-6 pt-8">
                 {[
                   {
                     title: "Why FluxBank",
                     items: [
                       "Borrow without selling",
                       "Transparent, price-aware limits",
-                      "Built like a real bank, powered by crypto"
+                      "Built like a bank, powered by crypto"
                     ]
                   },
                   {
@@ -153,14 +153,14 @@ export default function FluxBank() {
                     items: [
                       "Sign up and receive an instant wallet",
                       "Deposit Flux as collateral",
-                      "Borrow supported assets based on real-time prices",
-                      "Requests are recorded and processed securely"
+                      "Borrow supported assets instantly",
+                      "Recorded securely on chain"
                     ]
                   },
                   {
                     title: "What Makes It Different",
                     items: [
-                      "Bank-style UX instead of complex DeFi dashboards",
+                      "Bank-style UX, not DeFi chaos",
                       "Unified transaction history",
                       "Manual + automated safety checks"
                     ]
@@ -168,13 +168,13 @@ export default function FluxBank() {
                 ].map((block, i) => (
                   <div 
                     key={i}
-                    className="group p-6 rounded-2xl bg-muted/20 border border-border/50 hover:border-flux/50 hover:bg-flux/5 transition-all duration-300 cursor-default"
+                    className="group p-8 rounded-2xl bg-muted/20 border border-border/50 hover:border-flux/50 hover:bg-flux/5 transition-all duration-300 cursor-default text-left"
                   >
-                    <h4 className="text-xl font-bold mb-3 group-hover:text-flux transition-colors">{block.title}</h4>
-                    <ul className="space-y-2">
+                    <h4 className="text-xl font-bold mb-4 group-hover:text-flux transition-colors">{block.title}</h4>
+                    <ul className="space-y-3">
                       {block.items.map((item, j) => (
-                        <li key={j} className="flex items-center gap-3 text-muted-foreground text-sm">
-                          <div className="h-1.5 w-1.5 rounded-full bg-flux/50 group-hover:bg-flux" />
+                        <li key={j} className="flex items-start gap-3 text-muted-foreground text-sm leading-tight">
+                          <div className="h-1.5 w-1.5 rounded-full bg-flux/50 mt-1.5 group-hover:bg-flux shrink-0" />
                           {item}
                         </li>
                       ))}
@@ -183,42 +183,7 @@ export default function FluxBank() {
                 ))}
               </div>
             </div>
-
-            {/* Right Column – Visual / Motion Element */}
-            <div className="relative aspect-square flex items-center justify-center">
-              <div className="absolute inset-0 bg-flux/10 rounded-full blur-[100px] animate-pulse" />
-              <div className="relative w-full h-full max-w-[400px] max-h-[400px]">
-                {/* Central Flux Logo */}
-                <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <div className="h-32 w-32 md:h-40 md:w-40 rounded-full border-2 border-flux bg-background/80 backdrop-blur-md flex items-center justify-center shadow-[0_0_50px_rgba(84,210,146,0.4)] animate-glow-pulse">
-                    <Image src="/fluxbank-logo.png" alt="Flux" width={80} height={80} className="object-contain" />
-                  </div>
-                </div>
-
-                {/* Floating Assets Icons */}
-                {["BTC", "ETH", "SOL", "USDC", "USDT", "TON"].map((asset, i) => (
-                  <div
-                    key={asset}
-                    className="absolute h-14 w-14 rounded-full border border-flux/20 bg-background/40 backdrop-blur-sm flex items-center justify-center shadow-lg"
-                    style={{
-                      top: `${50 + 40 * Math.sin((i * 60 * Math.PI) / 180)}%`,
-                      left: `${50 + 40 * Math.cos((i * 60 * Math.PI) / 180)}%`,
-                      transform: 'translate(-50%, -50%)',
-                      animation: `float-asset ${4 + i}s ease-in-out infinite alternate`
-                    }}
-                  >
-                    <span className="text-[10px] font-bold text-flux/80">{asset}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
-          <style jsx>{`
-            @keyframes float-asset {
-              from { transform: translate(-50%, -40%); }
-              to { transform: translate(-50%, -60%); }
-            }
-          `}</style>
         </section>
 
         {/* Specialty Section */}

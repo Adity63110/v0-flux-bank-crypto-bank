@@ -48,7 +48,10 @@ export async function POST(req: Request) {
       .eq("username", username)
       .single()
 
-    if (userError || !userData) throw new Error("User not found")
+    if (userError || !userData) {
+      console.error("User fetch error:", userError)
+      throw new Error(`User not found: ${username}`)
+    }
 
     let updateData = {}
     if (type === "stake") {

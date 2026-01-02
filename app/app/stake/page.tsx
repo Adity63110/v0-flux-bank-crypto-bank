@@ -26,10 +26,11 @@ export default function StakingPage() {
   const unstakingPeriod = "7 Days"
 
   const fetchUserData = async (user: string) => {
+    if (!user) return
     try {
       const [balanceRes, historyRes] = await Promise.all([
-        fetch(`/api/user/balance?username=${user}`),
-        fetch(`/api/stake?username=${user}`)
+        fetch(`/api/user/balance?username=${encodeURIComponent(user)}`),
+        fetch(`/api/stake?username=${encodeURIComponent(user)}`)
       ])
       
       if (balanceRes.ok) {
@@ -61,11 +62,14 @@ export default function StakingPage() {
     if (!stakeAmount || parseFloat(stakeAmount) <= 0) return
     setIsSubmitting(true)
     try {
+      const savedUser = localStorage.getItem("fluxbank_user")
+      const currentUser = savedUser ? JSON.parse(savedUser).username : username
+      
       const response = await fetch("/api/stake", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username,
+          username: currentUser,
           amount: stakeAmount,
           type: "stake",
           lock_period: lockPeriod
@@ -76,7 +80,7 @@ export default function StakingPage() {
       if (response.ok) {
         alert("Staking request submitted successfully!")
         setStakeAmount("")
-        fetchUserData(username)
+        fetchUserData(currentUser)
       } else {
         throw new Error(data.error || "Failed to stake")
       }
@@ -91,11 +95,14 @@ export default function StakingPage() {
     if (!unstakeAmount || parseFloat(unstakeAmount) <= 0) return
     setIsSubmitting(true)
     try {
+      const savedUser = localStorage.getItem("fluxbank_user")
+      const currentUser = savedUser ? JSON.parse(savedUser).username : username
+
       const response = await fetch("/api/stake", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username,
+          username: currentUser,
           amount: unstakeAmount,
           type: "unstake"
         }),
@@ -105,7 +112,7 @@ export default function StakingPage() {
       if (response.ok) {
         alert("Unstaking request submitted! Please wait for the cooldown period.")
         setUnstakeAmount("")
-        fetchUserData(username)
+        fetchUserData(currentUser)
       } else {
         throw new Error(data.error || "Failed to unstake")
       }

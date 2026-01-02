@@ -27,13 +27,24 @@ export default function BorrowPage() {
   const [step, setStep] = useState(1)
   const [borrowAmount, setBorrowAmount] = useState("")
   const [fluxBalance, setFluxBalance] = useState(0)
-  
-  const fluxPrice = 0.000012 
+  const [fluxPrice, setFluxPrice] = useState(0.000012)
   
   const calculateMaxBorrow = (asset: typeof BORROW_OPTIONS[0]) => {
     const collateralValue = fluxBalance * fluxPrice
     const maxBorrowUSD = collateralValue * 0.30
     return maxBorrowUSD / asset.price
+  }
+
+  const fetchPrice = async () => {
+    try {
+      const response = await fetch('/api/settings');
+      if (response.ok) {
+        const data = await response.json();
+        setFluxPrice(data.flux_price);
+      }
+    } catch (error) {
+      console.error("Error fetching price:", error);
+    }
   }
 
   const fetchBalance = async (user: string) => {
@@ -54,6 +65,7 @@ export default function BorrowPage() {
       const { username: sUsername } = JSON.parse(savedUser)
       setUsername(sUsername)
       fetchBalance(sUsername)
+      fetchPrice()
     }
   }, [])
 

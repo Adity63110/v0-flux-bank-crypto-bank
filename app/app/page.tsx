@@ -42,7 +42,21 @@ export default function FluxBank() {
   const [borrowAmount, setBorrowAmount] = useState("")
   const [isDepositing, setIsDepositing] = useState(false)
   const [fluxBalance, setFluxBalance] = useState("0.00")
+  const [fluxPrice, setFluxPrice] = useState(0.000012)
   const [transactions, setTransactions] = useState<any[]>([])
+
+  // Fetch Flux Price
+  const fetchPrice = async () => {
+    try {
+      const response = await fetch('/api/settings');
+      if (response.ok) {
+        const data = await response.json();
+        setFluxPrice(data.flux_price);
+      }
+    } catch (error) {
+      console.error("Error fetching price:", error);
+    }
+  }
 
   // Fetch transactions
   const fetchTransactions = async () => {
@@ -92,9 +106,11 @@ export default function FluxBank() {
   useEffect(() => {
     if (isSignedIn) {
       fetchBalance()
+      fetchPrice()
       fetchTransactions()
       const interval = setInterval(() => {
         fetchBalance()
+        fetchPrice()
         fetchTransactions()
       }, 10000) // Refresh every 10s
       return () => clearInterval(interval)
@@ -312,7 +328,7 @@ export default function FluxBank() {
               <CardTitle className="text-3xl font-bold">{fluxBalance}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">≈ ${(parseFloat(fluxBalance) * 0.000012).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })}</p>
+              <p className="text-xs text-muted-foreground">≈ ${(parseFloat(fluxBalance) * fluxPrice).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })}</p>
             </CardContent>
           </Card>
 
@@ -345,11 +361,11 @@ export default function FluxBank() {
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Collateral Value</span>
-                  <span className="font-medium">${(parseFloat(fluxBalance) * 0.000012).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })}</span>
+                  <span className="font-medium">${(parseFloat(fluxBalance) * fluxPrice).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Max Borrow (30%)</span>
-                  <span className="font-medium text-flux">${(parseFloat(fluxBalance) * 0.000012 * 0.3).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })}</span>
+                  <span className="font-medium text-flux">${(parseFloat(fluxBalance) * fluxPrice * 0.3).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Currently Borrowed</span>

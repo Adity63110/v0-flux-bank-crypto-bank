@@ -5,7 +5,8 @@ import { useState } from "react"
 import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Lock, TrendingUp, Wallet, ArrowRight, Zap, Shield } from "lucide-react"
+import { Lock, TrendingUp, Wallet, ArrowRight, Zap, Shield, Users, HelpCircle, ChevronDown } from "lucide-react"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -193,6 +194,118 @@ export default function FluxBank() {
               to { transform: translate(-50%, -60%); }
             }
           `}</style>
+        </section>
+
+        {/* Credibility Section */}
+        <section className="container mx-auto px-4 py-24 relative overflow-hidden">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-start">
+            {/* Left Column - Interactive Stats Card */}
+            <div className="space-y-8 animate-fade-in">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-flux/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-100 transition duration-500" />
+                <div className="relative bg-background/40 backdrop-blur-xl border border-flux/20 rounded-3xl p-8 md:p-12 shadow-2xl hover:shadow-flux/20 transition-all duration-500 hover:-translate-y-1">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="h-12 w-12 rounded-2xl bg-flux/10 flex items-center justify-center border border-flux/20">
+                      <Users className="h-6 w-6 text-flux" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Growth Analytics</p>
+                      <h3 className="text-xl font-bold">FluxBank Global Reach</h3>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <p className="text-muted-foreground text-sm font-medium">Total Accounts Registered</p>
+                    <div className="text-5xl md:text-6xl font-bold tracking-tight text-flux drop-shadow-[0_0_15px_rgba(84,210,146,0.3)]">
+                      12,483+
+                    </div>
+                  </div>
+
+                  <div className="mt-8 pt-8 border-t border-border/40 flex items-center justify-between">
+                    <div className="flex -space-x-3">
+                      {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className="h-10 w-10 rounded-full border-2 border-background bg-muted flex items-center justify-center overflow-hidden">
+                          <Image src={`https://i.pravatar.cc/100?u=${i}`} alt="User" width={40} height={40} />
+                        </div>
+                      ))}
+                      <div className="h-10 w-10 rounded-full border-2 border-background bg-flux/20 flex items-center justify-center text-[10px] font-bold text-flux">
+                        +2k
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs font-medium text-flux/80">
+                      <span className="h-2 w-2 rounded-full bg-flux animate-pulse" />
+                      Live Network Data
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+                  <div className="text-flux font-bold text-2xl mb-1">$2.4B+</div>
+                  <div className="text-xs text-muted-foreground uppercase tracking-wider">Total Value Locked</div>
+                </div>
+                <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+                  <div className="text-flux font-bold text-2xl mb-1">99.9%</div>
+                  <div className="text-xs text-muted-foreground uppercase tracking-wider">Uptime Reliability</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - FAQ Accordion */}
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-flux/10 border border-flux/20">
+                  <HelpCircle className="h-4 w-4 text-flux" />
+                  <span className="text-xs font-semibold text-flux uppercase tracking-wider">Transparency</span>
+                </div>
+                <h2 className="text-4xl font-bold tracking-tight">Common Questions</h2>
+                <p className="text-muted-foreground">Everything you need to know about the next generation of banking.</p>
+              </div>
+
+              <Accordion type="single" collapsible className="w-full space-y-4">
+                {[
+                  {
+                    q: "What is FluxBank and how does it work?",
+                    a: "FluxBank is a crypto-powered digital bank that allows users to deposit assets and borrow against them securely. Each user receives a dedicated wallet, and all balances, limits, and transactions are tracked using blockchain data and internal risk controls."
+                  },
+                  {
+                    q: "Do I need to connect an external wallet to use FluxBank?",
+                    a: "No. FluxBank automatically creates a secure wallet for every user at signup, enabling instant access without wallet connections."
+                  },
+                  {
+                    q: "Which cryptocurrencies are supported?",
+                    a: "FluxBank supports major assets including Bitcoin (BTC), Binance Smart Chain (BNB), USDT, USDC, TON, TRON, and Solana. More assets will be added over time."
+                  },
+                  {
+                    q: "How are borrow limits calculated?",
+                    a: "Borrow limits are dynamically calculated based on collateral value, real-time market prices, volatility, and platform risk parameters."
+                  },
+                  {
+                    q: "Are my funds safe on FluxBank?",
+                    a: "Security is a top priority. FluxBank uses internal custody controls, transaction monitoring, and approval layers for sensitive actions."
+                  },
+                  {
+                    q: "Are deposits, borrows, and withdrawals instant?",
+                    a: "Deposits reflect after blockchain confirmation. Borrow and withdrawal requests are reviewed before final approval for platform safety."
+                  }
+                ].map((item, i) => (
+                  <AccordionItem 
+                    key={i} 
+                    value={`item-${i}`}
+                    className="border border-border/50 rounded-2xl px-6 bg-muted/20 data-[state=open]:border-flux/50 data-[state=open]:bg-flux/5 transition-all duration-300"
+                  >
+                    <AccordionTrigger className="hover:no-underline py-5 text-left text-base font-semibold data-[state=open]:text-flux">
+                      {item.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
+                      {item.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
         </section>
 
         <section className="container mx-auto px-4 py-20">

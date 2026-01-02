@@ -1,0 +1,72 @@
+Design a premium homepage credibility section for a modern crypto neo-bank called FluxBank.
+
+The section should be visually striking, trustworthy, and futuristic, similar to high-end fintech products like Revolut, Stripe, and modern Web3 banks.
+
+Layout
+
+Use a two-column responsive layout:
+
+Left Column – Interactive Bank Stats Card
+
+• Display a sleek digital bank-style statistics card
+• Glassmorphism design with soft blur, rounded corners, and subtle neon glow using color code #54d292
+• Include a minimal bank or user icon
+• Show the metric:
+“Total Accounts Registered”
+• Large animated number that counts up smoothly on page load (example: 12,483+)
+• Hover animation that increases glow, depth, and shadow
+• Card should feel like a real banking dashboard widget
+• Optimized for desktop and mobile
+• Designed to connect to live backend data later
+
+Right Column – Detailed FAQ Accordion
+
+Create a clean accordion-style FAQ column with smooth expand/collapse animations.
+Only one question should be open at a time.
+Active questions should have a subtle Flux green highlight.
+
+FAQ Content:
+
+What is FluxBank and how does it work?
+FluxBank is a crypto-powered digital bank that allows users to deposit assets and borrow against them securely. Each user receives a dedicated wallet, and all balances, limits, and transactions are tracked using blockchain data and internal risk controls.
+
+Do I need to connect an external wallet to use FluxBank?
+No. FluxBank automatically creates a secure wallet for every user at signup, enabling instant access without wallet connections.
+
+Which cryptocurrencies are supported?
+FluxBank supports major assets including Bitcoin (BTC), Binance Smart Chain (BNB), USDT, USDC, TON, TRON, and Solana. More assets will be added over time.
+
+How are borrow limits calculated?
+Borrow limits are dynamically calculated based on collateral value, real-time market prices, volatility, and platform risk parameters.
+
+Are my funds safe on FluxBank?
+Security is a top priority. FluxBank uses internal custody controls, transaction monitoring, and approval layers for sensitive actions.
+
+Are deposits, borrows, and withdrawals instant?
+Deposits reflect after blockchain confirmation. Borrow and withdrawal requests are reviewed before final approval for platform safety.
+
+Is FluxBank custodial or non-custodial?
+FluxBank operates as a managed custodial platform to provide banking-grade services such as lending, account tracking, and approvals.
+
+Are there any fees for using FluxBank?
+There are no account creation fees. Any applicable borrowing or platform fees are clearly shown before confirmation.
+
+Can FluxBank be used globally?
+FluxBank is designed for global users, though availability may vary based on regional regulations.
+
+What happens during extreme market volatility?
+Borrow limits may adjust automatically if collateral value changes significantly. Users are notified in advance when action is required.
+
+Is FluxBank beginner-friendly?
+Yes. FluxBank is designed to feel like a modern digital bank with clear guidance, simple actions, and transparent limits.
+
+UX & Visual Requirements
+
+• Smooth transitions and micro-animations
+• Premium, trustworthy fintech aesthetic
+• Dark-mode friendly
+• Clear spacing and readability
+• Mobile-first responsive design
+• Section should strongly increase user trust and credibility
+
+This section will be placed on the homepage before sign-in and should visually reinforce FluxBank as a serious, secure, next-generation crypto bank.

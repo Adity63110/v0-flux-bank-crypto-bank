@@ -44,13 +44,18 @@ export async function POST(req: Request) {
     // Get current user balance
     const { data: userData, error: userError } = await supabase
       .from("users")
-      .select("balance, staked_balance")
+      .select("balance, staked_balance, pending_rewards")
       .eq("username", username)
-      .single()
+      .maybeSingle()
 
-    if (userError || !userData) {
+    if (userError) {
       console.error("User fetch error:", userError)
-      throw new Error(`User not found: ${username}`)
+      throw new Error(`Database error fetching user: ${userError.message}`)
+    }
+
+    if (!userData) {
+      console.error(`User not found: ${username}`)
+      return NextResponse.json({ error: `User "${username}" does not exist. Please make sure you are logged in.` }, { status: 404 })
     }
 
     let updateData = {}

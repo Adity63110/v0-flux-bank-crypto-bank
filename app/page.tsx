@@ -5,7 +5,7 @@ import { useState } from "react"
 import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Lock, TrendingUp, Wallet, ArrowRight, Zap } from "lucide-react"
+import { Lock, TrendingUp, Wallet, ArrowRight, Zap, Shield } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -123,8 +123,6 @@ export default function FluxBank() {
         </section>
         {/* </CHANGE> */}
 
-        </section>
-
         {/* Specialty Section */}
         <section className="container mx-auto px-4 py-20 bg-muted/30 relative overflow-hidden">
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -197,6 +195,24 @@ export default function FluxBank() {
 
         <section className="container mx-auto px-4 py-20">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Core Features</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="p-6 rounded-2xl bg-muted/50 border border-border/50 space-y-4">
+              <Zap className="h-10 w-10 text-flux" />
+              <h3 className="text-xl font-bold">Instant Liquidity</h3>
+              <p className="text-muted-foreground">Borrow against your assets instantly without any wait times or approvals.</p>
+            </div>
+            <div className="p-6 rounded-2xl bg-muted/50 border border-border/50 space-y-4">
+              <Shield className="h-10 w-10 text-flux" />
+              <h3 className="text-xl font-bold">Secure & Private</h3>
+              <p className="text-muted-foreground">No KYC required. Maintain full control of your keys and your privacy.</p>
+            </div>
+            <div className="p-6 rounded-2xl bg-muted/50 border border-border/50 space-y-4">
+              <ArrowRight className="h-10 w-10 text-flux" />
+              <h3 className="text-xl font-bold">Multi-Chain Support</h3>
+              <p className="text-muted-foreground">Borrow BTC, ETH, SOL, and more using Flux as your primary collateral.</p>
+            </div>
+          </div>
+        </section>
 
         <section className="container mx-auto px-4 py-20 text-center">
           <div className="max-w-3xl mx-auto">

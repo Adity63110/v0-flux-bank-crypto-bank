@@ -155,6 +155,29 @@ export default function BorrowPage() {
                 </div>
               </div>
 
+              {borrowAmount && parseFloat(borrowAmount) > 0 && (
+                <div className="p-4 rounded-xl bg-flux/5 border border-flux/20 animate-in fade-in slide-in-from-top-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <Lock className="h-4 w-4 text-flux" />
+                      <span className="text-sm font-medium">Collateral Cost</span>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-lg font-bold text-flux">
+                        {(
+                          (parseFloat(borrowAmount) * selectedAsset.price) /
+                          (fluxPrice * 0.3)
+                        ).toLocaleString(undefined, { maximumFractionDigits: 2 })}{" "}
+                        FLUX
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Required for 30% LTV
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-4">
                 <div className="flex justify-between items-end">
                   <Label htmlFor="amount" className="text-sm font-medium">

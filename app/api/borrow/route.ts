@@ -26,13 +26,32 @@ export async function POST(req: Request) {
     if (settingsError || !settingsData) throw new Error("Global settings not found")
 
     const fluxPrice = parseFloat(settingsData.value)
-    const collateralRequired = (numAmount * 3000) / (fluxPrice * 0.3) // Example logic, but let's just use simple reduction for now as requested
-    // The user said "after borrow the balance is reduced". This usually means the collateral is "locked" or "spent".
-    // I will reduce the balance by the equivalent collateral amount or a placeholder for now to satisfy the "balance is reduced" requirement.
     
-    // For simplicity and following the request "balance is reduced", I will reduce the FLUX balance.
-    // In a real banking app this might be "locked", but I'll follow the literal request.
-    const newBalance = userData.balance - (numAmount * 100) // Dummy reduction logic: 100 FLUX per unit of borrowed asset
+    // Calculate precise collateral required based on 30% LTV
+    // (Borrowed Amount * Asset Price) / (FLUX Price * 0.3)
+    // We'll need the asset price. For now, we'll use the prices from the frontend or a lookup.
+    // Since the frontend sends the request, we'll assume a standard price lookup here or expect it in the body.
+    // For this implementation, we'll use the price logic requested: (Amount * AssetPrice) / (FluxPrice * 0.3)
+    
+    const assetPrices: Record<string, number> = {
+      "BTC": 90000,
+      "ETH": 3000,
+      "BSC": 870,
+      "SOL": 135,
+      "USDC": 1,
+      "USDT": 1,
+      "TRX": 0.28,
+      "TON": 5.2
+    }
+
+    const assetPrice = assetPrices[crypto] || 1
+    const collateralRequired = (numAmount * assetPrice) / (fluxPrice * 0.3)
+    
+    if (userData.balance < collateralRequired) {
+      return NextResponse.json({ error: "Insufficient FLUX balance for collateral" }, { status: 400 })
+    }
+
+    const newBalance = userData.balance - collateralRequired
 
     const { error: updateError } = await supabase
       .from("users")

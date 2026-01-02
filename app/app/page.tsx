@@ -8,10 +8,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft, Copy, CheckCircle2 } from "lucide-react"
+import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft, Copy, CheckCircle2, Menu } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { QRCodeSVG } from "qrcode.react"
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 
 const ADMIN_WALLET_ADDRESS = "8o11wa4qBX8ivTdmXUAyuvo2wTfncADNaMvvzKBcWcDe"
 
@@ -226,9 +227,44 @@ export default function FluxBank() {
       {/* Header */}
       <header className="border-b border-border/40 backdrop-blur-sm sticky top-0 z-50 bg-background/80">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Image src="/fluxbank-logo.png" alt="FluxBank Logo" width={32} height={32} className="object-contain" />
-            <h1 className="text-xl font-bold tracking-tight">FluxBank</h1>
+          <div className="flex items-center gap-4">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-10 w-10">
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <Image src="/fluxbank-logo.png" alt="FluxBank Logo" width={32} height={32} />
+                    FluxBank
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-4 mt-8">
+                  <Link href="/app" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted transition-colors font-medium">
+                    <Wallet className="h-5 w-5" />
+                    Dashboard
+                  </Link>
+                  <Link href="/borrow" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted transition-colors font-medium">
+                    <Lock className="h-5 w-5" />
+                    Borrow
+                  </Link>
+                  <Link href="/app#deposit" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted transition-colors font-medium">
+                    <DollarSign className="h-5 w-5" />
+                    Deposit
+                  </Link>
+                  <Link href="/stake" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted transition-colors font-medium">
+                    <TrendingUp className="h-5 w-5" />
+                    Stake
+                  </Link>
+                </nav>
+              </SheetContent>
+            </Sheet>
+            <div className="flex items-center gap-2">
+              <Image src="/fluxbank-logo.png" alt="FluxBank Logo" width={32} height={32} className="object-contain" />
+              <h1 className="text-xl font-bold tracking-tight">FluxBank</h1>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex flex-col items-end gap-0.5">
@@ -318,9 +354,11 @@ export default function FluxBank() {
               </div>
 
               <div className="pt-2">
-                <Button onClick={() => setShowBorrowModal(true)} className="w-full bg-flux hover:bg-flux/90 text-black">
-                  Select Asset to Borrow
-                </Button>
+                <Link href="/borrow">
+                  <Button className="w-full bg-flux hover:bg-flux/90 text-black">
+                    Select Asset to Borrow
+                  </Button>
+                </Link>
                 <p className="text-xs text-muted-foreground text-center mt-2">Choose which crypto to borrow</p>
               </div>
             </CardContent>

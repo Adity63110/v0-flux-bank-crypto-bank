@@ -272,12 +272,13 @@ export default function FluxBank() {
                     <Lock className="h-5 w-5" />
                     Borrow
                   </Link>
-                  <button 
+                  <Link 
+                    href="/app/stake"
                     className="flex items-center gap-3 p-3 rounded-xl text-muted-foreground hover:bg-flux/5 hover:text-flux transition-all"
                   >
                     <TrendingUp className="h-5 w-5" />
                     Stake
-                  </button>
+                  </Link>
                 </nav>
               </SheetContent>
             </Sheet>
@@ -414,10 +415,12 @@ export default function FluxBank() {
               </div>
 
               <div className="pt-2">
-                <Button className="w-full bg-flux hover:bg-flux/90 text-black" disabled>
-                  Stake FLUX
-                </Button>
-                <p className="text-xs text-muted-foreground text-center mt-2">Deposit FLUX to start staking</p>
+                <Link href="/app/stake">
+                  <Button className="w-full bg-flux hover:bg-flux/90 text-black">
+                    Stake FLUX
+                  </Button>
+                </Link>
+                <p className="text-xs text-muted-foreground text-center mt-2">Earn up to 12.5% APR</p>
               </div>
             </CardContent>
           </Card>

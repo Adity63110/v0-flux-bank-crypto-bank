@@ -110,6 +110,15 @@ export default function FluxBank() {
                 >
                   Tokenomics
                 </Link>
+                <button 
+                  onClick={() => {
+                    const faqSection = document.getElementById('faq-section');
+                    faqSection?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="text-sm font-medium text-white hover:text-flux transition-colors cursor-pointer"
+                >
+                  FAQ
+                </button>
               </div>
             <div className="flex items-center gap-3 flex-1 justify-end">
               <Link href="/app">
@@ -389,7 +398,7 @@ export default function FluxBank() {
             </Reveal>
 
             <Reveal direction="right">
-              <div className="space-y-8">
+              <div id="faq-section" className="space-y-8 scroll-mt-24">
                 <div className="space-y-4">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-flux/10 border border-flux/20">
                     <HelpCircle className="h-4 w-4 text-flux" />

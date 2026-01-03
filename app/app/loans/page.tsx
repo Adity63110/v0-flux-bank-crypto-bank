@@ -1,7 +1,9 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { ArrowLeft, Clock, Shield, AlertCircle, CheckCircle2, Loader2 } from "lucide-react"
+import { ArrowLeft, Clock, Shield, AlertCircle, CheckCircle2, Loader2, Mail } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import Image from "next/image"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -20,6 +22,9 @@ export default function LoanHistoryPage() {
   const [loans, setLoans] = useState<Loan[]>([])
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState("")
+  const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null)
+  const [email, setEmail] = useState("")
+  const [isRepaying, setIsRepaying] = useState(false)
 
   useEffect(() => {
     const savedUser = localStorage.getItem("fluxbank_user")
@@ -41,6 +46,43 @@ export default function LoanHistoryPage() {
       console.error("Error fetching loans:", error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleRepay = async () => {
+    if (!selectedLoan || !email || !username) return;
+    if (!email.includes('@')) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    setIsRepaying(true);
+    try {
+      const response = await fetch('/api/repay', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username,
+          loanId: selectedLoan.id,
+          amount: selectedLoan.amount,
+          asset: selectedLoan.crypto,
+          email
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Repayment request submitted successfully! We will contact you at your email.");
+        setSelectedLoan(null);
+        setEmail("");
+        fetchLoans(username);
+      } else {
+        throw new Error(data.error || "Failed to submit repayment");
+      }
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setIsRepaying(false);
     }
   }
 
@@ -86,7 +128,12 @@ export default function LoanHistoryPage() {
           <div className="grid gap-4">
             {loans.map((loan, i) => (
               <Reveal key={loan.id} direction="up" delay={i * 50}>
-                <Card className="border-border/40 bg-card/30 hover:border-flux/30 transition-colors overflow-hidden relative">
+                <Card 
+                  className={`border-border/40 bg-card/30 hover:border-flux/30 transition-all overflow-hidden relative cursor-pointer ${
+                    selectedLoan?.id === loan.id ? 'ring-2 ring-flux border-flux/50 shadow-lg shadow-flux/10 scale-[1.02]' : ''
+                  }`}
+                  onClick={() => setSelectedLoan(loan)}
+                >
                   <div className="absolute top-0 right-0 p-4">
                      <div className="flex items-center gap-2 px-2 py-1 rounded-full bg-zinc-900/50 border border-white/5">
                         {getStatusIcon(loan.status)}
@@ -136,6 +183,74 @@ export default function LoanHistoryPage() {
                     Start Borrowing
                   </Button>
                 </Link>
+              </CardContent>
+            </Card>
+          </Reveal>
+        )}
+
+        {selectedLoan && (
+          <Reveal direction="up">
+            <Card className="mt-8 border-flux/30 bg-flux/5 backdrop-blur-xl shadow-2xl overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-flux/5 to-transparent pointer-events-none" />
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-flux" />
+                  Repay Loan #{selectedLoan.id.slice(0, 8)}
+                </CardTitle>
+                <CardDescription>
+                  Enter your contact details to receive repayment instructions for {selectedLoan.amount} {selectedLoan.crypto}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-sm font-medium flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-flux" />
+                      Email Address
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="your@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="h-12 border-flux/20 bg-background/50 focus-visible:ring-flux"
+                    />
+                  </div>
+                  
+                  <div className="p-4 rounded-xl bg-background/50 border border-flux/20 space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Repayment Amount</span>
+                      <span className="font-bold">{selectedLoan.amount} {selectedLoan.crypto}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Status</span>
+                      <span className="text-flux font-medium uppercase text-[10px] tracking-widest">{selectedLoan.status}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <Button 
+                    variant="outline" 
+                    className="flex-1 h-12 border-border/40 hover:bg-muted"
+                    onClick={() => setSelectedLoan(null)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    className="flex-[2] h-12 bg-flux hover:bg-flux/90 text-black font-bold"
+                    onClick={handleRepay}
+                    disabled={!email || isRepaying}
+                  >
+                    {isRepaying ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Processing...
+                      </div>
+                    ) : "Confirm Repayment"}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </Reveal>

@@ -1,0 +1,42 @@
+import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/crypto';
+
+export async function POST(request: Request) {
+  try {
+    const { username, loanId, amount, asset, email } = await request.json();
+
+    if (!username || !loanId || !amount || !asset || !email) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    // Record the repayment request
+    const { data, error } = await supabase
+      .from('repay')
+      .insert([{
+        username,
+        loan_id: loanId,
+        amount,
+        asset,
+        email,
+        status: 'pending'
+      }])
+      .select();
+
+    if (error) throw error;
+
+    // Log as transaction
+    await supabase.from('transactions').insert([{
+      username,
+      type: 'repay_request',
+      asset,
+      amount,
+      status: 'pending',
+      description: `Repayment request for loan #${loanId} (Email: ${email})`
+    }]);
+
+    return NextResponse.json({ success: true, data });
+  } catch (error: any) {
+    console.error('Repay error:', error);
+    return NextResponse.json({ error: 'Failed to process repayment request' }, { status: 500 });
+  }
+}

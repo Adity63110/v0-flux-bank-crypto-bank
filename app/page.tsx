@@ -68,24 +68,25 @@ export default function FluxBank() {
         {/* Header */}
         <header className="border-b border-border/40 backdrop-blur-sm sticky top-0 z-50 bg-background/80">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Image
-                src="/fluxbank-logo.png"
-                alt="FluxBank Logo"
-                width={40}
-                height={40}
-                className="object-contain drop-shadow-[0_0_8px_rgba(84,210,146,0.4)]"
-              />
-              <h1 className="text-2xl font-bold tracking-tight">FluxBank</h1>
-            </div>
             <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <Image
+                  src="/fluxbank-logo.png"
+                  alt="FluxBank Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain drop-shadow-[0_0_8px_rgba(84,210,146,0.4)]"
+                />
+                <h1 className="text-2xl font-bold tracking-tight">FluxBank</h1>
+              </div>
               <button 
                 onClick={() => setIsFutureOpen(true)}
                 className="text-sm font-medium text-white hover:text-flux transition-colors cursor-pointer"
               >
                 Future
               </button>
-              <div className="flex items-center gap-3">
+            </div>
+            <div className="flex items-center gap-3">
                 <Link href="/app">
                   <Button 
                     variant="ghost" 

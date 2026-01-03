@@ -104,6 +104,12 @@ export default function FluxBank() {
               >
                 Future
               </button>
+              <Link
+                href="/tokenomics"
+                className="text-sm font-medium text-white hover:text-flux transition-colors cursor-pointer"
+              >
+                Tokenomics
+              </Link>
             </div>
             <div className="flex items-center gap-3">
               <Link href="/app">

@@ -1,0 +1,142 @@
+Create a dedicated “Tokenomics” page for the FluxBank website, accessible only via the navbar.
+
+This page must clearly explain Flux’s economic flywheel, where creator fees are recycled into buybacks and user rewards, creating continuous value flow.
+
+Navigation & Access
+
+• Navbar item: Tokenomics
+• Opens as a full page or slide-in panel
+• Smooth, premium transition animation
+• Dark-mode first UI with Flux green accents (#54d292)
+
+Page Intent
+
+Communicate that Flux is not just a token, but an economic engine where:
+• Platform activity generates fees
+• Fees fund buybacks
+• Buybacks reward users
+• Rewards increase usage
+• Usage increases fees again
+
+A self-reinforcing system.
+
+Layout Structure
+
+Use a two-column responsive layout with interactive cards and animated diagrams.
+
+LEFT COLUMN – FLUX UTILITY & VALUE CAPTURE
+Heading
+
+Flux Tokenomics
+
+Subheading
+The Engine Behind Borrowing, Staking, and Rewards
+
+Intro Text
+
+Flux powers the entire FluxBank ecosystem. Every borrow, stake, and interaction contributes to a value loop that benefits active users.
+
+Utility Cards (Interactive)
+
+1. Borrowing Collateral
+• Flux can be used as collateral to borrow multiple cryptocurrencies
+• Higher Flux holdings unlock better borrow limits
+
+2. Staking & Yield
+• Stake Flux to earn protocol rewards
+• Rewards scale with platform usage
+
+3. Fee Recycling (Flywheel Core)
+• Creator fees collected from borrowing and staking
+• Fees are partially used for Flux buybacks
+• Bought-back Flux is redistributed to users
+
+4. Governance (Future)
+• Flux holders influence protocol decisions
+• Voting power scales with stake and participation
+
+Each card should animate on hover or click.
+
+RIGHT COLUMN – TOKEN ECONOMICS & DISTRIBUTION
+Token Supply Overview
+
+Display stat cards for:
+• Total Supply
+• Circulating Supply
+• Staked Supply
+• Locked / Vesting Supply
+
+Distribution Chart
+
+• Interactive pie or donut chart
+• Hover tooltips with clear explanations
+• Allocation categories:
+– Community & Rewards
+– Ecosystem Growth
+– Team & Advisors
+– Treasury
+– Liquidity
+
+🔁 FEE BUYBACK FLYWHEEL (CORE FEATURE)
+
+Create a central animated flywheel diagram showing this loop:
+
+1. User Activity
+Borrowing, staking, and protocol usage generate creator fees
+
+2. Creator Fee Collection
+Fees accumulate in the FluxBank treasury
+
+3. Automated Buybacks
+A portion of fees is used to buy Flux from the open market
+
+4. User Rewards
+Bought-back Flux is:
+• Distributed to stakers
+• Used as incentives
+• Potentially burned or locked (optional future mechanic)
+
+5. Increased Participation
+Rewards encourage more usage, restarting the cycle
+
+The flywheel should rotate or animate subtly on scroll.
+
+USER BENEFIT HIGHLIGHTS (CALLOUT SECTION)
+
+Add a horizontal highlight section:
+
+• “Fees work for users, not against them”
+• “Platform growth directly benefits Flux holders”
+• “Sustainable rewards backed by real activity”
+
+TRANSPARENCY & TRUST
+
+Include a clear note:
+
+“Creator fees are transparently tracked and used to strengthen the Flux ecosystem through buybacks and rewards.”
+
+UX & DESIGN RULES
+
+• Smooth left/right scroll-in animations
+• Interactive diagrams with tooltips
+• Minimal hype, maximum clarity
+• Mobile-friendly
+• Professional fintech aesthetic
+
+VISUAL STYLE
+
+• Dark background
+• Subtle gradients
+• Flux green highlights (#54d292)
+• Clean typography
+• No meme visuals
+
+FINAL GOAL
+
+The Tokenomics page should make it obvious that:
+• Flux captures real value
+• Fees create buy pressure
+• Users are rewarded automatically
+• The system improves as it grows
+
+This page should feel comparable to top-tier DeFi protocols, not experimental projects.

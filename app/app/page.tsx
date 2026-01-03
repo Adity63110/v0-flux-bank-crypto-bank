@@ -559,9 +559,15 @@ export default function FluxBank() {
                       <div className="flex items-center justify-between p-3 border border-border/40 rounded-lg bg-muted/20">
                         <div className="flex items-center gap-3">
                           <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                            tx.type === 'deposit' ? 'bg-flux/10 text-flux' : 'bg-red-500/10 text-red-500'
+                            tx.type === 'deposit' ? 'bg-flux/10 text-flux' : 
+                            tx.type === 'borrow' ? 'bg-blue-500/10 text-blue-500' :
+                            tx.type === 'stake' ? 'bg-purple-500/10 text-purple-500' :
+                            'bg-orange-500/10 text-orange-500'
                           }`}>
-                            {tx.type === 'deposit' ? <ArrowDownLeft className="h-5 w-5" /> : <ArrowUpRight className="h-5 w-5" />}
+                            {tx.type === 'deposit' ? <ArrowDownLeft className="h-5 w-5" /> : 
+                             tx.type === 'borrow' ? <ArrowUpRight className="h-5 w-5" /> :
+                             tx.type === 'stake' ? <Lock className="h-5 w-5" /> :
+                             <Shield className="h-5 w-5" />}
                           </div>
                           <div>
                             <div className="font-semibold capitalize">{tx.type}</div>
@@ -571,7 +577,9 @@ export default function FluxBank() {
                         <div className="text-right">
                           <div className="font-bold">{tx.amount} {tx.asset}</div>
                           <div className={`text-xs ${
-                            tx.status === 'pending' ? 'text-amber-500' : tx.status === 'approved' ? 'text-flux' : 'text-red-500'
+                            tx.status === 'pending' ? 'text-amber-500' : 
+                            (tx.status === 'approved' || tx.status === 'completed') ? 'text-flux' : 
+                            'text-red-500'
                           }`}>
                             {tx.status.charAt(0).toUpperCase() + tx.status.slice(1)}
                           </div>

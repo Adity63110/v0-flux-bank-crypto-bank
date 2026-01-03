@@ -1,15 +1,11 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Smartphone, Globe, Zap, ArrowRight, Shield, Bell, Layout } from "lucide-react"
+import { X, Smartphone, Globe, Zap, ArrowRight, Shield, Bell, Layout, Copy, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-
-interface FutureAmbitionsProps {
-  isOpen: boolean
-  onClose: () => void
-}
+import { Reveal } from "@/components/animations/Reveal"
 
 const VISION_BLOCKS = [
   {
@@ -146,8 +142,34 @@ const VISION_BLOCKS = [
   }
 ]
 
+interface FutureAmbitionsProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
 export const FutureAmbitions: React.FC<FutureAmbitionsProps> = ({ isOpen, onClose }) => {
   const [activeId, setActiveId] = useState("mobile")
+  const [caAddress, setCaAddress] = useState("8o11wa4qBX8ivTdmXUAyuvo2wTfncADNaMvvzKBcWcDe")
+  const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      fetch('/api/settings')
+        .then(res => res.json())
+        .then(data => {
+          if (data.ca_contract_address) {
+            setCaAddress(data.ca_contract_address)
+          }
+        })
+        .catch(err => console.error("Failed to fetch CA:", err))
+    }
+  }, [isOpen])
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(caAddress)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   const activeBlock = VISION_BLOCKS.find(b => b.id === activeId) || VISION_BLOCKS[0]
 
@@ -184,9 +206,9 @@ export const FutureAmbitions: React.FC<FutureAmbitionsProps> = ({ isOpen, onClos
               </Button>
             </header>
 
-            <main className="flex-1 overflow-y-auto lg:overflow-hidden">
-              <div className="container mx-auto h-full px-4 lg:px-8 py-12 lg:py-0">
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 h-full items-center">
+            <main className="flex-1">
+              <div className="container mx-auto px-4 lg:px-8 py-12">
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
                   
                   {/* Left Column */}
                   <div className="space-y-12">
@@ -272,10 +294,34 @@ export const FutureAmbitions: React.FC<FutureAmbitionsProps> = ({ isOpen, onClos
                         </motion.button>
                       ))}
                     </div>
+
+                    {/* CA Section */}
+                    <Reveal direction="up" delay={500}>
+                      <div className="max-w-md p-6 rounded-2xl bg-zinc-900/50 border border-white/5 space-y-4">
+                        <div className="flex items-center gap-2">
+                           <Zap className="h-4 w-4 text-flux" />
+                           <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Official Contract</span>
+                        </div>
+                        <div className="relative">
+                          <div className="p-4 rounded-xl bg-black border border-flux/20 font-mono text-sm break-all pr-12">
+                            {caAddress}
+                          </div>
+                          <button 
+                            onClick={copyToClipboard}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-zinc-800 hover:bg-flux hover:text-black transition-all"
+                          >
+                            {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                          </button>
+                        </div>
+                        <p className="text-[10px] text-zinc-600">
+                          Verify the contract address before any transaction. FluxBank will never DM you for funds.
+                        </p>
+                      </div>
+                    </Reveal>
                   </div>
 
                   {/* Right Column */}
-                  <div className="relative h-full min-h-[400px] flex items-center justify-center">
+                  <div className="relative lg:sticky lg:top-32 h-[500px] flex items-center justify-center">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={activeId}

@@ -3,15 +3,26 @@ import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    const { data, error } = await supabase
+    const { data: priceData, error: priceError } = await supabase
       .from('global_settings')
       .select('value')
       .eq('key', 'flux_price')
       .single();
 
-    if (error) throw error;
-    return NextResponse.json({ flux_price: data.value });
+    const { data: caData, error: caError } = await supabase
+      .from('platform_settings')
+      .select('value')
+      .eq('key', 'ca_contract_address')
+      .single();
+
+    return NextResponse.json({ 
+      flux_price: priceData?.value || 0.000012,
+      ca_contract_address: caData?.value || '8o11wa4qBX8ivTdmXUAyuvo2wTfncADNaMvvzKBcWcDe'
+    });
   } catch (error) {
-    return NextResponse.json({ flux_price: 0.000012 }, { status: 500 });
+    return NextResponse.json({ 
+      flux_price: 0.000012,
+      ca_contract_address: '8o11wa4qBX8ivTdmXUAyuvo2wTfncADNaMvvzKBcWcDe'
+    }, { status: 500 });
   }
 }

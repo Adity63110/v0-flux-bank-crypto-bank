@@ -1,8 +1,7 @@
 "use client"
 
-import type React from "react"
-
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -29,6 +28,7 @@ const CRYPTO_OPTIONS = [
 ]
 
 export default function FluxBank() {
+  const router = useRouter()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [isSignedIn, setIsSignedIn] = useState(false)
@@ -216,26 +216,9 @@ export default function FluxBank() {
     setWalletAddress("")
   }
 
-  const handleDepositSubmit = async () => {
+  const handleDepositSubmit = () => {
     if (!depositAmount || isNaN(parseFloat(depositAmount))) return;
-    
-    setIsDepositing(true)
-    try {
-      const response = await fetch('/api/deposit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, amount: depositAmount }),
-      });
-      
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Failed to submit deposit');
-      
-      setDepositStep(3)
-    } catch (error: any) {
-      alert(`Deposit failed: ${error.message}`);
-    } finally {
-      setIsDepositing(false)
-    }
+    router.push(`/deposit?amount=${depositAmount}&username=${username}`);
   }
 
   const handleWithdrawSubmit = async () => {
@@ -602,9 +585,9 @@ export default function FluxBank() {
                           <Button 
                             onClick={handleDepositSubmit}
                             className="bg-flux hover:bg-flux/90 text-black px-8 h-12 font-bold"
-                            disabled={!depositAmount || isDepositing}
+                            disabled={!depositAmount}
                           >
-                            {isDepositing ? "Processing..." : "Deposit & Show Address"}
+                            Deposit
                           </Button>
                         </div>
                       </div>

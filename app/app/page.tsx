@@ -574,53 +574,121 @@ export default function FluxBank() {
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="deposit" className="w-full">
-                <TabsList className="grid w-full max-w-md grid-cols-2">
+                <TabsList className="grid w-full grid-cols-2 mb-6">
                   <TabsTrigger value="deposit">Deposit</TabsTrigger>
                   <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
                 </TabsList>
-                <TabsContent value="deposit" className="space-y-4 pt-4">
-                  <div className="max-w-md space-y-3">
-                    <Label htmlFor="deposit-amount">Amount (FLUX)</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        id="deposit-amount"
-                        type="number"
-                        placeholder="0.00"
-                        value={depositAmount}
-                        onChange={(e) => setDepositAmount(e.target.value)}
-                        className="border-muted-foreground/20 focus-visible:ring-flux"
-                      />
-                      <Button 
-                        onClick={() => setShowDepositModal(true)}
-                        className="bg-flux hover:bg-flux/90 text-black px-6"
-                      >
-                        <ArrowDownLeft className="h-4 w-4 mr-1" />
-                        Deposit
-                      </Button>
+                
+                <TabsContent value="deposit" className="space-y-6 pt-4">
+                  <div className="grid md:grid-cols-2 gap-8 items-start">
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="deposit-crypto">Select Asset</Label>
+                        <div className="grid grid-cols-4 gap-2">
+                          {CRYPTO_OPTIONS.map((crypto) => (
+                            <Button
+                              key={crypto.symbol}
+                              variant="outline"
+                              className={`h-14 flex flex-col items-center justify-center gap-1 p-1 ${selectedCrypto === crypto.symbol ? 'border-flux bg-flux/5' : 'border-border/40'}`}
+                              onClick={() => setSelectedCrypto(crypto.symbol)}
+                            >
+                              <Image src={crypto.logo} alt={crypto.name} width={16} height={16} />
+                              <span className="text-[10px] font-bold">{crypto.symbol}</span>
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="deposit-amount">Amount ({selectedCrypto || 'FLUX'})</Label>
+                        <div className="flex gap-2">
+                          <Input
+                            id="deposit-amount"
+                            type="number"
+                            placeholder="0.00"
+                            value={depositAmount}
+                            onChange={(e) => setDepositAmount(e.target.value)}
+                            className="border-muted-foreground/20 focus-visible:ring-flux h-12"
+                          />
+                          <Button 
+                            onClick={() => setShowDepositModal(true)}
+                            className="bg-flux hover:bg-flux/90 text-black px-8 h-12 font-bold"
+                            disabled={!selectedCrypto || !depositAmount}
+                          >
+                            Deposit
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="bg-flux/5 border border-flux/20 rounded-xl p-6 space-y-4">
+                      <h4 className="font-bold flex items-center gap-2 text-flux">
+                        <Shield className="h-4 w-4" />
+                        Deposit Security
+                      </h4>
+                      <ul className="space-y-3 text-xs text-muted-foreground">
+                        <li className="flex gap-2">
+                          <div className="h-1.5 w-1.5 rounded-full bg-flux mt-1.5 shrink-0" />
+                          Ensure you are sending the correct asset to the generated address.
+                        </li>
+                        <li className="flex gap-2">
+                          <div className="h-1.5 w-1.5 rounded-full bg-flux mt-1.5 shrink-0" />
+                          Assets will be credited to your balance after 3 network confirmations.
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </TabsContent>
-                <TabsContent value="withdraw" className="space-y-4 pt-4">
-                  <div className="max-w-md space-y-3">
-                    <Label htmlFor="withdraw-amount">Amount (FLUX)</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        id="withdraw-amount"
-                        type="number"
-                        placeholder="0.00"
-                        value={withdrawAmount}
-                        onChange={(e) => setWithdrawAmount(e.target.value)}
-                        className="border-muted-foreground/20 focus-visible:ring-flux"
-                      />
+
+                <TabsContent value="withdraw" className="space-y-6 pt-4">
+                  <div className="grid md:grid-cols-2 gap-8 items-start">
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="withdraw-amount">Amount (FLUX)</Label>
+                        <div className="relative">
+                          <Input
+                            id="withdraw-amount"
+                            type="number"
+                            placeholder="0.00"
+                            value={withdrawAmount}
+                            onChange={(e) => setWithdrawAmount(e.target.value)}
+                            className="border-muted-foreground/20 focus-visible:ring-flux h-12 pr-16"
+                          />
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] h-8 text-flux hover:bg-flux/10"
+                            onClick={() => setWithdrawAmount(fluxBalance)}
+                          >
+                            MAX
+                          </Button>
+                        </div>
+                        <div className="flex justify-between px-1">
+                          <span className="text-[10px] text-muted-foreground italic">Available: {fluxBalance} FLUX</span>
+                        </div>
+                      </div>
                       <Button 
                         onClick={() => setShowWithdrawDialog(true)}
-                        disabled={!withdrawAmount || parseFloat(withdrawAmount) <= 0}
-                        className="bg-flux hover:bg-flux/90 text-black px-8"
+                        disabled={!withdrawAmount || parseFloat(withdrawAmount) <= 0 || parseFloat(withdrawAmount) > parseFloat(fluxBalance)}
+                        className="w-full bg-flux hover:bg-flux/90 text-black h-12 font-bold"
                       >
-                        Withdraw
+                        {isWithdrawing ? "Processing..." : "Continue to Withdrawal"}
                       </Button>
                     </div>
-                    <p className="text-xs text-muted-foreground">Available: {fluxBalance} FLUX</p>
+                    <div className="bg-muted/30 border border-border/40 rounded-xl p-6 space-y-4">
+                      <h4 className="font-bold flex items-center gap-2 text-muted-foreground">
+                        <Zap className="h-4 w-4" />
+                        Withdrawal Info
+                      </h4>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-muted-foreground">Processing Fee</span>
+                          <span className="font-mono">0.00 FLUX</span>
+                        </div>
+                        <div className="flex justify-between text-xs">
+                          <span className="text-muted-foreground">Estimated Time</span>
+                          <span className="font-mono text-flux">Instant</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   {showWithdrawDialog && (

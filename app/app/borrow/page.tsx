@@ -311,14 +311,15 @@ export default function BorrowPage() {
 
         <Reveal direction="up" delay={400}>
           <div className="mt-8 flex justify-center">
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full max-w-md h-14 border-flux/20 hover:bg-flux/5 text-muted-foreground hover:text-flux text-lg font-bold"
-              onClick={() => alert("Repay feature coming soon! Please contact support for manual repayment.")}
-            >
-              Repay Loan
-            </Button>
+            <Link href="/app/loans" className="w-full max-w-md">
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full h-14 border-flux/20 hover:bg-flux/5 text-muted-foreground hover:text-flux text-lg font-bold"
+              >
+                Repay Loan
+              </Button>
+            </Link>
           </div>
         </Reveal>
       </main>

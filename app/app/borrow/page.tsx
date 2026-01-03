@@ -9,6 +9,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Reveal } from "@/components/animations/Reveal"
 
 const BORROW_OPTIONS = [
   { name: "Bitcoin", symbol: "BTC", ltv: "30%", apr: "5%", logo: "/cryptos/btc.png", price: 90000 },
@@ -125,116 +126,120 @@ export default function BorrowPage() {
         </header>
 
         <main className="container mx-auto px-4 py-8 max-w-2xl">
-          <Card className="border-flux/20 bg-card/50">
-            <CardHeader>
-              <div className="flex items-center gap-4 mb-2">
-                <div className="h-10 w-10 rounded-full border border-flux/20 overflow-hidden">
-                  <Image src={selectedAsset.logo} alt={selectedAsset.name} width={40} height={40} />
+          <Reveal direction="up">
+            <Card className="border-flux/20 bg-card/50">
+              <CardHeader>
+                <div className="flex items-center gap-4 mb-2">
+                  <div className="h-10 w-10 rounded-full border border-flux/20 overflow-hidden">
+                    <Image src={selectedAsset.logo} alt={selectedAsset.name} width={40} height={40} />
+                  </div>
+                  <div>
+                    <CardTitle>Calculate Borrow Amount</CardTitle>
+                    <CardDescription>Using FLUX as collateral (30% LTV)</CardDescription>
+                  </div>
                 </div>
-                <div>
-                  <CardTitle>Calculate Borrow Amount</CardTitle>
-                  <CardDescription>Using FLUX as collateral (30% LTV)</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-background/50 border border-border/40">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Your Balance</p>
+                    <p className="text-lg font-bold">{fluxBalance.toLocaleString()} FLUX</p>
+                    <p className="text-sm text-flux">${(fluxBalance * fluxPrice).toLocaleString()} USD</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-background/50 border border-border/40">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Price Info (USD)</p>
+                    <p className="text-sm">
+                      FLUX: <span className="font-bold text-flux">${fluxPrice}</span>
+                    </p>
+                    <p className="text-sm">
+                      {selectedAsset.symbol}: <span className="font-bold text-flux">${selectedAsset.price}</span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-background/50 border border-border/40">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Your Balance</p>
-                  <p className="text-lg font-bold">{fluxBalance.toLocaleString()} FLUX</p>
-                  <p className="text-sm text-flux">${(fluxBalance * fluxPrice).toLocaleString()} USD</p>
-                </div>
-                <div className="p-4 rounded-xl bg-background/50 border border-border/40">
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Price Info (USD)</p>
-                  <p className="text-sm">
-                    FLUX: <span className="font-bold text-flux">${fluxPrice}</span>
-                  </p>
-                  <p className="text-sm">
-                    {selectedAsset.symbol}: <span className="font-bold text-flux">${selectedAsset.price}</span>
-                  </p>
-                </div>
-              </div>
 
-              {borrowAmount && parseFloat(borrowAmount) > 0 && (
-                <div className="p-4 rounded-xl bg-flux/5 border border-flux/20 animate-in fade-in slide-in-from-top-2">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <Lock className="h-4 w-4 text-flux" />
-                      <span className="text-sm font-medium">Collateral Cost</span>
+                {borrowAmount && parseFloat(borrowAmount) > 0 && (
+                  <Reveal direction="up">
+                    <div className="p-4 rounded-xl bg-flux/5 border border-flux/20">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <Lock className="h-4 w-4 text-flux" />
+                          <span className="text-sm font-medium">Collateral Cost</span>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-lg font-bold text-flux">
+                            {(
+                              (parseFloat(borrowAmount) * selectedAsset.price) /
+                              (fluxPrice * 0.3)
+                            ).toLocaleString(undefined, { maximumFractionDigits: 2 })}{" "}
+                            FLUX
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            Required for 30% LTV
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-flux">
-                        {(
-                          (parseFloat(borrowAmount) * selectedAsset.price) /
-                          (fluxPrice * 0.3)
-                        ).toLocaleString(undefined, { maximumFractionDigits: 2 })}{" "}
-                        FLUX
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Required for 30% LTV
-                      </p>
+                  </Reveal>
+                )}
+
+                <div className="space-y-4">
+                  <div className="flex justify-between items-end">
+                    <Label htmlFor="amount" className="text-sm font-medium">
+                      Borrow Amount ({selectedAsset.symbol})
+                    </Label>
+                    <span className="text-xs text-muted-foreground">
+                      Max: <span className="text-flux font-bold">{maxBorrow.toFixed(6)} {selectedAsset.symbol}</span>
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <Input
+                      id="amount"
+                      type="number"
+                      placeholder="0.00"
+                      value={borrowAmount}
+                      onChange={(e) => {
+                        const val = parseFloat(e.target.value)
+                        if (isNaN(val) || val <= maxBorrow) {
+                          setBorrowAmount(e.target.value)
+                        }
+                      }}
+                      className="text-lg h-14 pr-16 border-flux/30 focus-visible:ring-flux"
+                    />
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-muted-foreground">
+                      {selectedAsset.symbol}
                     </div>
                   </div>
                 </div>
-              )}
 
-              <div className="space-y-4">
-                <div className="flex justify-between items-end">
-                  <Label htmlFor="amount" className="text-sm font-medium">
-                    Borrow Amount ({selectedAsset.symbol})
+                <div className="space-y-2">
+                  <Label htmlFor="destination" className="text-sm font-medium">
+                    Enter your {selectedAsset.symbol} wallet address
                   </Label>
-                  <span className="text-xs text-muted-foreground">
-                    Max: <span className="text-flux font-bold">{maxBorrow.toFixed(6)} {selectedAsset.symbol}</span>
-                  </span>
-                </div>
-                <div className="relative">
                   <Input
-                    id="amount"
-                    type="number"
-                    placeholder="0.00"
-                    value={borrowAmount}
-                    onChange={(e) => {
-                      const val = parseFloat(e.target.value)
-                      if (isNaN(val) || val <= maxBorrow) {
-                        setBorrowAmount(e.target.value)
-                      }
-                    }}
-                    className="text-lg h-14 pr-16 border-flux/30 focus-visible:ring-flux"
+                    id="destination"
+                    type="text"
+                    placeholder={`Paste your ${selectedAsset.symbol} address here`}
+                    value={destinationAddress}
+                    onChange={(e) => setDestinationAddress(e.target.value)}
+                    className="h-12 border-flux/30 focus-visible:ring-flux"
+                    required
                   />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-muted-foreground">
-                    {selectedAsset.symbol}
-                  </div>
+                  <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                    <Info className="h-3.5 w-3.5 text-flux" />
+                    Ensure this address is correct. FluxBank is not responsible for funds sent to wrong addresses.
+                  </p>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="destination" className="text-sm font-medium">
-                  Enter your {selectedAsset.symbol} wallet address
-                </Label>
-                <Input
-                  id="destination"
-                  type="text"
-                  placeholder={`Paste your ${selectedAsset.symbol} address here`}
-                  value={destinationAddress}
-                  onChange={(e) => setDestinationAddress(e.target.value)}
-                  className="h-12 border-flux/30 focus-visible:ring-flux"
-                  required
-                />
-                <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                  <Info className="h-3.5 w-3.5 text-flux" />
-                  Ensure this address is correct. FluxBank is not responsible for funds sent to wrong addresses.
-                </p>
-              </div>
-
-              <Button
-                className="w-full h-14 text-lg font-bold bg-flux hover:bg-flux/90"
-                disabled={!borrowAmount || parseFloat(borrowAmount) <= 0 || !destinationAddress || isSubmitting}
-                onClick={handleBorrow}
-              >
-                {isSubmitting ? "Submitting..." : "Continue to Borrow"}
-              </Button>
-            </CardContent>
-          </Card>
+                <Button
+                  className="w-full h-14 text-lg font-bold bg-flux hover:bg-flux/90"
+                  disabled={!borrowAmount || parseFloat(borrowAmount) <= 0 || !destinationAddress || isSubmitting}
+                  onClick={handleBorrow}
+                >
+                  {isSubmitting ? "Submitting..." : "Continue to Borrow"}
+                </Button>
+              </CardContent>
+            </Card>
+          </Reveal>
         </main>
       </div>
     )
@@ -257,47 +262,50 @@ export default function BorrowPage() {
       </header>
 
       <main className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold mb-2">Borrow Against Your FLUX</h2>
-          <p className="text-muted-foreground">Select a major cryptocurrency to borrow using your FLUX as collateral.</p>
-        </div>
+        <Reveal direction="up">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold mb-2">Borrow Against Your FLUX</h2>
+            <p className="text-muted-foreground">Select a major cryptocurrency to borrow using your FLUX as collateral.</p>
+          </div>
+        </Reveal>
 
         <div className="grid gap-4 md:grid-cols-2">
-          {BORROW_OPTIONS.map((option) => (
-            <Card
-              key={option.symbol}
-              className="border-border/40 hover:border-flux/50 transition-all cursor-pointer group"
-              onClick={() => handleSelectAsset(option)}
-            >
-              <CardHeader className="flex flex-row items-center gap-4">
-                <div className="h-12 w-12 rounded-full border-2 border-flux/20 bg-background flex items-center justify-center overflow-hidden">
-                  <Image src={option.logo} alt={option.name} width={48} height={48} className="object-cover" />
-                </div>
-                <div className="flex-1">
-                  <CardTitle>{option.name}</CardTitle>
-                  <CardDescription>{option.symbol}</CardDescription>
-                </div>
-                <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-flux transition-colors" />
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div className="space-y-1">
-                    <p className="text-muted-foreground">LTV Ratio</p>
-                    <p className="font-bold text-flux">{option.ltv}</p>
+          {BORROW_OPTIONS.map((option, i) => (
+            <Reveal key={option.symbol} direction={i % 2 === 0 ? "left" : "right"} delay={i * 100}>
+              <Card
+                className="border-border/40 hover:border-flux/50 transition-all cursor-pointer group h-full"
+                onClick={() => handleSelectAsset(option)}
+              >
+                <CardHeader className="flex flex-row items-center gap-4">
+                  <div className="h-12 w-12 rounded-full border-2 border-flux/20 bg-background flex items-center justify-center overflow-hidden">
+                    <Image src={option.logo} alt={option.name} width={48} height={48} className="object-cover" />
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-muted-foreground">Interest (APR)</p>
-                    <p className="font-bold">{option.apr}</p>
+                  <div className="flex-1">
+                    <CardTitle>{option.name}</CardTitle>
+                    <CardDescription>{option.symbol}</CardDescription>
                   </div>
-                </div>
-                <div className="mt-4 pt-4 border-t border-border/40">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-muted-foreground">Max Borrowable</span>
-                    <span className="font-bold text-flux">Select to calculate</span>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-flux transition-colors" />
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-1">
+                      <p className="text-muted-foreground">LTV Ratio</p>
+                      <p className="font-bold text-flux">{option.ltv}</p>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-muted-foreground">Interest (APR)</p>
+                      <p className="font-bold">{option.apr}</p>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="mt-4 pt-4 border-t border-border/40">
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-muted-foreground">Max Borrowable</span>
+                      <span className="font-bold text-flux">Select to calculate</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Reveal>
           ))}
         </div>
       </main>

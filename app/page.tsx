@@ -126,6 +126,10 @@ export default function FluxBank() {
                 >
                   Leaderboard
                 </Link>
+                <div className="text-sm font-medium text-muted-foreground/50 cursor-not-allowed flex items-center gap-1.5">
+                  Create Card
+                  <span className="text-[10px] bg-flux/10 text-flux px-1.5 py-0.5 rounded">SOON</span>
+                </div>
               </div>
             <div className="flex items-center gap-3 flex-1 justify-end">
               <Link href="/app">

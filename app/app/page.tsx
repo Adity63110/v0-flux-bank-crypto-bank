@@ -13,6 +13,7 @@ import Link from "next/link"
 import { QRCodeSVG } from "qrcode.react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Reveal } from "@/components/animations/Reveal"
+import { DebitCardPreview } from "@/components/dashboard/DebitCardPreview"
 
 const ADMIN_WALLET_ADDRESS = "8o11wa4qBX8ivTdmXUAyuvo2wTfncADNaMvvzKBcWcDe"
 
@@ -413,6 +414,10 @@ export default function FluxBank() {
                     <TrendingUp className="h-5 w-5" />
                     Stake
                   </Link>
+                  <div className="flex items-center gap-3 p-3 rounded-xl text-muted-foreground/50 cursor-not-allowed">
+                    <Zap className="h-5 w-5" />
+                    <span>Create Card <span className="text-[10px] bg-flux/10 text-flux px-1.5 py-0.5 rounded ml-1">SOON</span></span>
+                  </div>
                 </nav>
               </SheetContent>
             </Sheet>
@@ -752,6 +757,71 @@ export default function FluxBank() {
                   IMPORTANT
                 </div>
                 <p>Solana address transfers coming soon. External wallet transfers will be enabled in a future update.</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Reveal>
+
+        {/* Flux Debit Card Section */}
+        <Reveal direction="up">
+          <Card className="border-border/40 bg-muted/5 backdrop-blur-sm overflow-hidden mb-8">
+            <CardContent className="p-0">
+              <div className="grid lg:grid-cols-2 gap-8 items-center p-8">
+                {/* Left Side: Card Preview */}
+                <div className="relative">
+                  <DebitCardPreview />
+                </div>
+
+                {/* Right Side: Details */}
+                <div className="space-y-6">
+                  <div>
+                    <h2 className="text-3xl font-bold tracking-tight mb-2">Flux Debit Card</h2>
+                    <p className="text-flux font-medium text-lg">Spend your crypto like cash.</p>
+                  </div>
+
+                  <ul className="space-y-4">
+                    {[
+                      "Pay anywhere Visa is accepted",
+                      "Spend borrowed or staked liquidity",
+                      "Real-time balance sync",
+                      "No preloading required",
+                      "Powered by Flux collateral"
+                    ].map((feature, i) => (
+                      <li key={i} className="flex items-center gap-3 text-muted-foreground">
+                        <div className="h-5 w-5 rounded-full bg-flux/10 flex items-center justify-center shrink-0">
+                          <CheckCircle2 className="h-3 w-3 text-flux" />
+                        </div>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="space-y-4">
+                    <div className="p-4 rounded-xl bg-muted/30 border border-border/40 text-xs text-muted-foreground space-y-2">
+                      <div className="flex items-center gap-2 font-bold text-muted-foreground/80 uppercase tracking-widest">
+                        <Shield className="h-3 w-3" />
+                        Info Note
+                      </div>
+                      <p>This card will connect directly to your FluxBank balance. External wallet spending support coming soon.</p>
+                    </div>
+
+                    <div className="group relative">
+                      <Button 
+                        disabled 
+                        className="w-full h-12 bg-flux/10 text-flux border border-flux/20 font-bold opacity-70"
+                      >
+                        Create Card (Coming Soon)
+                      </Button>
+                      <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-black text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-white/10 pointer-events-none">
+                        This feature is under development.
+                      </div>
+                    </div>
+                    
+                    <p className="text-[10px] text-muted-foreground text-center">
+                      Designed for spending without selling. Card issuance subject to regulatory approval.
+                    </p>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

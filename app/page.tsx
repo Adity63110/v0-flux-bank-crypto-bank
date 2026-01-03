@@ -131,7 +131,6 @@ export default function FluxBank() {
                   className="text-sm font-medium text-white hover:text-flux transition-colors cursor-pointer flex items-center gap-1.5"
                 >
                   Create Card
-                  <span className="text-[10px] bg-flux/10 text-flux px-1.5 py-0.5 rounded">SOON</span>
                 </Link>
               </div>
             <div className="flex items-center gap-3 flex-1 justify-end">

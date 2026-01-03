@@ -165,9 +165,6 @@ export default function LoanHistoryPage() {
                        <div className="text-xs text-zinc-500">
                           Transaction ID: <span className="font-mono">{loan.id.slice(0, 12)}...</span>
                        </div>
-                       <Button variant="ghost" size="sm" className="h-8 text-flux hover:text-flux hover:bg-flux/5">
-                          View Details
-                       </Button>
                     </div>
                   </CardContent>
                 </Card>

@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft, Copy, CheckCircle2, Menu, LayoutDashboard, Shield, Zap } from "lucide-react"
+import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft, Copy, CheckCircle2, Menu, LayoutDashboard, Shield, Zap, Trophy } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { QRCodeSVG } from "qrcode.react"
@@ -339,6 +339,13 @@ export default function FluxBank() {
                   </div>
                 </SheetHeader>
                 <nav className="flex flex-col gap-4">
+                  <Link 
+                    href="/leaderboard" 
+                    className="flex items-center gap-3 p-3 rounded-xl text-muted-foreground hover:bg-flux/5 hover:text-flux transition-all"
+                  >
+                    <Trophy className="h-5 w-5" />
+                    Leaderboard
+                  </Link>
                   <Link 
                     href="/app" 
                     className="flex items-center gap-3 p-3 rounded-xl bg-flux/10 text-flux font-medium"

@@ -318,7 +318,7 @@ export default function StakingPage() {
                           <Info className="h-5 w-5 shrink-0 mt-0.5" />
                           <div className="text-sm">
                             <p className="font-bold mb-1">Unstaking Cooldown</p>
-                            <p>Once requested, your FLUX will be available in {unstakingPeriod}. During this time, it will not earn rewards.</p>
+                            <p>Once requested, your FLUX will be available in {unstakingPeriod}. During this time, it will earn rewards.</p>
                           </div>
                         </div>
                       </div>

@@ -1,0 +1,96 @@
+Create a hidden “Future Ambitions” section for the FluxBank website that is accessible only via the navbar (not visible on scroll by default).
+
+This section should feel exclusive, visionary, and forward-looking, similar to a product roadmap reveal from a major fintech or crypto wallet.
+
+Navigation Behavior
+
+• Add a navbar item called “Future” or “Vision”
+• Clicking it opens a dedicated full-width panel or page
+• Smooth slide-in or fade-in transition
+• Dark-mode focused with Flux green accents (#54d292)
+
+Section Purpose
+
+Showcase FluxBank’s long-term ambitions and upcoming products, focusing on mobile app and browser extension, with a unique twist around loans and staking.
+
+Layout
+
+Use a two-column interactive layout:
+
+Left Column – Vision & Ambitions (Interactive)
+
+Heading:
+The Future of FluxBank
+
+Subheading:
+Banking, Borrowing, and Staking — Everywhere
+
+Short intro text:
+
+FluxBank is expanding beyond the web. Our goal is to bring lending and staking directly into everyday crypto workflows, without friction.
+
+Below the intro, add interactive vision blocks or tabs:
+
+1. FluxBank Mobile App
+• iOS & Android native apps
+• Borrow and stake directly from your phone
+• Real-time loan tracking and approvals
+• Push notifications for price changes and borrow limits
+
+2. FluxBank Browser Extension
+• Works like major crypto wallets
+• Built-in borrowing and staking layer
+• Borrow liquidity without leaving a website
+• Seamless interaction with dApps
+
+3. The Flux Twist
+• Loans + staking integrated at the wallet level
+• No need to sell assets to access liquidity
+• Banking-grade UX with Web3 power
+
+Each block should animate smoothly when selected, with glowing active states and subtle motion.
+
+Right Column – Interactive Product Previews
+
+• Animated mockups or interface previews
+• One preview for mobile app UI
+• One preview for browser extension UI
+• Screens should show:
+– Loan dashboard
+– Staking panel
+– Available balance and borrow limits
+
+• Use floating, parallax, or hover-based animations
+• Subtle glow and glassmorphism panels
+• Flux logo watermark or accent in previews
+
+Interaction & Animation
+
+• Smooth transitions between mobile and extension previews
+• Light floating animations for screens
+• Hover reveals UI details
+• No autoplay distractions
+
+UX & Tone
+
+• Visionary but grounded
+• Premium fintech aesthetic
+• Clean typography
+• Minimal but impressive
+• Feels like a glimpse into the future, not a promise overload
+
+Accessibility & Performance
+
+• Responsive on all devices
+• Reduced motion support
+• Fast load despite animations
+
+Goal
+
+This section should:
+• Build excitement and trust
+• Signal long-term commitment
+• Position FluxBank alongside major wallets and banks
+• Make users feel early to something big
+
+This section is intentionally hidden behind the navbar to feel exclusive and forward-looking.

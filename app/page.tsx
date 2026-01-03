@@ -10,6 +10,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import Image from "next/image"
 import Link from "next/link"
 import { Reveal } from "@/components/animations/Reveal"
+import { FutureAmbitions } from "@/components/future/FutureAmbitions"
 
 const CRYPTO_OPTIONS = [
   { name: "Bitcoin", symbol: "BTC", color: "#F7931A", logo: "/cryptos/btc.png" },
@@ -28,6 +29,7 @@ export default function FluxBank() {
   const [walletAddress, setWalletAddress] = useState("")
   const [showBorrowModal, setShowBorrowModal] = useState(false)
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null)
+  const [isFutureOpen, setIsFutureOpen] = useState(false)
 
   const [depositAmount, setDepositAmount] = useState("")
   const [withdrawAmount, setWithdrawAmount] = useState("")
@@ -76,17 +78,25 @@ export default function FluxBank() {
               />
               <h1 className="text-2xl font-bold tracking-tight">FluxBank</h1>
             </div>
-            <div className="flex items-center gap-3">
-              <Link href="/app">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="relative group p-4 rounded-full border border-flux/20 bg-flux/5 hover:bg-flux/10 transition-all duration-300"
-                >
-                  <div className="absolute inset-0 rounded-full border border-flux/40 animate-pulse group-hover:animate-none opacity-50" />
-                  <span className="relative z-10 text-muted-foreground group-hover:text-flux font-medium">Sign In</span>
-                </Button>
-              </Link>
+            <div className="flex items-center gap-6">
+              <button 
+                onClick={() => setIsFutureOpen(true)}
+                className="text-sm font-medium text-muted-foreground hover:text-flux transition-colors"
+              >
+                Future
+              </button>
+              <div className="flex items-center gap-3">
+                <Link href="/app">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="relative group p-4 rounded-full border border-flux/20 bg-flux/5 hover:bg-flux/10 transition-all duration-300"
+                  >
+                    <div className="absolute inset-0 rounded-full border border-flux/40 animate-pulse group-hover:animate-none opacity-50" />
+                    <span className="relative z-10 text-muted-foreground group-hover:text-flux font-medium">Sign In</span>
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </header>
@@ -472,6 +482,11 @@ export default function FluxBank() {
             </div>
           </div>
         </footer>
+
+        <FutureAmbitions 
+          isOpen={isFutureOpen} 
+          onClose={() => setIsFutureOpen(false)} 
+        />
       </div>
     </div>
   )

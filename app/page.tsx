@@ -90,12 +90,12 @@ export default function FluxBank() {
             <div className="flex items-center gap-2 flex-1">
               <Image
                 src="/fluxbank-logo.png"
-                alt="FluxBank Logo"
+                alt="Flux Logo"
                 width={40}
                 height={40}
                 className="object-contain drop-shadow-[0_0_8px_rgba(84,210,146,0.4)]"
               />
-              <h1 className="text-2xl font-bold tracking-tight">FluxBank</h1>
+              <h1 className="text-2xl font-bold tracking-tight">Flux</h1>
             </div>
               <div className="flex items-center gap-6 flex-1 justify-center">
                 <button 

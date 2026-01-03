@@ -8,8 +8,8 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "FluxBank - Decentralized Crypto Banking",
-  description: "Your decentralized crypto bank. Borrow, stake, and manage your crypto assets with FluxBank.",
+  title: "Flux - Decentralized Crypto Banking",
+  description: "Your decentralized crypto bank. Borrow, stake, and manage your crypto assets with Flux.",
   generator: "v0.app",
   icons: {
     icon: [

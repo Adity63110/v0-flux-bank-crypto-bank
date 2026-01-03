@@ -12,6 +12,7 @@ import Link from "next/link"
 import { Reveal } from "@/components/animations/Reveal"
 import { FutureAmbitions } from "@/components/future/FutureAmbitions"
 import { RecentTransactions } from "@/components/RecentTransactions"
+import { DebitCardPreview } from "@/components/dashboard/DebitCardPreview"
 
 const CRYPTO_OPTIONS = [
   { name: "Bitcoin", symbol: "BTC", color: "#F7931A", logo: "/cryptos/btc.png" },

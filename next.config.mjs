@@ -11,6 +11,7 @@ const nextConfig = {
     '127.0.0.1',
     '*.replit.dev',
     '*.spock.replit.dev',
+    '*.picard.replit.dev',
   ],
 }
 

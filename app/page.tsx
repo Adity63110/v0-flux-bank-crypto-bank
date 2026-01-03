@@ -359,7 +359,7 @@ export default function FluxBank() {
               <div className="flex-1 space-y-6 relative z-10">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-flux/10 border border-flux/20">
                   <Zap className="h-4 w-4 text-flux" />
-                  <span className="text-xs font-bold tracking-widest text-flux uppercase">New Feature</span>
+                  <span className="text-xs font-bold tracking-widest text-flux uppercase">Coming Soon</span>
                 </div>
                 <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Meet the Flux Card</h2>
                 <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">

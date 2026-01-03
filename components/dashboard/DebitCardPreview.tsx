@@ -77,7 +77,7 @@ export function DebitCardPreview() {
                  <div className="text-sm font-medium tracking-wide text-white">USER NAME</div>
                </div>
                <div className="relative w-16 h-10">
-                 <Image src="/visa-logo.png" alt="Visa" fill className="object-contain brightness-0 invert opacity-80" />
+                 <Image src="/visa-logo-card.png" alt="Visa" fill className="object-contain" />
                </div>
              </div>
           </div>

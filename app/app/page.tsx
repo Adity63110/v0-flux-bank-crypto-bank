@@ -37,6 +37,9 @@ export default function FluxBank() {
   const [showDepositModal, setShowDepositModal] = useState(false)
   const [depositStep, setDepositStep] = useState(1)
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null)
+  const [withdrawAddress, setWithdrawAddress] = useState("")
+  const [showWithdrawDialog, setShowWithdrawDialog] = useState(false)
+  const [isWithdrawing, setIsWithdrawing] = useState(false)
 
   const [depositAmount, setDepositAmount] = useState("")
   const [withdrawAmount, setWithdrawAmount] = useState("")
@@ -232,6 +235,42 @@ export default function FluxBank() {
       alert(`Deposit failed: ${error.message}`);
     } finally {
       setIsDepositing(false)
+    }
+  }
+
+  const handleWithdrawSubmit = async () => {
+    if (!withdrawAmount || !withdrawAddress) {
+      alert("Please enter amount and wallet address");
+      return;
+    }
+
+    setIsWithdrawing(true);
+    try {
+      const response = await fetch('/api/withdraw', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username,
+          amount: withdrawAmount,
+          address: withdrawAddress
+        }),
+      });
+
+      if (response.ok) {
+        alert("Withdrawal request submitted successfully!");
+        setWithdrawAmount("");
+        setWithdrawAddress("");
+        setShowWithdrawDialog(false);
+        fetchBalance();
+        fetchTransactions();
+      } else {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to process withdrawal");
+      }
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setIsWithdrawing(false);
     }
   }
 
@@ -573,13 +612,65 @@ export default function FluxBank() {
                         onChange={(e) => setWithdrawAmount(e.target.value)}
                         className="border-muted-foreground/20 focus-visible:ring-flux"
                       />
-                      <Button disabled className="bg-flux hover:bg-flux/90 text-black px-6">
-                        <ArrowUpRight className="h-4 w-4 mr-1" />
+                      <Button 
+                        onClick={() => setShowWithdrawDialog(true)}
+                        disabled={!withdrawAmount || parseFloat(withdrawAmount) <= 0}
+                        className="bg-flux hover:bg-flux/90 text-black px-8"
+                      >
                         Withdraw
                       </Button>
                     </div>
-                    <p className="text-xs text-muted-foreground">Available: 0.00 FLUX</p>
+                    <p className="text-xs text-muted-foreground">Available: {fluxBalance} FLUX</p>
                   </div>
+
+                  {showWithdrawDialog && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                      <Reveal direction="up">
+                        <Card className="w-full max-w-md border-flux/20 bg-background shadow-2xl">
+                          <CardHeader>
+                            <CardTitle>Confirm Withdrawal</CardTitle>
+                            <CardDescription>Enter the destination address for your FLUX tokens.</CardDescription>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="p-3 rounded-lg bg-flux/10 border border-flux/20">
+                              <div className="flex justify-between text-sm">
+                                <span className="text-muted-foreground">Amount to Withdraw</span>
+                                <span className="font-bold text-flux">{withdrawAmount} FLUX</span>
+                              </div>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <Label htmlFor="withdraw-address">Destination Wallet Address</Label>
+                              <Input
+                                id="withdraw-address"
+                                placeholder="Enter FLUX/Solana address"
+                                value={withdrawAddress}
+                                onChange={(e) => setWithdrawAddress(e.target.value)}
+                                className="border-muted-foreground/20 focus-visible:ring-flux font-mono text-sm"
+                              />
+                            </div>
+                            
+                            <div className="flex gap-3 pt-2">
+                              <Button 
+                                variant="outline" 
+                                className="flex-1 border-muted-foreground/20"
+                                onClick={() => setShowWithdrawDialog(false)}
+                              >
+                                Cancel
+                              </Button>
+                              <Button 
+                                className="flex-1 bg-flux hover:bg-flux/90 text-black font-bold"
+                                onClick={handleWithdrawSubmit}
+                                disabled={isWithdrawing || !withdrawAddress}
+                              >
+                                {isWithdrawing ? "Processing..." : "Confirm & Withdraw"}
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </Reveal>
+                    </div>
+                  )}
                 </TabsContent>
               </Tabs>
             </CardContent>
@@ -610,10 +701,11 @@ export default function FluxBank() {
                                tx.type === 'borrow' ? <ArrowUpRight className="h-5 w-5" /> :
                                tx.type === 'stake' ? <Lock className="h-5 w-5" /> :
                                tx.type === 'collect_reward' ? <Zap className="h-5 w-5" /> :
+                               tx.type === 'withdraw_request' ? <ArrowUpRight className="h-5 w-5" /> :
                                <Shield className="h-5 w-5" />}
                             </div>
                           <div>
-                            <div className="font-semibold capitalize">{tx.type}</div>
+                            <div className="font-semibold capitalize">{tx.type.replace('_', ' ')}</div>
                             <div className="text-xs text-muted-foreground">{new Date(tx.created_at).toLocaleString()}</div>
                           </div>
                         </div>

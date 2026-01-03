@@ -131,7 +131,7 @@ export default function FluxBank() {
                   href="/app/card"
                   className="text-sm font-medium text-white hover:text-flux transition-colors cursor-pointer flex items-center gap-1.5"
                 >
-                  Create Card
+                  Card
                 </Link>
               </div>
             <div className="flex items-center gap-3 flex-1 justify-end">

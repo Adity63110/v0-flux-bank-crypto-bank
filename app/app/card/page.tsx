@@ -69,7 +69,7 @@ export default function DebitCardPage() {
                   </Link>
                   <div className="flex items-center gap-3 p-3 rounded-xl bg-flux/10 text-flux font-medium">
                     <Zap className="h-5 w-5" />
-                    <span>Flux Card</span>
+                    <span>Card</span>
                   </div>
                 </nav>
               </SheetContent>

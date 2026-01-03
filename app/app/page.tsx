@@ -419,7 +419,7 @@ export default function FluxBank() {
                     className="flex items-center gap-3 p-3 rounded-xl text-muted-foreground hover:bg-flux/5 hover:text-flux transition-all"
                   >
                     <Zap className="h-5 w-5" />
-                    <span>Flux Card</span>
+                    <span>Card</span>
                   </Link>
                 </nav>
               </SheetContent>

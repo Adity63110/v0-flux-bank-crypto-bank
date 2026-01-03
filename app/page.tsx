@@ -99,12 +99,6 @@ export default function FluxBank() {
               <h1 className="text-2xl font-bold tracking-tight">Flux</h1>
             </div>
               <div className="flex items-center gap-6 flex-1 justify-center">
-                <Link
-                  href="/leaderboard"
-                  className="text-sm font-medium text-white hover:text-flux transition-colors cursor-pointer"
-                >
-                  Leaderboard
-                </Link>
                 <button 
                   onClick={() => setIsFutureOpen(true)}
                   className="text-sm font-medium text-white hover:text-flux transition-colors cursor-pointer"
@@ -126,6 +120,12 @@ export default function FluxBank() {
                 >
                   FAQ
                 </button>
+                <Link
+                  href="/leaderboard"
+                  className="text-sm font-medium text-white hover:text-flux transition-colors cursor-pointer"
+                >
+                  Leaderboard
+                </Link>
               </div>
             <div className="flex items-center gap-3 flex-1 justify-end">
               <Link href="/app">

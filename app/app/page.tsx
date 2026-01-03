@@ -301,9 +301,10 @@ export default function FluxBank() {
               variant="ghost"
               size="sm"
               onClick={handleSignOut}
-              className="text-muted-foreground hover:text-foreground"
+              className="relative group p-4 rounded-full border border-flux/20 bg-flux/5 hover:bg-flux/10 transition-all duration-300"
             >
-              Sign Out
+              <div className="absolute inset-0 rounded-full border border-flux/40 animate-pulse group-hover:animate-none opacity-50" />
+              <span className="relative z-10 text-muted-foreground group-hover:text-flux font-medium">Sign Out</span>
             </Button>
           </div>
         </div>

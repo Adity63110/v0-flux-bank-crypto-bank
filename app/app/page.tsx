@@ -45,6 +45,7 @@ export default function FluxBank() {
   const [fluxBalance, setFluxBalance] = useState("0.00")
   const [stakedBalance, setStakedBalance] = useState(0)
   const [pendingRewards, setPendingRewards] = useState(0)
+  const [isCollecting, setIsCollecting] = useState(false)
   const [fluxPrice, setFluxPrice] = useState(0.000012)
   const [transactions, setTransactions] = useState<any[]>([])
   const [totalBorrowedUSD, setTotalBorrowedUSD] = useState(0)
@@ -146,6 +147,32 @@ export default function FluxBank() {
       return () => clearInterval(interval)
     }
   }, [isSignedIn, username])
+
+  const handleCollectRewards = async () => {
+    if (pendingRewards <= 0 || isCollecting) return;
+    setIsCollecting(true);
+    try {
+      const response = await fetch('/api/stake/collect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        alert(`Successfully collected ${data.collected_amount.toFixed(4)} FLUX!`);
+        fetchBalance();
+        fetchTransactions();
+      } else {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to collect rewards');
+      }
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setIsCollecting(false);
+    }
+  }
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -463,6 +490,20 @@ export default function FluxBank() {
                     <span className="text-muted-foreground">APR</span>
                     <span className="font-medium">12.5%</span>
                   </div>
+                  <div className="pt-2 flex items-center justify-between border-t border-border/40">
+                    <div>
+                      <span className="text-xs text-muted-foreground block">Pending Rewards</span>
+                      <span className="text-sm font-bold text-flux">{pendingRewards.toLocaleString()} FLUX</span>
+                    </div>
+                    <Button 
+                      size="sm" 
+                      onClick={handleCollectRewards}
+                      disabled={pendingRewards <= 0 || isCollecting}
+                      className="bg-flux/10 hover:bg-flux text-flux hover:text-black border border-flux/20 h-8 text-xs font-bold"
+                    >
+                      {isCollecting ? "Collecting..." : "Collect"}
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="pt-2">
@@ -558,17 +599,19 @@ export default function FluxBank() {
                     <Reveal key={tx.id} direction="up" delay={i * 50}>
                       <div className="flex items-center justify-between p-3 border border-border/40 rounded-lg bg-muted/20">
                         <div className="flex items-center gap-3">
-                          <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                            tx.type === 'deposit' ? 'bg-flux/10 text-flux' : 
-                            tx.type === 'borrow' ? 'bg-blue-500/10 text-blue-500' :
-                            tx.type === 'stake' ? 'bg-purple-500/10 text-purple-500' :
-                            'bg-orange-500/10 text-orange-500'
-                          }`}>
-                            {tx.type === 'deposit' ? <ArrowDownLeft className="h-5 w-5" /> : 
-                             tx.type === 'borrow' ? <ArrowUpRight className="h-5 w-5" /> :
-                             tx.type === 'stake' ? <Lock className="h-5 w-5" /> :
-                             <Shield className="h-5 w-5" />}
-                          </div>
+                            <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
+                              tx.type === 'deposit' ? 'bg-flux/10 text-flux' : 
+                              tx.type === 'borrow' ? 'bg-blue-500/10 text-blue-500' :
+                              tx.type === 'stake' ? 'bg-purple-500/10 text-purple-500' :
+                              tx.type === 'collect_reward' ? 'bg-green-500/10 text-green-500' :
+                              'bg-orange-500/10 text-orange-500'
+                            }`}>
+                              {tx.type === 'deposit' ? <ArrowDownLeft className="h-5 w-5" /> : 
+                               tx.type === 'borrow' ? <ArrowUpRight className="h-5 w-5" /> :
+                               tx.type === 'stake' ? <Lock className="h-5 w-5" /> :
+                               tx.type === 'collect_reward' ? <Zap className="h-5 w-5" /> :
+                               <Shield className="h-5 w-5" />}
+                            </div>
                           <div>
                             <div className="font-semibold capitalize">{tx.type}</div>
                             <div className="text-xs text-muted-foreground">{new Date(tx.created_at).toLocaleString()}</div>

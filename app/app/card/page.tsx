@@ -165,7 +165,7 @@ export default function DebitCardPage() {
 
                 <div className="group relative">
                   <Button disabled className="w-full h-14 bg-flux/10 text-flux border border-flux/20 text-lg font-bold opacity-70">
-                    Create Card (Coming Soon)
+                    Create Card
                   </Button>
                   <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-black text-white text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-white/10 pointer-events-none">
                     Feature under development.

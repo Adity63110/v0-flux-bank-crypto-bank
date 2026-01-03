@@ -385,13 +385,18 @@ export default function FluxBank() {
                   </div>
                 </div>
 
-                <div className="pt-2">
+                <div className="pt-2 space-y-3">
                   <Link href="/app/borrow">
                     <Button className="w-full bg-flux hover:bg-flux/90 text-black">
                       Select Asset to Borrow
                     </Button>
                   </Link>
-                  <p className="text-xs text-muted-foreground text-center mt-2">Choose which crypto to borrow</p>
+                  <Link href="/app/loans">
+                    <Button variant="outline" className="w-full border-flux/20 hover:bg-flux/5 text-muted-foreground hover:text-flux">
+                      Repay Loan
+                    </Button>
+                  </Link>
+                  <p className="text-xs text-muted-foreground text-center mt-2">Manage your borrowing activity</p>
                 </div>
               </CardContent>
             </Card>

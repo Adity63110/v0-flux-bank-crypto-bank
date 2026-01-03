@@ -1,0 +1,175 @@
+🔁 TRANSFER & RECEIVE SECTION – DASHBOARD PROMPT (FLUXBANK)
+
+Add a Transfer & Receive section to the FluxBank dashboard, positioned above the existing Withdraw & Deposit section.
+This section allows users to send Flux tokens to another FluxBank user via username, and receive Flux by sharing their username.
+
+📍 Placement
+
+Location: Dashboard
+
+Position: Above Withdraw & Deposit
+
+Layout: Two side-by-side cards (Transfer | Receive)
+
+Responsive: Stack vertically on mobile
+
+🔄 TRANSFER CARD (Send Flux)
+UI Elements
+
+Title: Transfer Flux
+
+Subtitle: Send Flux instantly to another FluxBank user
+
+Input fields:
+
+Recipient Username
+
+Placeholder: Enter FluxBank username
+
+Amount (Flux)
+
+Placeholder: 0.00
+
+Show available balance
+
+Button:
+
+Label: Send Flux
+
+Disabled if:
+
+Username invalid
+
+Amount exceeds balance
+
+Amount ≤ 0
+
+Transfer Logic
+
+Transfers are internal only
+
+Username must exist
+
+Deduct Flux from sender
+
+Credit Flux to receiver instantly
+
+No blockchain transaction
+
+Confirmation Flow
+
+Click Send Flux
+
+Show confirmation modal:
+
+Recipient username
+
+Amount
+
+Confirm → Execute transfer
+
+Show success animation
+
+Transaction Recording
+
+Add entry to transactions table:
+
+type: transfer
+asset: FLUX
+amount: X
+status: completed
+from_user → to_user
+timestamp
+
+
+Show in:
+
+Dashboard Recent Transactions
+
+Receiver’s Recent Transactions
+
+📥 RECEIVE CARD
+UI Elements
+
+Title: Receive Flux
+
+Subtitle: Share your username to receive Flux
+
+Display:
+
+User’s FluxBank username
+
+Button:
+
+Copy Username
+
+After click:
+
+Copy to clipboard
+
+Toast message:
+
+“Username copied. Share this to receive Flux.”
+
+Info Banner (Important)
+
+Below the copy button, display a muted info box:
+
+Solana address transfers coming soon
+External wallet transfers will be enabled in a future update.
+
+🎨 Visual Design
+
+Neon Flux green accent
+
+Subtle glow on buttons
+
+Arrow animation between users
+
+Glassmorphism cards
+
+Icons:
+
+Transfer: ↔️
+
+Receive: 📥
+
+🔐 Security & Validation
+
+Prevent self-transfer
+
+Prevent overdraft
+
+Rate-limit transfers
+
+Log failed attempts
+
+📱 Mobile UX
+
+Full-width cards
+
+Sticky send button
+
+Easy copy-to-clipboard
+
+🧠 UX Microcopy
+
+Transfer success:
+
+“Flux sent successfully.”
+
+Transfer failure:
+
+“User not found or insufficient balance.”
+
+🏁 FINAL RESULT
+
+Users can:
+
+Send Flux instantly using usernames
+
+Receive Flux without wallet addresses
+
+Experience true bank-like transfers
+
+See all activity reflected instantly

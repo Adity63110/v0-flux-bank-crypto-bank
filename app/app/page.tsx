@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft, Copy, CheckCircle2, Menu, LayoutDashboard, Shield, Zap, Trophy } from "lucide-react"
+import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft, Copy, CheckCircle2, Menu, LayoutDashboard, Shield, Zap, Trophy, User as UserIcon, ArrowRight } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { QRCodeSVG } from "qrcode.react"
@@ -52,6 +52,12 @@ export default function FluxBank() {
   const [fluxPrice, setFluxPrice] = useState(0.000012)
   const [transactions, setTransactions] = useState<any[]>([])
   const [totalBorrowedUSD, setTotalBorrowedUSD] = useState(0)
+
+  // Transfer state
+  const [transferRecipient, setTransferRecipient] = useState("")
+  const [transferAmount, setTransferAmount] = useState("")
+  const [isTransferring, setIsTransferring] = useState(false)
+  const [showTransferConfirm, setShowTransferConfirm] = useState(false)
 
   // Fetch Flux Price
 
@@ -257,6 +263,46 @@ export default function FluxBank() {
     }
   }
 
+  const handleTransferSubmit = async () => {
+    if (!transferRecipient || !transferAmount || isNaN(parseFloat(transferAmount))) return;
+    if (parseFloat(transferAmount) > parseFloat(fluxBalance)) {
+      alert("Insufficient balance");
+      return;
+    }
+    setShowTransferConfirm(true);
+  }
+
+  const confirmTransfer = async () => {
+    setIsTransferring(true);
+    try {
+      const response = await fetch('/api/transfer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from_user: username,
+          to_username: transferRecipient,
+          amount: parseFloat(transferAmount)
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Flux sent successfully.");
+        setTransferRecipient("");
+        setTransferAmount("");
+        setShowTransferConfirm(false);
+        fetchBalance();
+        fetchTransactions();
+      } else {
+        throw new Error(data.error || "Transfer failed");
+      }
+    } catch (error: any) {
+      alert(error.message);
+    } finally {
+      setIsTransferring(false);
+    }
+  }
+
   if (!isSignedIn) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -398,18 +444,90 @@ export default function FluxBank() {
         </div>
       </header>
 
+      {/* Confirmation Modal */}
+      {showTransferConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
+          <Card className="max-w-md w-full border-flux/20 bg-muted/20 backdrop-blur-xl shadow-2xl">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Confirm Transfer</CardTitle>
+                <Button variant="ghost" size="icon" onClick={() => setShowTransferConfirm(false)}>
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              <CardDescription>Please review the transfer details below</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex items-center justify-between p-4 rounded-xl bg-background border border-border/40">
+                <div className="space-y-1">
+                  <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Recipient</p>
+                  <p className="text-lg font-bold text-flux">@{transferRecipient}</p>
+                </div>
+                <div className="h-10 w-10 rounded-full bg-flux/10 flex items-center justify-center">
+                  <UserIcon className="h-5 w-5 text-flux" />
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between p-4 rounded-xl bg-background border border-border/40">
+                <div className="space-y-1">
+                  <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Amount</p>
+                  <p className="text-2xl font-bold text-white">{transferAmount} FLUX</p>
+                </div>
+                <div className="h-10 w-10 rounded-full bg-flux/10 flex items-center justify-center">
+                  <Zap className="h-5 w-5 text-flux" />
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <Button 
+                  className="w-full bg-flux hover:bg-flux/90 text-black font-bold h-12"
+                  onClick={confirmTransfer}
+                  disabled={isTransferring}
+                >
+                  {isTransferring ? "Executing Transfer..." : "Confirm & Send"}
+                </Button>
+                <Button 
+                  variant="ghost"
+                  className="w-full"
+                  onClick={() => setShowTransferConfirm(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="grid gap-6 md:grid-cols-3 mb-8">
           <Reveal direction="left">
             <Card className="border-flux/20 bg-gradient-to-br from-flux/5 to-transparent h-full">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 text-center">
+                <div className="flex justify-center mb-2">
+                  <div className="h-10 w-10 rounded-full bg-flux/10 flex items-center justify-center border border-flux/20">
+                    <UserIcon className="h-5 w-5 text-flux" />
+                  </div>
+                </div>
                 <CardDescription className="text-xs">FluxBank Account</CardDescription>
                 <CardTitle className="text-2xl font-bold">@{username}</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-xs text-muted-foreground font-mono">
+              <CardContent className="text-center">
+                <p className="text-xs text-muted-foreground font-mono mb-4">
                   {walletAddress.slice(0, 12)}...{walletAddress.slice(-6)}
                 </p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full border-flux/20 hover:bg-flux/5 text-xs font-bold gap-2"
+                  onClick={() => {
+                    navigator.clipboard.writeText(username);
+                    alert("Username copied. Share this to receive Flux.");
+                  }}
+                >
+                  <Copy className="h-3 w-3" />
+                  Copy Username
+                </Button>
               </CardContent>
             </Card>
           </Reveal>
@@ -438,6 +556,103 @@ export default function FluxBank() {
                 <p className="text-xs text-muted-foreground">
                   {totalBorrowedUSD > 0 ? `Borrowed: $${totalBorrowedUSD.toLocaleString()}` : "No active loans"}
                 </p>
+              </CardContent>
+            </Card>
+          </Reveal>
+        </div>
+
+        {/* Transfer & Receive Section */}
+        <div className="grid gap-6 md:grid-cols-2 mb-8">
+          <Reveal direction="left">
+            <Card className="border-flux/20 bg-muted/20 backdrop-blur-sm overflow-hidden relative group">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <ArrowRight className="h-24 w-24 -rotate-45" />
+              </div>
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-lg bg-flux/10 flex items-center justify-center">
+                    <ArrowUpRight className="h-4 w-4 text-flux" />
+                  </div>
+                  <div>
+                    <CardTitle>Transfer Flux</CardTitle>
+                    <CardDescription>Send Flux instantly to another user</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="transfer-username">Recipient Username</Label>
+                  <Input
+                    id="transfer-username"
+                    placeholder="Enter FluxBank username"
+                    value={transferRecipient}
+                    onChange={(e) => setTransferRecipient(e.target.value)}
+                    className="border-muted-foreground/20 focus-visible:ring-flux"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <Label htmlFor="transfer-amount">Amount (Flux)</Label>
+                    <span className="text-xs text-muted-foreground">Available: {fluxBalance}</span>
+                  </div>
+                  <Input
+                    id="transfer-amount"
+                    placeholder="0.00"
+                    value={transferAmount}
+                    onChange={(e) => setTransferAmount(e.target.value)}
+                    className="border-muted-foreground/20 focus-visible:ring-flux"
+                  />
+                </div>
+                <Button 
+                  className="w-full bg-flux hover:bg-flux/90 text-black font-bold h-12 gap-2"
+                  onClick={handleTransferSubmit}
+                  disabled={!transferRecipient || !transferAmount || parseFloat(transferAmount) <= 0}
+                >
+                  <Zap className="h-4 w-4" />
+                  Send Flux
+                </Button>
+              </CardContent>
+            </Card>
+          </Reveal>
+
+          <Reveal direction="right">
+            <Card className="border-border/40 h-full flex flex-col">
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-lg bg-flux/10 flex items-center justify-center">
+                    <ArrowDownLeft className="h-4 w-4 text-flux" />
+                  </div>
+                  <div>
+                    <CardTitle>Receive Flux</CardTitle>
+                    <CardDescription>Share your username to receive Flux</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="flex-1 flex flex-col justify-between space-y-6">
+                <div className="p-6 rounded-2xl bg-muted/30 border border-dashed border-flux/30 flex flex-col items-center justify-center text-center space-y-2">
+                  <span className="text-sm text-muted-foreground uppercase tracking-widest font-bold">Your Username</span>
+                  <div className="text-3xl font-bold text-flux">@{username}</div>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="mt-2 hover:bg-flux/10 text-flux"
+                    onClick={() => {
+                      navigator.clipboard.writeText(username);
+                      alert("Username copied. Share this to receive Flux.");
+                    }}
+                  >
+                    <Copy className="h-4 w-4 mr-2" />
+                    Copy Username
+                  </Button>
+                </div>
+
+                <div className="p-4 rounded-xl bg-muted/20 border border-border/40 text-xs text-muted-foreground space-y-2">
+                  <div className="flex items-center gap-2 font-bold text-muted-foreground/80">
+                    <Shield className="h-3 w-3" />
+                    IMPORTANT
+                  </div>
+                  <p>Solana address transfers coming soon. External wallet transfers will be enabled in a future update.</p>
+                </div>
               </CardContent>
             </Card>
           </Reveal>

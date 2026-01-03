@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { 
   ArrowRight, 
   Coins, 
@@ -13,7 +14,8 @@ import {
   PieChart,
   Layers,
   Zap,
-  ChevronRight
+  ChevronLeft,
+  ArrowLeft
 } from 'lucide-react'
 import { Reveal } from '@/components/animations/Reveal'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
@@ -85,6 +87,15 @@ const TokenomicsPage = () => {
   return (
     <div className="min-h-screen bg-black text-white pt-24 pb-20 px-4 md:px-8 overflow-hidden">
       <div className="max-w-7xl mx-auto">
+        <Reveal>
+          <Link 
+            href="/"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-[#54d292] transition-colors mb-8 group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Home
+          </Link>
+        </Reveal>
         {/* Header Section */}
         <div className="mb-16">
           <Reveal>

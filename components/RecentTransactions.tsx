@@ -116,7 +116,6 @@ export function RecentTransactions() {
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Type</th>
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Asset</th>
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Amount</th>
-                      <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">UID</th>
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Status</th>
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider text-right">Time</th>
                     </tr>
@@ -136,9 +135,6 @@ export function RecentTransactions() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           {tx.amount}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-muted-foreground">
-                          {maskUsername(tx.username)}
-                        </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className={`flex items-center gap-1.5 text-xs font-medium ${getStatusColor(tx.status)}`}>
                             {tx.status.toLowerCase() === 'completed' ? <CheckCircle2 className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
@@ -152,7 +148,7 @@ export function RecentTransactions() {
                     ))}
                     {transactions.length === 0 && (
                       <tr>
-                        <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground italic">
+                        <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground italic">
                           Waiting for live network activity...
                         </td>
                       </tr>

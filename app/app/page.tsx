@@ -45,6 +45,9 @@ export default function FluxBank() {
   const [fluxBalance, setFluxBalance] = useState("0.00")
   const [fluxPrice, setFluxPrice] = useState(0.000012)
   const [transactions, setTransactions] = useState<any[]>([])
+  const [totalBorrowedUSD, setTotalBorrowedUSD] = useState(0)
+
+  // Fetch Flux Price
 
   // Fetch Flux Price
   const fetchPrice = async () => {
@@ -67,6 +70,28 @@ export default function FluxBank() {
       if (response.ok) {
         const data = await response.json()
         setTransactions(data.transactions)
+        
+        // Calculate total borrowed USD from loans
+        const borrowTx = data.transactions.filter((tx: any) => tx.type === 'borrow' && tx.status === 'approved');
+        
+        // We'll use the price map to calculate total USD value
+        const priceMap: Record<string, number> = {
+          'BTC': 90000,
+          'ETH': 3000,
+          'BSC': 870,
+          'SOL': 135,
+          'USDC': 1,
+          'USDT': 1,
+          'TRX': 0.28,
+          'TON': 5.2
+        };
+        
+        const total = borrowTx.reduce((sum: number, tx: any) => {
+          const price = priceMap[tx.asset] || 0;
+          return sum + (tx.amount * price);
+        }, 0);
+        
+        setTotalBorrowedUSD(total);
       }
     } catch (error) {
       console.error("Error fetching transactions:", error)
@@ -345,10 +370,14 @@ export default function FluxBank() {
             <Card className="border-border/40 h-full">
               <CardHeader className="pb-3">
                 <CardDescription className="text-xs">Health Ratio</CardDescription>
-                <CardTitle className="text-3xl font-bold text-flux">Healthy</CardTitle>
+                <CardTitle className="text-3xl font-bold text-flux">
+                  {totalBorrowedUSD > 0 ? "Safe" : "Healthy"}
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-xs text-muted-foreground">No active loans</p>
+                <p className="text-xs text-muted-foreground">
+                  {totalBorrowedUSD > 0 ? `Borrowed: $${totalBorrowedUSD.toLocaleString()}` : "No active loans"}
+                </p>
               </CardContent>
             </Card>
           </Reveal>
@@ -381,7 +410,7 @@ export default function FluxBank() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Currently Borrowed</span>
-                    <span className="font-medium">$0.00</span>
+                    <span className="font-medium">${totalBorrowedUSD.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
 

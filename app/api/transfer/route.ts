@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       .eq('username', from_user)
       .single();
 
-    if (senderError || !sender || sender.balance < amount) {
+    if (senderError || !sender || (sender.balance || 0) < amount) {
       return NextResponse.json({ error: 'Insufficient balance' }, { status: 400 });
     }
 
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     // Decrement sender
     const { error: decError } = await supabase
       .from('users')
-      .update({ balance: sender.balance - amount })
+      .update({ balance: (sender.balance || 0) - amount })
       .eq('username', from_user);
 
     if (decError) throw decError;
@@ -52,29 +52,21 @@ export async function POST(request: Request) {
 
     if (incError) throw incError;
 
-    // 4. Record transactions
-    const transactionData = {
-      asset: 'FLUX',
+    // 4. Record in 'transfers' table
+    const { error: transferLogError } = await supabase.from('transfers').insert([{
+      from_user: from_user,
+      to_user: to_username,
       amount: amount,
+      asset: 'FLUX',
       status: 'completed',
-      created_at: new Date().toISOString(),
-    };
-
-    // Sender's transaction
-    await supabase.from('transactions').insert([{
-      ...transactionData,
-      username: from_user,
-      type: 'transfer_out',
-      description: `Transfer to @${to_username}`
+      created_at: new Date().toISOString()
     }]);
 
-    // Receiver's transaction
-    await supabase.from('transactions').insert([{
-      ...transactionData,
-      username: to_username,
-      type: 'transfer_in',
-      description: `Transfer from @${from_user}`
-    }]);
+    if (transferLogError) {
+      console.error('Failed to log transfer:', transferLogError);
+      // We don't fail the whole request since balances are already updated, 
+      // but in a production app you'd want a transaction here.
+    }
 
     return NextResponse.json({ message: 'Transfer successful' });
 

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Smartphone, Globe, Zap, ArrowRight, Shield, Bell, Layout, Copy, Check } from "lucide-react"
+import { X, Smartphone, Globe, Zap, ArrowRight, Shield, Bell, Layout, Copy, Check, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { Reveal } from "@/components/animations/Reveal"
@@ -192,9 +192,19 @@ export const FutureAmbitions: React.FC<FutureAmbitionsProps> = ({ isOpen, onClos
           <div className="relative h-full flex flex-col overflow-y-auto">
             {/* Header */}
             <header className="p-6 border-b border-white/10 flex items-center justify-between sticky top-0 bg-black z-20">
-              <div className="flex items-center gap-3">
-                <Image src="/fluxbank-logo.png" alt="Logo" width={32} height={32} />
-                <span className="font-bold tracking-tight text-xl">Future Vision</span>
+              <div className="flex items-center gap-6">
+                <button
+                  onClick={onClose}
+                  className="flex items-center gap-2 text-zinc-400 hover:text-flux transition-colors group text-sm font-medium"
+                >
+                  <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                  Back
+                </button>
+                <div className="w-px h-4 bg-white/10" />
+                <div className="flex items-center gap-3">
+                  <Image src="/fluxbank-logo.png" alt="Logo" width={32} height={32} />
+                  <span className="font-bold tracking-tight text-xl">Future Vision</span>
+                </div>
               </div>
               <Button 
                 variant="ghost" 

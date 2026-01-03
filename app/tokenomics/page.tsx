@@ -11,11 +11,12 @@ import {
   ShieldCheck, 
   BarChart3, 
   Lock, 
-  PieChart,
-  Layers,
-  Zap,
-  ChevronLeft,
-  ArrowLeft
+  PieChart, 
+  Layers, 
+  Zap, 
+  ChevronLeft, 
+  ArrowLeft,
+  ChevronRight
 } from 'lucide-react'
 import { Reveal } from '@/components/animations/Reveal'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'

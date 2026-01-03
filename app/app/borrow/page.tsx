@@ -237,6 +237,14 @@ export default function BorrowPage() {
                 >
                   {isSubmitting ? "Submitting..." : "Continue to Borrow"}
                 </Button>
+
+                <Button
+                  variant="outline"
+                  className="w-full h-12 border-flux/20 hover:bg-flux/5 text-muted-foreground hover:text-flux"
+                  onClick={() => alert("Repay feature coming soon! Please contact support for manual repayment.")}
+                >
+                  Repay Loan
+                </Button>
               </CardContent>
             </Card>
           </Reveal>

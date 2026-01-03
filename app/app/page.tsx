@@ -43,6 +43,8 @@ export default function FluxBank() {
   const [borrowAmount, setBorrowAmount] = useState("")
   const [isDepositing, setIsDepositing] = useState(false)
   const [fluxBalance, setFluxBalance] = useState("0.00")
+  const [stakedBalance, setStakedBalance] = useState(0)
+  const [pendingRewards, setPendingRewards] = useState(0)
   const [fluxPrice, setFluxPrice] = useState(0.000012)
   const [transactions, setTransactions] = useState<any[]>([])
   const [totalBorrowedUSD, setTotalBorrowedUSD] = useState(0)
@@ -106,6 +108,8 @@ export default function FluxBank() {
       if (response.ok) {
         const data = await response.json()
         setFluxBalance(data.balance.toFixed(2))
+        setStakedBalance(data.staked_balance || 0)
+        setPendingRewards(data.pending_rewards || 0)
       }
     } catch (error) {
       console.error("Error fetching balance:", error)
@@ -449,11 +453,11 @@ export default function FluxBank() {
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Staked Amount</span>
-                    <span className="font-medium">0 FLUX</span>
+                    <span className="font-medium">{stakedBalance.toLocaleString()} FLUX</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Estimated Rewards</span>
-                    <span className="font-medium text-flux">0 FLUX/day</span>
+                    <span className="font-medium text-flux">{(stakedBalance * 0.00034).toFixed(4)} FLUX/day</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">APR</span>

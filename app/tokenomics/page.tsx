@@ -50,11 +50,10 @@ const TokenomicsPage = () => {
   ]
 
   const distribution = [
-    { category: "Community & Rewards", percentage: 40, color: "#54d292" },
-    { category: "Ecosystem Growth", percentage: 25, color: "#3da675" },
+    { category: "Community & Rewards", percentage: 45, color: "#54d292" },
+    { category: "Ecosystem Growth", percentage: 28, color: "#3da675" },
     { category: "Team & Advisors", percentage: 15, color: "#2d7a56" },
-    { category: "Treasury", percentage: 12, color: "#1d523a" },
-    { category: "Liquidity", percentage: 8, color: "#0e291d" }
+    { category: "Treasury", percentage: 12, color: "#1d523a" }
   ]
 
   const flywheelSteps = [

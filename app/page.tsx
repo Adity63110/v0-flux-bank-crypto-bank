@@ -11,6 +11,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Reveal } from "@/components/animations/Reveal"
 import { FutureAmbitions } from "@/components/future/FutureAmbitions"
+import { RecentTransactions } from "@/components/RecentTransactions"
 
 const CRYPTO_OPTIONS = [
   { name: "Bitcoin", symbol: "BTC", color: "#F7931A", logo: "/cryptos/btc.png" },
@@ -490,6 +491,8 @@ export default function FluxBank() {
             ))}
           </div>
         </section>
+
+        <RecentTransactions />
 
         <section className="container mx-auto px-4 py-20 text-center">
           <Reveal direction="up">

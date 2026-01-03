@@ -351,6 +351,39 @@ export default function FluxBank() {
         </section>
 
         <section className="container mx-auto px-4 py-24 relative overflow-hidden">
+          <Reveal direction="up">
+            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 p-8 md:p-12 rounded-[40px] bg-gradient-to-br from-flux/10 via-background to-background border border-flux/20 relative group overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-flux/10 blur-[100px] rounded-full -mr-32 -mt-32" />
+              
+              <div className="flex-1 space-y-6 relative z-10">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-flux/10 border border-flux/20">
+                  <Zap className="h-4 w-4 text-flux" />
+                  <span className="text-xs font-bold tracking-widest text-flux uppercase">New Feature</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Meet the Flux Card</h2>
+                <p className="text-xl text-muted-foreground leading-relaxed max-w-xl">
+                  Spend your crypto directly from your FluxBank account at over 100M merchants worldwide. The ultimate bridge between Web3 and reality.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                  <Link href="/app/card">
+                    <Button size="lg" className="bg-flux hover:bg-flux/90 text-black px-8 h-14 font-bold rounded-2xl shadow-lg shadow-flux/20">
+                      Explore Flux Card
+                    </Button>
+                  </Link>
+                  <div className="h-14 w-20 relative grayscale opacity-40">
+                    <Image src="/visa-logo-color.png" alt="Visa" fill className="object-contain" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full max-w-[400px] relative z-10">
+                <DebitCardPreview />
+              </div>
+            </div>
+          </Reveal>
+        </section>
+
+        <section className="container mx-auto px-4 py-24 relative overflow-hidden">
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-start">
             <Reveal direction="left">
               <div className="space-y-8">

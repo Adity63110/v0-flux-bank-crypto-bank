@@ -43,6 +43,7 @@ export function RecentTransactions() {
       case 'deposit': return 'text-green-400 bg-green-400/10 border-green-400/20'
       case 'borrow': return 'text-blue-400 bg-blue-400/10 border-blue-400/20'
       case 'stake': return 'text-purple-400 bg-purple-400/10 border-purple-400/20'
+      case 'collect_reward': return 'text-cyan-400 bg-cyan-400/10 border-cyan-400/20'
       case 'unstake': return 'text-orange-400 bg-orange-400/10 border-orange-400/20'
       default: return 'text-gray-400'
     }
@@ -62,6 +63,7 @@ export function RecentTransactions() {
       case 'deposit': return <ArrowDownLeft className="h-4 w-4" />
       case 'borrow': return <ArrowUpRight className="h-4 w-4" />
       case 'stake':
+      case 'collect_reward':
       case 'unstake': return <Lock className="h-4 w-4" />
       default: return <Zap className="h-4 w-4" />
     }

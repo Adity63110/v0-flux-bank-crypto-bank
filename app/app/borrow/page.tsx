@@ -237,14 +237,6 @@ export default function BorrowPage() {
                 >
                   {isSubmitting ? "Submitting..." : "Continue to Borrow"}
                 </Button>
-
-                <Button
-                  variant="outline"
-                  className="w-full h-12 border-flux/20 hover:bg-flux/5 text-muted-foreground hover:text-flux"
-                  onClick={() => alert("Repay feature coming soon! Please contact support for manual repayment.")}
-                >
-                  Repay Loan
-                </Button>
               </CardContent>
             </Card>
           </Reveal>
@@ -316,6 +308,19 @@ export default function BorrowPage() {
             </Reveal>
           ))}
         </div>
+
+        <Reveal direction="up" delay={400}>
+          <div className="mt-8 flex justify-center">
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full max-w-md h-14 border-flux/20 hover:bg-flux/5 text-muted-foreground hover:text-flux text-lg font-bold"
+              onClick={() => alert("Repay feature coming soon! Please contact support for manual repayment.")}
+            >
+              Repay Loan
+            </Button>
+          </div>
+        </Reveal>
       </main>
     </div>
   )

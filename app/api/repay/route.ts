@@ -3,10 +3,10 @@ import { supabase } from '@/lib/crypto';
 
 export async function POST(request: Request) {
   try {
-    const { username, loanId, amount, asset, email } = await request.json();
+    const { username, amount, email } = await request.json();
 
-    if (!username || !loanId || !amount || !asset || !email) {
-      console.log('Missing fields:', { username, loanId, amount, asset, email });
+    if (!username || !amount || !email) {
+      console.log('Missing fields:', { username, amount, email });
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
@@ -15,9 +15,7 @@ export async function POST(request: Request) {
       .from('repay')
       .insert([{
         username,
-        loan_id: loanId,
         amount,
-        asset,
         email,
         status: 'pending'
       }])
@@ -29,10 +27,10 @@ export async function POST(request: Request) {
     await supabase.from('transactions').insert([{
       username,
       type: 'repay_request',
-      asset,
+      asset: 'FLUX',
       amount,
       status: 'pending',
-      description: `Repayment request for loan #${loanId} (Email: ${email})`
+      description: `Repayment request (Email: ${email})`
     }]);
 
     return NextResponse.json({ success: true, data });

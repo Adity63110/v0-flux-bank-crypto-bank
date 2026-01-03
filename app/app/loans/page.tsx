@@ -60,9 +60,7 @@ export default function LoanHistoryPage() {
     try {
       console.log('Submitting repay request:', {
         username,
-        loanId: selectedLoan.id,
         amount: selectedLoan.amount,
-        asset: selectedLoan.crypto,
         email
       });
       const response = await fetch('/api/repay', {
@@ -70,9 +68,7 @@ export default function LoanHistoryPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username,
-          loanId: selectedLoan.id,
           amount: selectedLoan.amount,
-          asset: selectedLoan.crypto,
           email
         }),
       });

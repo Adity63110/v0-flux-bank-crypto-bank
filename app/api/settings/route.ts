@@ -3,14 +3,14 @@ import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    const { data: priceData, error: priceError } = await supabase
+    const { data: priceData } = await supabase
       .from('global_settings')
       .select('value')
       .eq('key', 'flux_price')
       .single();
 
-    const { data: caData, error: caError } = await supabase
-      .from('platform_settings')
+    const { data: caData } = await supabase
+      .from('global_settings')
       .select('value')
       .eq('key', 'ca_contract_address')
       .single();

@@ -96,9 +96,9 @@ export default function DebitCardPage() {
       </header>
 
       <main className="container mx-auto px-4 py-12 max-w-5xl">
-        <Link href="/app" className="inline-flex items-center gap-2 text-muted-foreground hover:text-flux transition-colors mb-8">
+        <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-flux transition-colors mb-8">
           <ArrowLeft className="h-4 w-4" />
-          Back to Dashboard
+          Back to Home
         </Link>
 
         <Reveal direction="up">

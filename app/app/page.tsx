@@ -582,24 +582,14 @@ export default function FluxBank() {
                 <TabsContent value="deposit" className="space-y-6 pt-4">
                   <div className="grid md:grid-cols-2 gap-8 items-start">
                     <div className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="deposit-crypto">Select Asset</Label>
-                        <div className="grid grid-cols-4 gap-2">
-                          {CRYPTO_OPTIONS.map((crypto) => (
-                            <Button
-                              key={crypto.symbol}
-                              variant="outline"
-                              className={`h-14 flex flex-col items-center justify-center gap-1 p-1 ${selectedCrypto === crypto.symbol ? 'border-flux bg-flux/5' : 'border-border/40'}`}
-                              onClick={() => setSelectedCrypto(crypto.symbol)}
-                            >
-                              <Image src={crypto.logo} alt={crypto.name} width={16} height={16} />
-                              <span className="text-[10px] font-bold">{crypto.symbol}</span>
-                            </Button>
-                          ))}
-                        </div>
+                      <div className="flex flex-col items-center justify-center py-8 bg-flux/5 border border-flux/20 rounded-xl mb-4">
+                        <Image src="/fluxbank-logo.png" alt="Flux Logo" width={80} height={80} className="mb-4 animate-pulse" />
+                        <h3 className="text-xl font-bold text-flux">FLUX Native Token</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Depositing to FluxBank</p>
                       </div>
+                      
                       <div className="space-y-2">
-                        <Label htmlFor="deposit-amount">Amount ({selectedCrypto || 'FLUX'})</Label>
+                        <Label htmlFor="deposit-amount">Amount (FLUX)</Label>
                         <div className="flex gap-2">
                           <Input
                             id="deposit-amount"
@@ -612,7 +602,7 @@ export default function FluxBank() {
                           <Button 
                             onClick={() => setShowDepositModal(true)}
                             className="bg-flux hover:bg-flux/90 text-black px-8 h-12 font-bold"
-                            disabled={!selectedCrypto || !depositAmount}
+                            disabled={!depositAmount}
                           >
                             Deposit
                           </Button>

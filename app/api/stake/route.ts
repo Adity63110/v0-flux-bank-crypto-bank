@@ -22,7 +22,7 @@ export async function GET(req: Request) {
 
     if (error) throw error
 
-    return NextResponse.json({ history: data || [] })
+    return NextResponse.json({ history: data || [], stakes: data || [] })
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }

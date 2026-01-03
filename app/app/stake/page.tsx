@@ -59,6 +59,20 @@ export default function StakingPage() {
     }
   }, [])
 
+  const calculateRemainingDays = (createdAt: string, lockPeriod: string) => {
+    const start = new Date(createdAt)
+    const now = new Date()
+    
+    let days = 7
+    if (lockPeriod === "1month") days = 30
+    if (lockPeriod === "1year") days = 365
+    
+    const diffTime = now.getTime() - start.getTime()
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+    
+    return Math.max(0, days - diffDays)
+  }
+
   const handleStake = async () => {
     if (!stakeAmount || parseFloat(stakeAmount) <= 0) return
     setIsSubmitting(true)
@@ -365,7 +379,7 @@ export default function StakingPage() {
                           <div>
                             <p className="font-semibold capitalize">{item.type}</p>
                             <p className="text-xs text-muted-foreground">
-                              {new Date(item.created_at).toLocaleDateString()} • {item.lock_period ? item.lock_period.replace('1', '1 ') : 'No lock'}
+                              {new Date(item.created_at).toLocaleDateString()} • {item.type === 'stake' ? `${calculateRemainingDays(item.created_at, item.lock_period)} days left` : 'Unstaking'}
                             </p>
                           </div>
                         </div>

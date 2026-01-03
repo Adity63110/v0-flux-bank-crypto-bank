@@ -414,10 +414,13 @@ export default function FluxBank() {
                     <TrendingUp className="h-5 w-5" />
                     Stake
                   </Link>
-                  <div className="flex items-center gap-3 p-3 rounded-xl text-muted-foreground/50 cursor-not-allowed">
+                  <Link 
+                    href="/app/card"
+                    className="flex items-center gap-3 p-3 rounded-xl text-muted-foreground hover:bg-flux/5 hover:text-flux transition-all"
+                  >
                     <Zap className="h-5 w-5" />
-                    <span>Create Card <span className="text-[10px] bg-flux/10 text-flux px-1.5 py-0.5 rounded ml-1">SOON</span></span>
-                  </div>
+                    <span>Flux Card <span className="text-[10px] bg-flux/10 text-flux px-1.5 py-0.5 rounded ml-1">SOON</span></span>
+                  </Link>
                 </nav>
               </SheetContent>
             </Sheet>

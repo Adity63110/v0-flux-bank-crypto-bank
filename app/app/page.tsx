@@ -561,103 +561,6 @@ export default function FluxBank() {
           </Reveal>
         </div>
 
-        {/* Transfer & Receive Section */}
-        <div className="grid gap-6 md:grid-cols-2 mb-8">
-          <Reveal direction="left">
-            <Card className="border-flux/20 bg-muted/20 backdrop-blur-sm overflow-hidden relative group">
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <ArrowRight className="h-24 w-24 -rotate-45" />
-              </div>
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-lg bg-flux/10 flex items-center justify-center">
-                    <ArrowUpRight className="h-4 w-4 text-flux" />
-                  </div>
-                  <div>
-                    <CardTitle>Transfer Flux</CardTitle>
-                    <CardDescription>Send Flux instantly to another user</CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="transfer-username">Recipient Username</Label>
-                  <Input
-                    id="transfer-username"
-                    placeholder="Enter FluxBank username"
-                    value={transferRecipient}
-                    onChange={(e) => setTransferRecipient(e.target.value)}
-                    className="border-muted-foreground/20 focus-visible:ring-flux"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <Label htmlFor="transfer-amount">Amount (Flux)</Label>
-                    <span className="text-xs text-muted-foreground">Available: {fluxBalance}</span>
-                  </div>
-                  <Input
-                    id="transfer-amount"
-                    placeholder="0.00"
-                    value={transferAmount}
-                    onChange={(e) => setTransferAmount(e.target.value)}
-                    className="border-muted-foreground/20 focus-visible:ring-flux"
-                  />
-                </div>
-                <Button 
-                  className="w-full bg-flux hover:bg-flux/90 text-black font-bold h-12 gap-2"
-                  onClick={handleTransferSubmit}
-                  disabled={!transferRecipient || !transferAmount || parseFloat(transferAmount) <= 0}
-                >
-                  <Zap className="h-4 w-4" />
-                  Send Flux
-                </Button>
-              </CardContent>
-            </Card>
-          </Reveal>
-
-          <Reveal direction="right">
-            <Card className="border-border/40 h-full flex flex-col">
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-lg bg-flux/10 flex items-center justify-center">
-                    <ArrowDownLeft className="h-4 w-4 text-flux" />
-                  </div>
-                  <div>
-                    <CardTitle>Receive Flux</CardTitle>
-                    <CardDescription>Share your username to receive Flux</CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col justify-between space-y-6">
-                <div className="p-6 rounded-2xl bg-muted/30 border border-dashed border-flux/30 flex flex-col items-center justify-center text-center space-y-2">
-                  <span className="text-sm text-muted-foreground uppercase tracking-widest font-bold">Your Username</span>
-                  <div className="text-3xl font-bold text-flux">@{username}</div>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="mt-2 hover:bg-flux/10 text-flux"
-                    onClick={() => {
-                      navigator.clipboard.writeText(username);
-                      alert("Username copied. Share this to receive Flux.");
-                    }}
-                  >
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copy Username
-                  </Button>
-                </div>
-
-                <div className="p-4 rounded-xl bg-muted/20 border border-border/40 text-xs text-muted-foreground space-y-2">
-                  <div className="flex items-center gap-2 font-bold text-muted-foreground/80">
-                    <Shield className="h-3 w-3" />
-                    IMPORTANT
-                  </div>
-                  <p>Solana address transfers coming soon. External wallet transfers will be enabled in a future update.</p>
-                </div>
-              </CardContent>
-            </Card>
-          </Reveal>
-        </div>
-
         <div className="grid gap-6 lg:grid-cols-2 mb-8">
           {/* Borrow Section */}
           <Reveal direction="left">
@@ -762,6 +665,97 @@ export default function FluxBank() {
             </Card>
           </Reveal>
         </div>
+
+        {/* Transfer & Receive Section - Combined into single card/column layout */}
+        <Reveal direction="up">
+          <Card className="border-flux/20 bg-muted/20 backdrop-blur-sm overflow-hidden mb-8">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-lg bg-flux/10 flex items-center justify-center">
+                  <Zap className="h-4 w-4 text-flux" />
+                </div>
+                <div>
+                  <CardTitle>Transfer & Receive</CardTitle>
+                  <CardDescription>Manage your internal Flux movements</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-8 md:grid-cols-2">
+                {/* Transfer Side */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <ArrowUpRight className="h-4 w-4 text-flux" />
+                    <h3 className="font-bold">Send Flux</h3>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="transfer-username">Recipient Username</Label>
+                    <Input
+                      id="transfer-username"
+                      placeholder="Enter FluxBank username"
+                      value={transferRecipient}
+                      onChange={(e) => setTransferRecipient(e.target.value)}
+                      className="border-muted-foreground/20 focus-visible:ring-flux"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <Label htmlFor="transfer-amount">Amount (Flux)</Label>
+                      <span className="text-xs text-muted-foreground">Available: {fluxBalance}</span>
+                    </div>
+                    <Input
+                      id="transfer-amount"
+                      placeholder="0.00"
+                      value={transferAmount}
+                      onChange={(e) => setTransferAmount(e.target.value)}
+                      className="border-muted-foreground/20 focus-visible:ring-flux"
+                    />
+                  </div>
+                  <Button 
+                    className="w-full bg-flux hover:bg-flux/90 text-black font-bold h-12 gap-2"
+                    onClick={handleTransferSubmit}
+                    disabled={!transferRecipient || !transferAmount || parseFloat(transferAmount) <= 0}
+                  >
+                    <Zap className="h-4 w-4" />
+                    Send Flux
+                  </Button>
+                </div>
+
+                {/* Receive Side */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <ArrowDownLeft className="h-4 w-4 text-flux" />
+                    <h3 className="font-bold">Receive Flux</h3>
+                  </div>
+                  <div className="p-6 rounded-2xl bg-muted/30 border border-dashed border-flux/30 flex flex-col items-center justify-center text-center space-y-2 h-full min-h-[160px]">
+                    <span className="text-sm text-muted-foreground uppercase tracking-widest font-bold">Your Username</span>
+                    <div className="text-3xl font-bold text-flux">@{username}</div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="mt-2 hover:bg-flux/10 text-flux"
+                      onClick={() => {
+                        navigator.clipboard.writeText(username);
+                        alert("Username copied. Share this to receive Flux.");
+                      }}
+                    >
+                      <Copy className="h-4 w-4 mr-2" />
+                      Copy Username
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 rounded-xl bg-muted/20 border border-border/40 text-xs text-muted-foreground space-y-2">
+                <div className="flex items-center gap-2 font-bold text-muted-foreground/80">
+                  <Shield className="h-3 w-3" />
+                  IMPORTANT
+                </div>
+                <p>Solana address transfers coming soon. External wallet transfers will be enabled in a future update.</p>
+              </div>
+            </CardContent>
+          </Card>
+        </Reveal>
 
         {/* Deposit / Withdraw */}
         <Reveal direction="up">

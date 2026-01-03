@@ -132,7 +132,7 @@ export default function FluxBank() {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="relative group p-4 rounded-full border border-flux/20 bg-flux/5 hover:bg-flux/10 transition-all duration-300"
+                  className="relative group p-4 rounded-full border border-flux/20 bg-flux/5 hover:bg-flux/10 transition-all duration-300 shadow-[0_0_15px_rgba(84,210,146,0.2)] hover:shadow-[0_0_25px_rgba(84,210,146,0.4)]"
                 >
                   <div className="absolute inset-0 rounded-full border border-flux/40 animate-pulse group-hover:animate-none opacity-50" />
                   <span className="relative z-10 text-muted-foreground group-hover:text-flux font-medium">Sign In</span>

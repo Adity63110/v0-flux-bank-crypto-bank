@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     if (incError) throw incError;
 
     // 4. Record in 'transfers' table
-    const { error: transferLogError } = await supabase.from('transfers').insert([{
+    await supabase.from('transfers').insert([{
       from_user: from_user,
       to_user: to_username,
       amount: amount,
@@ -62,11 +62,29 @@ export async function POST(request: Request) {
       created_at: new Date().toISOString()
     }]);
 
-    if (transferLogError) {
-      console.error('Failed to log transfer:', transferLogError);
-      // We don't fail the whole request since balances are already updated, 
-      // but in a production app you'd want a transaction here.
-    }
+    // 5. Record in 'transactions' table for both users
+    const transactionData = {
+      asset: 'FLUX',
+      amount: amount,
+      status: 'completed',
+      created_at: new Date().toISOString(),
+    };
+
+    // Sender's transaction
+    await supabase.from('transactions').insert([{
+      ...transactionData,
+      username: from_user,
+      type: 'transfer_out',
+      description: `Transfer to @${to_username}`
+    }]);
+
+    // Receiver's transaction
+    await supabase.from('transactions').insert([{
+      ...transactionData,
+      username: to_username,
+      type: 'transfer_in',
+      description: `Transfer from @${from_user}`
+    }]);
 
     return NextResponse.json({ message: 'Transfer successful' });
 

@@ -257,7 +257,7 @@ export default function FluxBank() {
       });
 
       if (response.ok) {
-        alert("Withdrawal request submitted successfully!");
+        alert("Withdrawal request submitted successfully! Amount has been deducted from your balance.");
         setWithdrawAmount("");
         setWithdrawAddress("");
         setShowWithdrawDialog(false);

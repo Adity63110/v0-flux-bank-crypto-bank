@@ -22,7 +22,26 @@ export async function POST(request: Request) {
 
     if (error) throw error;
 
-    // 2. Log as transaction
+    // 2. Deduct from user balance
+    const { data: userData, error: fetchError } = await supabase
+      .from('users')
+      .select('balance')
+      .eq('username', username)
+      .single();
+
+    if (fetchError) throw fetchError;
+    if (userData.balance < parseFloat(amount)) {
+      return NextResponse.json({ error: 'Insufficient balance' }, { status: 400 });
+    }
+
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ balance: userData.balance - parseFloat(amount) })
+      .eq('username', username);
+
+    if (updateError) throw updateError;
+
+    // 3. Log as transaction
     await supabase.from('transactions').insert([{
       username,
       type: 'withdraw_request',

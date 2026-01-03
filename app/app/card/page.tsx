@@ -102,38 +102,36 @@ export default function DebitCardPage() {
         </Link>
 
         <Reveal direction="up">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-flux/10 border border-flux/20 mb-6">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-flux opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-flux"></span>
-              </span>
-              <span className="text-xs font-bold tracking-widest text-flux uppercase">Coming Soon</span>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-16 text-left">
+            <div className="flex-1 space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-flux/10 border border-flux/20 mb-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-flux opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-flux"></span>
+                </span>
+                <span className="text-xs font-bold tracking-widest text-flux uppercase">Coming Soon</span>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Flux Debit Card</h1>
+              <div className="flex items-center gap-4">
+                <p className="text-xl text-muted-foreground">The bridge between Web3 and reality.</p>
+                <div className="h-8 w-12 relative grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all cursor-help">
+                  <Image src="/visa-logo-color.png" alt="Visa" fill className="object-contain" />
+                </div>
+              </div>
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">Flux Debit Card</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              The bridge between your Web3 wealth and real-world spending. 
-              Powered by Visa, fueled by Flux.
-            </p>
+            <div className="w-full max-w-[400px]">
+              <DebitCardPreview />
+            </div>
           </div>
         </Reveal>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          <Reveal direction="left">
-            <div className="relative">
-              <DebitCardPreview />
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-background/80 backdrop-blur-md px-4 py-2 rounded-full border border-border/40 text-[10px] text-muted-foreground uppercase tracking-widest">
-                Interactive 3D Preview
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal direction="right">
-            <div className="space-y-8">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold">Spend your crypto like cash.</h2>
-                <p className="text-muted-foreground">
-                  Designed for spending without selling. Use your borrowed assets or staked rewards for everyday purchases.
+        <div className="grid lg:grid-cols-1 gap-12 items-start mb-16">
+          <Reveal direction="up">
+            <div className="space-y-12">
+              <div className="space-y-4">
+                <h2 className="text-4xl font-bold text-flux">Spend your crypto like cash.</h2>
+                <p className="text-xl text-muted-foreground max-w-3xl">
+                  Designed for spending without selling. Use your borrowed assets or staked rewards for everyday purchases at over 100 million merchants worldwide.
                 </p>
               </div>
 

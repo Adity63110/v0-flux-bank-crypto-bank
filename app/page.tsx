@@ -81,7 +81,7 @@ export default function FluxBank() {
             <div className="flex items-center gap-6">
               <button 
                 onClick={() => setIsFutureOpen(true)}
-                className="text-sm font-medium text-muted-foreground hover:text-flux transition-colors"
+                className="text-sm font-medium text-white hover:text-flux transition-colors cursor-pointer"
               >
                 Future
               </button>

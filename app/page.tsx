@@ -5,23 +5,7 @@ import { useState } from "react"
 import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Lock, TrendingUp, Wallet, ArrowRight, Zap, Shield, Users, HelpCircle, ChevronDown } from "lucide-react"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import Image from "next/image"
-import Link from "next/link"
-import { Reveal } from "@/components/animations/Reveal"
-import { FutureAmbitions } from "@/components/future/FutureAmbitions"
-
-const CRYPTO_OPTIONS = [
-  { name: "Bitcoin", symbol: "BTC", color: "#F7931A", logo: "/cryptos/btc.png" },
-  { name: "Ethereum", symbol: "ETH", color: "#627EEA", logo: "/cryptos/eth.png" },
-  { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F", logo: "/cryptos/bsc.png" },
-  { name: "Solana", symbol: "SOL", color: "#14F195", logo: "/cryptos/sol.png" },
-  { name: "USDC", symbol: "USDC", color: "#2775CA", logo: "/cryptos/usdc.png" },
-  { name: "USDT", symbol: "USDT", color: "#26A17B", logo: "/cryptos/usdt.png" },
-  { name: "Tron", symbol: "TRX", color: "#FF0013", logo: "/cryptos/tron.png" },
-  { name: "Ton", symbol: "TON", color: "#0088CC", logo: "/cryptos/ton.png" },
-]
+import { ArrowRight, Wallet, Shield, Zap, TrendingUp, ChevronRight, Menu, Smartphone, Globe, Copy, Check } from "lucide-react"
 
 export default function FluxBank() {
   const [username, setUsername] = useState("")
@@ -34,6 +18,26 @@ export default function FluxBank() {
   const [depositAmount, setDepositAmount] = useState("")
   const [withdrawAmount, setWithdrawAmount] = useState("")
   const [borrowAmount, setBorrowAmount] = useState("")
+
+  const [caAddress, setCaAddress] = useState("8o11wa4qBX8ivTdmXUAyuvo2wTfncADNaMvvzKBcWcDe")
+  const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.ca_contract_address) {
+          setCaAddress(data.ca_contract_address)
+        }
+      })
+      .catch(err => console.error("Failed to fetch CA:", err))
+  }, [])
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(caAddress)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -143,6 +147,27 @@ export default function FluxBank() {
                 >
                   Future Ambitions
                 </Button>
+              </div>
+            </Reveal>
+
+            {/* CA Section */}
+            <Reveal direction="up" delay={500}>
+              <div className="max-w-md mx-auto p-4 rounded-2xl bg-muted/20 border border-border/50 space-y-3">
+                <div className="flex items-center justify-center gap-2">
+                   <Zap className="h-3 w-3 text-flux" />
+                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Official Contract Address</span>
+                </div>
+                <div className="relative group">
+                  <div className="p-3 rounded-xl bg-background border border-flux/20 font-mono text-xs break-all pr-12 text-muted-foreground group-hover:border-flux/40 transition-colors">
+                    {caAddress}
+                  </div>
+                  <button 
+                    onClick={copyToClipboard}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-muted hover:bg-flux hover:text-black transition-all"
+                  >
+                    {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                  </button>
+                </div>
               </div>
             </Reveal>
           </div>

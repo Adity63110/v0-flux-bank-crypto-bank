@@ -294,30 +294,6 @@ export const FutureAmbitions: React.FC<FutureAmbitionsProps> = ({ isOpen, onClos
                         </motion.button>
                       ))}
                     </div>
-
-                    {/* CA Section */}
-                    <Reveal direction="up" delay={500}>
-                      <div className="max-w-md p-6 rounded-2xl bg-zinc-900/50 border border-white/5 space-y-4">
-                        <div className="flex items-center gap-2">
-                           <Zap className="h-4 w-4 text-flux" />
-                           <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Official Contract</span>
-                        </div>
-                        <div className="relative">
-                          <div className="p-4 rounded-xl bg-black border border-flux/20 font-mono text-sm break-all pr-12">
-                            {caAddress}
-                          </div>
-                          <button 
-                            onClick={copyToClipboard}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-lg bg-zinc-800 hover:bg-flux hover:text-black transition-all"
-                          >
-                            {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                          </button>
-                        </div>
-                        <p className="text-[10px] text-zinc-600">
-                          Verify the contract address before any transaction. FluxBank will never DM you for funds.
-                        </p>
-                      </div>
-                    </Reveal>
                   </div>
 
                   {/* Right Column */}

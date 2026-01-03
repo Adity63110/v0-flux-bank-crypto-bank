@@ -109,8 +109,9 @@ export function RecentTransactions() {
           <div className="relative group">
             <div className="absolute -inset-1 bg-flux/10 rounded-[2rem] blur-2xl opacity-50 group-hover:opacity-100 transition duration-500" />
             <div className="relative bg-background/40 backdrop-blur-xl border border-border/50 rounded-[2rem] overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+              <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-flux/20 scrollbar-track-transparent">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="border-b border-border/50 bg-muted/30">
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Type</th>
@@ -158,7 +159,8 @@ export function RecentTransactions() {
               </div>
             </div>
           </div>
-        </Reveal>
+        </div>
+      </Reveal>
       </div>
     </section>
   )

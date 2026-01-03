@@ -167,9 +167,9 @@ export const FutureAmbitions: React.FC<FutureAmbitionsProps> = ({ isOpen, onClos
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-flux/10 rounded-full blur-[150px]" />
           </div>
 
-          <div className="relative h-full flex flex-col">
+          <div className="relative h-full flex flex-col overflow-y-auto">
             {/* Header */}
-            <header className="p-6 border-b border-white/10 flex items-center justify-between">
+            <header className="p-6 border-b border-white/10 flex items-center justify-between sticky top-0 bg-black z-20">
               <div className="flex items-center gap-3">
                 <Image src="/fluxbank-logo.png" alt="Logo" width={32} height={32} />
                 <span className="font-bold tracking-tight text-xl">Future Vision</span>

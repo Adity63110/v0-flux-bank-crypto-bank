@@ -678,40 +678,47 @@ export default function FluxBank() {
         </Reveal>
 
         <Reveal direction="up" delay={200}>
-          <Card className="mt-6 border-border/40">
-            <CardHeader>
-              <CardTitle>Transaction History</CardTitle>
-              <CardDescription>Your recent activity</CardDescription>
+          <Card className="mt-6 border-border/40 overflow-hidden">
+            <CardHeader className="border-b border-border/40 bg-muted/30">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-lg">Transaction History</CardTitle>
+                  <CardDescription className="text-xs">Your personal activity</CardDescription>
+                </div>
+                <div className="text-xs text-muted-foreground px-2 py-1 rounded bg-background border border-border/40">
+                  {transactions.length} Total
+                </div>
+              </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
               {transactions.length > 0 ? (
-                <div className="space-y-4">
-                  {transactions.map((tx, i) => (
-                    <Reveal key={tx.id} direction="up" delay={i * 50}>
-                      <div className="flex items-center justify-between p-3 border border-border/40 rounded-lg bg-muted/20">
+                <div className="max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-flux/20">
+                  <div className="divide-y divide-border/20">
+                    {transactions.map((tx, i) => (
+                      <div key={tx.id || i} className="flex items-center justify-between p-4 hover:bg-flux/5 transition-colors">
                         <div className="flex items-center gap-3">
-                            <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                              tx.type === 'deposit' ? 'bg-flux/10 text-flux' : 
-                              tx.type === 'borrow' ? 'bg-blue-500/10 text-blue-500' :
-                              tx.type === 'stake' ? 'bg-purple-500/10 text-purple-500' :
-                              tx.type === 'collect_reward' ? 'bg-green-500/10 text-green-500' :
-                              'bg-orange-500/10 text-orange-500'
-                            }`}>
-                              {tx.type === 'deposit' ? <ArrowDownLeft className="h-5 w-5" /> : 
-                               tx.type === 'borrow' ? <ArrowUpRight className="h-5 w-5" /> :
-                               tx.type === 'stake' ? <Lock className="h-5 w-5" /> :
-                               tx.type === 'collect_reward' ? <Zap className="h-5 w-5" /> :
-                               tx.type === 'withdraw_request' ? <ArrowUpRight className="h-5 w-5" /> :
-                               <Shield className="h-5 w-5" />}
-                            </div>
+                          <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
+                            tx.type === 'deposit' ? 'bg-flux/10 text-flux' : 
+                            tx.type === 'borrow' ? 'bg-blue-500/10 text-blue-500' :
+                            tx.type === 'stake' ? 'bg-purple-500/10 text-purple-500' :
+                            tx.type === 'collect_reward' ? 'bg-green-500/10 text-green-500' :
+                            'bg-orange-500/10 text-orange-500'
+                          }`}>
+                            {tx.type === 'deposit' ? <ArrowDownLeft className="h-5 w-5" /> : 
+                             tx.type === 'borrow' ? <ArrowUpRight className="h-5 w-5" /> :
+                             tx.type === 'stake' ? <Lock className="h-5 w-5" /> :
+                             tx.type === 'collect_reward' ? <Zap className="h-5 w-5" /> :
+                             tx.type === 'withdraw_request' ? <ArrowUpRight className="h-5 w-5" /> :
+                             <Shield className="h-5 w-5" />}
+                          </div>
                           <div>
-                            <div className="font-semibold capitalize">{tx.type.replace('_', ' ')}</div>
-                            <div className="text-xs text-muted-foreground">{new Date(tx.created_at).toLocaleString()}</div>
+                            <div className="font-semibold capitalize text-sm">{tx.type.replace('_', ' ')}</div>
+                            <div className="text-[10px] text-muted-foreground">{new Date(tx.created_at).toLocaleString()}</div>
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="font-bold">{tx.amount} {tx.asset}</div>
-                          <div className={`text-xs ${
+                          <div className="font-bold text-sm">{tx.amount} {tx.asset}</div>
+                          <div className={`text-[10px] font-medium ${
                             tx.status === 'pending' ? 'text-amber-500' : 
                             (tx.status === 'approved' || tx.status === 'completed') ? 'text-flux' : 
                             'text-red-500'
@@ -720,8 +727,8 @@ export default function FluxBank() {
                           </div>
                         </div>
                       </div>
-                    </Reveal>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center py-12 text-center">

@@ -600,11 +600,11 @@ export default function FluxBank() {
                             className="border-muted-foreground/20 focus-visible:ring-flux h-12"
                           />
                           <Button 
-                            onClick={() => setShowDepositModal(true)}
+                            onClick={handleDepositSubmit}
                             className="bg-flux hover:bg-flux/90 text-black px-8 h-12 font-bold"
-                            disabled={!depositAmount}
+                            disabled={!depositAmount || isDepositing}
                           >
-                            Deposit
+                            {isDepositing ? "Processing..." : "Deposit & Show Address"}
                           </Button>
                         </div>
                       </div>

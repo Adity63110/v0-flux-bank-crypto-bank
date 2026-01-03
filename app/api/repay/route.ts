@@ -6,6 +6,7 @@ export async function POST(request: Request) {
     const { username, loanId, amount, asset, email } = await request.json();
 
     if (!username || !loanId || !amount || !asset || !email) {
+      console.log('Missing fields:', { username, loanId, amount, asset, email });
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 

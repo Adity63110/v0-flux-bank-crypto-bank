@@ -58,6 +58,13 @@ export default function LoanHistoryPage() {
 
     setIsRepaying(true);
     try {
+      console.log('Submitting repay request:', {
+        username,
+        loanId: selectedLoan.id,
+        amount: selectedLoan.amount,
+        asset: selectedLoan.crypto,
+        email
+      });
       const response = await fetch('/api/repay', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

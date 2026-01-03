@@ -14,16 +14,16 @@ interface Transaction {
   amount: string
   status: TransactionStatus
   timestamp: string
-  user: string
+  uid: string
 }
 
 const MOCK_TRANSACTIONS: Transaction[] = [
-  { id: '1', type: 'Deposit', asset: 'SOL', amount: '12.5', status: 'Completed', timestamp: '2 mins ago', user: '0x7B2...4E9' },
-  { id: '2', type: 'Borrow', asset: 'USDC', amount: '2,500', status: 'Approved', timestamp: '5 mins ago', user: '0x3A1...F2D' },
-  { id: '3', type: 'Stake', asset: 'FLUX', amount: '50,000', status: 'Completed', timestamp: '12 mins ago', user: '0x9E4...1A8' },
-  { id: '4', type: 'Deposit', asset: 'BTC', amount: '0.045', status: 'Pending', timestamp: '15 mins ago', user: '0x2C8...6B3' },
-  { id: '5', type: 'Borrow', asset: 'USDT', amount: '1,200', status: 'Completed', timestamp: '22 mins ago', user: '0x5D3...8C1' },
-  { id: '6', type: 'Stake', asset: 'FLUX', amount: '25,000', status: 'Completed', timestamp: '45 mins ago', user: '0x8F1...3E4' },
+  { id: '1', type: 'Deposit', asset: 'SOL', amount: '12.5', status: 'Completed', timestamp: '2 mins ago', uid: 'USER_829' },
+  { id: '2', type: 'Borrow', asset: 'USDC', amount: '2,500', status: 'Approved', timestamp: '5 mins ago', uid: 'USER_142' },
+  { id: '3', type: 'Stake', asset: 'FLUX', amount: '50,000', status: 'Completed', timestamp: '12 mins ago', uid: 'USER_591' },
+  { id: '4', type: 'Deposit', asset: 'BTC', amount: '0.045', status: 'Pending', timestamp: '15 mins ago', uid: 'USER_338' },
+  { id: '5', type: 'Borrow', asset: 'USDT', amount: '1,200', status: 'Completed', timestamp: '22 mins ago', uid: 'USER_902' },
+  { id: '6', type: 'Stake', asset: 'FLUX', amount: '25,000', status: 'Completed', timestamp: '45 mins ago', uid: 'USER_674' },
 ]
 
 export function RecentTransactions() {
@@ -93,7 +93,7 @@ export function RecentTransactions() {
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Type</th>
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Asset</th>
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Amount</th>
-                      <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">User</th>
+                      <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">UID</th>
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider">Status</th>
                       <th className="px-6 py-4 text-xs font-bold text-muted-foreground uppercase tracking-wider text-right">Time</th>
                     </tr>
@@ -114,7 +114,7 @@ export function RecentTransactions() {
                           {tx.amount}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-muted-foreground">
-                          {tx.user}
+                          {tx.uid}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className={`flex items-center gap-1.5 text-xs font-medium ${getStatusColor(tx.status)}`}>

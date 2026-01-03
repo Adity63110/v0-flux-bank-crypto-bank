@@ -84,6 +84,7 @@ export default function LeaderboardPage() {
             <Reveal direction="up" delay={200}>
               <div className="relative inline-block">
                 <p className="text-muted-foreground text-lg">Top accounts powering the FluxBank ecosystem</p>
+                <p className="text-flux/80 text-sm font-bold mt-2 animate-pulse">Top 3 accounts will be rewarded</p>
                 <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-flux to-transparent opacity-50 blur-[1px] animate-pulse" />
               </div>
             </Reveal>

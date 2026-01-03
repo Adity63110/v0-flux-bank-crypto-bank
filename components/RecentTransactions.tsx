@@ -18,22 +18,42 @@ interface Transaction {
 }
 
 const MOCK_TRANSACTIONS: Transaction[] = [
-  { id: '1', type: 'Deposit', asset: 'SOL', amount: '12.5', status: 'Completed', timestamp: '2 mins ago', uid: 'USER_829' },
-  { id: '2', type: 'Borrow', asset: 'USDC', amount: '2,500', status: 'Approved', timestamp: '5 mins ago', uid: 'USER_142' },
-  { id: '3', type: 'Stake', asset: 'FLUX', amount: '50,000', status: 'Completed', timestamp: '12 mins ago', uid: 'USER_591' },
-  { id: '4', type: 'Deposit', asset: 'BTC', amount: '0.045', status: 'Pending', timestamp: '15 mins ago', uid: 'USER_338' },
-  { id: '5', type: 'Borrow', asset: 'USDT', amount: '1,200', status: 'Completed', timestamp: '22 mins ago', uid: 'USER_902' },
-  { id: '6', type: 'Stake', asset: 'FLUX', amount: '25,000', status: 'Completed', timestamp: '45 mins ago', uid: 'USER_674' },
+  { id: '1', type: 'Deposit', asset: 'SOL', amount: '12.5', status: 'Completed', timestamp: 'Just now', uid: 'USER_829' },
+  { id: '2', type: 'Borrow', asset: 'USDC', amount: '2,500', status: 'Approved', timestamp: '1 min ago', uid: 'USER_142' },
+  { id: '3', type: 'Stake', asset: 'FLUX', amount: '50,000', status: 'Completed', timestamp: '2 mins ago', uid: 'USER_591' },
+  { id: '4', type: 'Deposit', asset: 'BTC', amount: '0.045', status: 'Pending', timestamp: '5 mins ago', uid: 'USER_338' },
+  { id: '5', type: 'Borrow', asset: 'USDT', amount: '1,200', status: 'Completed', timestamp: '12 mins ago', uid: 'USER_902' },
+  { id: '6', type: 'Stake', asset: 'FLUX', amount: '25,000', status: 'Completed', timestamp: '15 mins ago', uid: 'USER_674' },
 ]
 
 export function RecentTransactions() {
   const [transactions, setTransactions] = useState<Transaction[]>(MOCK_TRANSACTIONS)
 
-  // Simulate live updates
   useEffect(() => {
     const interval = setInterval(() => {
-      // Logic for live updates could go here
-    }, 5000)
+      setTransactions(prev => {
+        const newTx: Transaction = {
+          id: Date.now().toString(),
+          type: ['Deposit', 'Borrow', 'Stake'][Math.floor(Math.random() * 3)] as TransactionType,
+          asset: ['BTC', 'SOL', 'USDT', 'USDC', 'TON', 'TRON', 'BSC', 'FLUX'][Math.floor(Math.random() * 8)],
+          amount: (Math.random() * 1000).toFixed(2),
+          status: ['Pending', 'Approved', 'Completed'][Math.floor(Math.random() * 3)] as TransactionStatus,
+          timestamp: 'Just now',
+          uid: `USER_${Math.floor(Math.random() * 999)}`
+        }
+        
+        const updated = [newTx, ...prev.map(tx => {
+          if (tx.timestamp === 'Just now') return { ...tx, timestamp: '1 min ago' }
+          if (tx.timestamp.includes('min ago')) {
+            const mins = parseInt(tx.timestamp)
+            return { ...tx, timestamp: `${mins + 1} mins ago` }
+          }
+          return tx
+        })].slice(0, 6)
+        
+        return updated
+      })
+    }, 60000)
     return () => clearInterval(interval)
   }, [])
 

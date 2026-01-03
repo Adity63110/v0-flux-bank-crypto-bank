@@ -4,83 +4,86 @@ import { useState, useEffect } from "react"
 import { Reveal } from "@/components/animations/Reveal"
 import { Zap, ArrowUpRight, ArrowDownLeft, Lock, CheckCircle2, Clock } from "lucide-react"
 
-type TransactionType = 'Deposit' | 'Borrow' | 'Stake'
-type TransactionStatus = 'Pending' | 'Approved' | 'Completed'
+type TransactionType = 'deposit' | 'borrow' | 'stake' | 'unstake'
+type TransactionStatus = 'pending' | 'approved' | 'completed'
 
 interface Transaction {
   id: string
   type: TransactionType
   asset: string
-  amount: string
+  amount: string | number
   status: TransactionStatus
-  timestamp: string
-  uid: string
+  created_at: string
+  username: string
 }
 
-const MOCK_TRANSACTIONS: Transaction[] = [
-  { id: '1', type: 'Deposit', asset: 'SOL', amount: '12.5', status: 'Completed', timestamp: 'Just now', uid: 'USER_829' },
-  { id: '2', type: 'Borrow', asset: 'USDC', amount: '2,500', status: 'Approved', timestamp: '1 min ago', uid: 'USER_142' },
-  { id: '3', type: 'Stake', asset: 'FLUX', amount: '50,000', status: 'Completed', timestamp: '2 mins ago', uid: 'USER_591' },
-  { id: '4', type: 'Deposit', asset: 'BTC', amount: '0.045', status: 'Pending', timestamp: '5 mins ago', uid: 'USER_338' },
-  { id: '5', type: 'Borrow', asset: 'USDT', amount: '1,200', status: 'Completed', timestamp: '12 mins ago', uid: 'USER_902' },
-  { id: '6', type: 'Stake', asset: 'FLUX', amount: '25,000', status: 'Completed', timestamp: '15 mins ago', uid: 'USER_674' },
-]
-
 export function RecentTransactions() {
-  const [transactions, setTransactions] = useState<Transaction[]>(MOCK_TRANSACTIONS)
+  const [transactions, setTransactions] = useState<Transaction[]>([])
+
+  const fetchTransactions = async () => {
+    try {
+      const response = await fetch('/api/public-transactions')
+      if (response.ok) {
+        const data = await response.json()
+        setTransactions(data.transactions)
+      }
+    } catch (error) {
+      console.error("Error fetching public transactions:", error)
+    }
+  }
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTransactions(prev => {
-        const newTx: Transaction = {
-          id: Date.now().toString(),
-          type: ['Deposit', 'Borrow', 'Stake'][Math.floor(Math.random() * 3)] as TransactionType,
-          asset: ['BTC', 'SOL', 'USDT', 'USDC', 'TON', 'TRON', 'BSC', 'FLUX'][Math.floor(Math.random() * 8)],
-          amount: (Math.random() * 1000).toFixed(2),
-          status: ['Pending', 'Approved', 'Completed'][Math.floor(Math.random() * 3)] as TransactionStatus,
-          timestamp: 'Just now',
-          uid: `USER_${Math.floor(Math.random() * 999)}`
-        }
-        
-        const updated = [newTx, ...prev.map(tx => {
-          if (tx.timestamp === 'Just now') return { ...tx, timestamp: '1 min ago' }
-          if (tx.timestamp.includes('min ago')) {
-            const mins = parseInt(tx.timestamp)
-            return { ...tx, timestamp: `${mins + 1} mins ago` }
-          }
-          return tx
-        })].slice(0, 6)
-        
-        return updated
-      })
-    }, 60000)
+    fetchTransactions()
+    const interval = setInterval(fetchTransactions, 60000)
     return () => clearInterval(interval)
   }, [])
 
-  const getTypeColor = (type: TransactionType) => {
-    switch (type) {
-      case 'Deposit': return 'text-green-400 bg-green-400/10 border-green-400/20'
-      case 'Borrow': return 'text-blue-400 bg-blue-400/10 border-blue-400/20'
-      case 'Stake': return 'text-purple-400 bg-purple-400/10 border-purple-400/20'
+  const getTypeColor = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'deposit': return 'text-green-400 bg-green-400/10 border-green-400/20'
+      case 'borrow': return 'text-blue-400 bg-blue-400/10 border-blue-400/20'
+      case 'stake': return 'text-purple-400 bg-purple-400/10 border-purple-400/20'
+      case 'unstake': return 'text-orange-400 bg-orange-400/10 border-orange-400/20'
       default: return 'text-gray-400'
     }
   }
 
-  const getStatusColor = (status: TransactionStatus) => {
-    switch (status) {
-      case 'Completed': return 'text-green-400'
-      case 'Approved': return 'text-cyan-400'
-      case 'Pending': return 'text-yellow-400'
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'completed': return 'text-green-400'
+      case 'approved': return 'text-cyan-400'
+      case 'pending': return 'text-yellow-400'
       default: return 'text-gray-400'
     }
   }
 
-  const getTypeIcon = (type: TransactionType) => {
-    switch (type) {
-      case 'Deposit': return <ArrowDownLeft className="h-4 w-4" />
-      case 'Borrow': return <ArrowUpRight className="h-4 w-4" />
-      case 'Stake': return <Lock className="h-4 w-4" />
+  const getTypeIcon = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'deposit': return <ArrowDownLeft className="h-4 w-4" />
+      case 'borrow': return <ArrowUpRight className="h-4 w-4" />
+      case 'stake':
+      case 'unstake': return <Lock className="h-4 w-4" />
+      default: return <Zap className="h-4 w-4" />
     }
+  }
+
+  const formatTime = (dateString: string) => {
+    const now = new Date()
+    const past = new Date(dateString)
+    const diffInMins = Math.floor((now.getTime() - past.getTime()) / 60000)
+    
+    if (diffInMins < 1) return 'Just now'
+    if (diffInMins === 1) return '1 min ago'
+    if (diffInMins < 60) return `${diffInMins} mins ago`
+    const diffInHours = Math.floor(diffInMins / 60)
+    if (diffInHours === 1) return '1 hour ago'
+    if (diffInHours < 24) return `${diffInHours} hours ago`
+    return past.toLocaleDateString()
+  }
+
+  const maskUsername = (username: string) => {
+    if (username.length <= 8) return username
+    return `${username.slice(0, 4)}...${username.slice(-4)}`
   }
 
   return (
@@ -120,33 +123,40 @@ export function RecentTransactions() {
                   </thead>
                   <tbody className="divide-y divide-border/30">
                     {transactions.map((tx, i) => (
-                      <tr key={tx.id} className="group/row hover:bg-flux/5 transition-colors">
+                      <tr key={tx.id || i} className="group/row hover:bg-flux/5 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border text-xs font-medium ${getTypeColor(tx.type)}`}>
                             {getTypeIcon(tx.type)}
                             {tx.type}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap font-bold text-sm">
+                        <td className="px-6 py-4 whitespace-nowrap font-bold text-sm uppercase">
                           {tx.asset}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           {tx.amount}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-muted-foreground">
-                          {tx.uid}
+                          {maskUsername(tx.username)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className={`flex items-center gap-1.5 text-xs font-medium ${getStatusColor(tx.status)}`}>
-                            {tx.status === 'Completed' ? <CheckCircle2 className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
+                            {tx.status.toLowerCase() === 'completed' ? <CheckCircle2 className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
                             {tx.status}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-xs text-muted-foreground">
-                          {tx.timestamp}
+                          {formatTime(tx.created_at)}
                         </td>
                       </tr>
                     ))}
+                    {transactions.length === 0 && (
+                      <tr>
+                        <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground italic">
+                          Waiting for live network activity...
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

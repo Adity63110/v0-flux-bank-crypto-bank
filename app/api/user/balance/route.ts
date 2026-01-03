@@ -11,7 +11,7 @@ export async function GET(request: Request) {
 
   const { data, error } = await supabase
     .from('users')
-    .select('balance')
+    .select('balance, staked_balance, pending_rewards')
     .eq('username', username)
     .single();
 
@@ -19,5 +19,9 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
-  return NextResponse.json({ balance: data.balance || 0 });
+  return NextResponse.json({ 
+    balance: data.balance || 0,
+    staked_balance: data.staked_balance || 0,
+    pending_rewards: data.pending_rewards || 0
+  });
 }

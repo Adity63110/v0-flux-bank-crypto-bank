@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft, Copy, CheckCircle2, Menu, LayoutDashboard } from "lucide-react"
+import { ArrowUpRight, ArrowDownLeft, TrendingUp, Wallet, Lock, DollarSign, X, ArrowLeft, Copy, CheckCircle2, Menu, LayoutDashboard, Shield } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { QRCodeSVG } from "qrcode.react"

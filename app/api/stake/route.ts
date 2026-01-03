@@ -22,7 +22,26 @@ export async function GET(req: Request) {
 
     if (error) throw error
 
-    return NextResponse.json({ history: data || [], stakes: data || [] })
+    const calculateRemainingDays = (createdAt: string, lockPeriod: string) => {
+      const start = new Date(createdAt)
+      const now = new Date()
+      
+      let days = 7
+      if (lockPeriod === "1month") days = 30
+      if (lockPeriod === "1year") days = 365
+      
+      const diffTime = now.getTime() - start.getTime()
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+      
+      return Math.max(0, days - diffDays)
+    }
+
+    const stakesWithDays = (data || []).map(stake => ({
+      ...stake,
+      remaining_days: stake.type === 'stake' ? calculateRemainingDays(stake.created_at, stake.lock_period) : 0
+    }))
+
+    return NextResponse.json({ history: stakesWithDays, stakes: stakesWithDays })
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }

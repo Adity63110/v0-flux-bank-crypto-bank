@@ -379,7 +379,7 @@ export default function StakingPage() {
                           <div>
                             <p className="font-semibold capitalize">{item.type}</p>
                             <p className="text-xs text-muted-foreground">
-                              {new Date(item.created_at).toLocaleDateString()} • {item.type === 'stake' ? `${calculateRemainingDays(item.created_at, item.lock_period)} days left` : 'Unstaking'}
+                              {new Date(item.created_at).toLocaleDateString()} • {item.type === 'stake' ? `${item.remaining_days} days left` : 'Unstaking'}
                             </p>
                           </div>
                         </div>

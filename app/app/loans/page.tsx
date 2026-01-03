@@ -155,7 +155,7 @@ export default function LoanHistoryPage() {
                        <div>
                           <CardTitle className="text-lg">{loan.amount} {loan.crypto}</CardTitle>
                           <CardDescription className="text-xs">
-                             {new Date(loan.created_at).toLocaleDateString()} at {new Date(loan.created_at).toLocaleTimeString()}
+                             Taken in: <span className="font-bold text-flux">{loan.crypto}</span> • {new Date(loan.created_at).toLocaleDateString()}
                           </CardDescription>
                        </div>
                     </div>

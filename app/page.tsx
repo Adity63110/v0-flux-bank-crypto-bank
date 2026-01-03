@@ -5,8 +5,23 @@ import { useState, useEffect } from "react"
 import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowRight, Wallet, Shield, Zap, TrendingUp, ChevronRight, Menu, Smartphone, Globe, Copy, Check } from "lucide-react"
+import { ArrowRight, Wallet, Shield, Zap, TrendingUp, ChevronRight, Menu, Smartphone, Globe, Copy, Check, Users, HelpCircle, ChevronDown, Lock } from "lucide-react"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import Image from "next/image"
+import Link from "next/link"
+import { Reveal } from "@/components/animations/Reveal"
+import { FutureAmbitions } from "@/components/future/FutureAmbitions"
 
+const CRYPTO_OPTIONS = [
+  { name: "Bitcoin", symbol: "BTC", color: "#F7931A", logo: "/cryptos/btc.png" },
+  { name: "Ethereum", symbol: "ETH", color: "#627EEA", logo: "/cryptos/eth.png" },
+  { name: "BNB Smart Chain", symbol: "BSC", color: "#F3BA2F", logo: "/cryptos/bsc.png" },
+  { name: "Solana", symbol: "SOL", color: "#14F195", logo: "/cryptos/sol.png" },
+  { name: "USDC", symbol: "USDC", color: "#2775CA", logo: "/cryptos/usdc.png" },
+  { name: "USDT", symbol: "USDT", color: "#26A17B", logo: "/cryptos/usdt.png" },
+  { name: "Tron", symbol: "TRX", color: "#FF0013", logo: "/cryptos/tron.png" },
+  { name: "Ton", symbol: "TON", color: "#0088CC", logo: "/cryptos/ton.png" },
+]
 export default function FluxBank() {
   const [username, setUsername] = useState("")
   const [isSignedIn, setIsSignedIn] = useState(false)

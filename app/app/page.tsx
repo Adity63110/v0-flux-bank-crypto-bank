@@ -253,7 +253,7 @@ export default function FluxBank() {
                     className="h-11 border-muted-foreground/20 focus-visible:ring-flux"
                     required
                   />
-                  <p className="text-xs text-muted-foreground">{"A new wallet will be created if this is your first visit"}</p>
+                  <p className="text-xs text-muted-foreground">{"A new FluxBank will be created if this is your first visit"}</p>
                 </div>
                 <Button type="submit" className="w-full h-11 bg-flux hover:bg-flux/90 text-black font-medium">
                   Sign In
@@ -343,7 +343,7 @@ export default function FluxBank() {
           <Reveal direction="left">
             <Card className="border-flux/20 bg-gradient-to-br from-flux/5 to-transparent h-full">
               <CardHeader className="pb-3">
-                <CardDescription className="text-xs">Wallet</CardDescription>
+                <CardDescription className="text-xs">FluxBank Account</CardDescription>
                 <CardTitle className="text-2xl font-bold">@{username}</CardTitle>
               </CardHeader>
               <CardContent>

@@ -213,7 +213,7 @@ export default function BorrowPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="destination" className="text-sm font-medium">
-                    Enter your {selectedAsset.symbol} wallet address
+                    Enter your {selectedAsset.symbol} FluxBank address
                   </Label>
                   <Input
                     id="destination"

@@ -229,7 +229,7 @@ export default function FluxBank() {
                     {
                       title: "How It Works",
                       items: [
-                        "Sign up and receive an instant wallet",
+                        "Sign up and receive an instant FluxBank",
                         "Deposit Flux as collateral",
                         "Borrow supported assets instantly",
                         "Recorded securely on chain"
@@ -412,11 +412,11 @@ export default function FluxBank() {
                   {[
                     {
                       q: "What is FluxBank and how does it work?",
-                      a: "FluxBank is a crypto-powered digital bank that allows users to deposit assets and borrow against them securely. Each user receives a dedicated wallet, and all balances, limits, and transactions are tracked using blockchain data and internal risk controls."
+                      a: "FluxBank is a crypto-powered digital bank that allows users to deposit assets and borrow against them securely. Each user receives a dedicated FluxBank, and all balances, limits, and transactions are tracked using blockchain data and internal risk controls."
                     },
                     {
                       q: "Do I need to connect an external wallet to use FluxBank?",
-                      a: "No. FluxBank automatically creates a secure wallet for every user at signup, enabling instant access without wallet connections."
+                      a: "No. FluxBank automatically creates a secure FluxBank for every user at signup, enabling instant access without wallet connections."
                     },
                     {
                       q: "Which cryptocurrencies are supported?",

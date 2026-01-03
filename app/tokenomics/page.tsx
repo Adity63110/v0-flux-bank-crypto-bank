@@ -43,10 +43,7 @@ const TokenomicsPage = () => {
   ]
 
   const stats = [
-    { label: "Total Supply", value: "1,000,000,000", sub: "FLUX" },
-    { label: "Circulating Supply", value: "450,000,000", sub: "45%" },
-    { label: "Staked Supply", value: "280,000,000", sub: "28%" },
-    { label: "Locked / Vesting", value: "270,000,000", sub: "27%" }
+    { label: "Total Supply", value: "1,000,000,000", sub: "FLUX" }
   ]
 
   const distribution = [
@@ -171,7 +168,7 @@ const TokenomicsPage = () => {
                 </div>
               </Reveal>
 
-              <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="grid grid-cols-1 gap-4 mb-8">
                 {stats.map((stat, idx) => (
                   <Reveal key={idx} delay={0.1 * idx}>
                     <div className="p-4 rounded-xl bg-[#111] border border-white/5">

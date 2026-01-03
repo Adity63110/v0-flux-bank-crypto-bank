@@ -69,7 +69,7 @@ export function DebitCardPreview() {
 
           <div className="space-y-4">
              <div className="text-xl font-mono tracking-[0.2em] text-white/90">
-               ••••  ••••  ••••  4392
+               4392  5821  9904  4392
              </div>
              <div className="flex justify-between items-end">
                <div>
@@ -83,16 +83,6 @@ export function DebitCardPreview() {
           </div>
         </div>
 
-        {/* Coming Soon Badge */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ transform: "translateZ(80px)" }}>
-           <motion.div 
-             animate={{ scale: [1, 1.05, 1], opacity: [0.8, 1, 0.8] }}
-             transition={{ duration: 2, repeat: Infinity }}
-             className="px-6 py-2 rounded-full bg-flux/90 backdrop-blur-md text-black text-sm font-black tracking-widest border border-white/20 shadow-[0_0_20px_rgba(84,210,146,0.4)]"
-           >
-             COMING SOON
-           </motion.div>
-        </div>
       </motion.div>
     </div>
   )

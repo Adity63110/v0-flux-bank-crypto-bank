@@ -421,11 +421,13 @@ export default function FluxBank() {
                   Spend your crypto directly from your FluxBank account at over 100M merchants worldwide. The ultimate bridge between Web3 and reality.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Link href="/app/card">
-                    <Button size="lg" className="bg-flux hover:bg-flux/90 text-black px-8 h-14 font-bold rounded-2xl shadow-lg shadow-flux/20">
-                      Explore Flux Card
-                    </Button>
-                  </Link>
+                  <Button 
+                    size="lg" 
+                    onClick={() => setShowAuthModal(true)}
+                    className="bg-flux hover:bg-flux/90 text-black px-8 h-14 font-bold rounded-2xl shadow-lg shadow-flux/20"
+                  >
+                    Explore Flux Card
+                  </Button>
                   <div className="h-14 w-20 relative grayscale opacity-40">
                     <Image src="/visa-logo-color.png" alt="Visa" fill className="object-contain" />
                   </div>
@@ -600,18 +602,68 @@ export default function FluxBank() {
             <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">Built for Trust & Speed</h2>
               <p className="text-xl text-muted-foreground mb-8">No KYC. Non-custodial. Built for speed and simplicity.</p>
-              <Link href="/app">
                 <Button
                   size="lg"
+                  onClick={() => setShowAuthModal(true)}
                   className="bg-flux hover:bg-flux/90 text-black text-lg px-8 h-14 shadow-lg shadow-flux/20"
                 >
                   Get Started Now
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-              </Link>
             </div>
           </Reveal>
         </section>
+
+        {/* Auth Choice Modal */}
+        {showAuthModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-md animate-in fade-in duration-300">
+            <Card className="max-w-md w-full border-flux/20 bg-muted/20 backdrop-blur-xl shadow-2xl overflow-hidden">
+              <CardHeader className="text-center pb-2">
+                <div className="flex justify-center mb-4">
+                  <div className="h-16 w-16 rounded-2xl bg-flux/10 flex items-center justify-center border border-flux/20 shadow-[0_0_20px_rgba(84,210,146,0.2)]">
+                    <Image src="/fluxbank-logo.png" alt="Flux Logo" width={40} height={40} />
+                  </div>
+                </div>
+                <CardTitle className="text-3xl font-bold tracking-tight">Welcome to FluxBank</CardTitle>
+                <CardDescription className="text-base text-muted-foreground/80 mt-2">
+                  Choose how you want to continue your journey
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4 pt-6">
+                <div className="grid gap-4">
+                  <Link href="/app" className="w-full">
+                    <Button 
+                      className="w-full h-16 bg-flux hover:bg-flux/90 text-black font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-flux/20"
+                      onClick={() => setShowAuthModal(false)}
+                    >
+                      <Users className="mr-3 h-5 w-5" />
+                      Create Account
+                    </Button>
+                  </Link>
+                  <Link href="/app" className="w-full">
+                    <Button 
+                      variant="outline"
+                      className="w-full h-16 border-flux/20 bg-transparent hover:bg-flux/5 text-white font-bold text-lg rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:border-flux/40"
+                      onClick={() => setShowAuthModal(false)}
+                    >
+                      <Lock className="mr-3 h-5 w-5 text-flux" />
+                      Sign In
+                    </Button>
+                  </Link>
+                </div>
+                <div className="pt-4">
+                  <Button 
+                    variant="ghost" 
+                    className="w-full text-muted-foreground hover:text-white"
+                    onClick={() => setShowAuthModal(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         <footer className="border-t border-border/40 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-8">

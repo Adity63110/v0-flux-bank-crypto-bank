@@ -2,11 +2,13 @@ import { createClient } from '@supabase/supabase-js';
 import { Keypair } from '@solana/web3.js';
 import CryptoJS from 'crypto-js';
 
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const encryptionSecret = process.env.ENCRYPTION_SECRET!;
+const supabaseUrl = process.env.SUPABASE_URL || '';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const encryptionSecret = process.env.ENCRYPTION_SECRET || 'fallback-secret-for-build';
 
-export const supabase = createClient(supabaseUrl, supabaseServiceKey);
+export const supabase = (supabaseUrl && supabaseServiceKey) 
+  ? createClient(supabaseUrl, supabaseServiceKey)
+  : null as any;
 
 /**
  * Hashes a password using SHA256

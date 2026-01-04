@@ -253,7 +253,7 @@ export default function FluxBank() {
                   </Link>
 
                   <Link 
-                    href="https://github.com/fluxbank" 
+                    href="https://github.com/Adity63110/v0-flux-bank-crypto-bank" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="group relative p-3 rounded-full bg-background/40 backdrop-blur-md border border-flux/20 hover:border-flux/50 hover:bg-flux/5 transition-all duration-300 hover:scale-110 shadow-[0_0_10px_rgba(84,210,146,0.1)] hover:shadow-[0_0_20px_rgba(84,210,146,0.3)]"

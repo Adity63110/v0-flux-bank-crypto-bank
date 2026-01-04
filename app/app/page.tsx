@@ -1030,13 +1030,13 @@ export default function FluxBank() {
                           <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
                             tx.type === 'deposit' ? 'bg-flux/10 text-flux' : 
                             tx.type === 'borrow' ? 'bg-blue-500/10 text-blue-500' :
-                            tx.type === 'stake' ? 'bg-purple-500/10 text-purple-500' :
+                            (tx.type === 'stake' || tx.type === 'staking') ? 'bg-purple-500/10 text-purple-500' :
                             tx.type === 'collect_reward' ? 'bg-green-500/10 text-green-500' :
                             'bg-orange-500/10 text-orange-500'
                           }`}>
                             {tx.type === 'deposit' ? <ArrowDownLeft className="h-5 w-5" /> : 
                              tx.type === 'borrow' ? <ArrowUpRight className="h-5 w-5" /> :
-                             tx.type === 'stake' ? <Lock className="h-5 w-5" /> :
+                             (tx.type === 'stake' || tx.type === 'staking') ? <Lock className="h-5 w-5" /> :
                              tx.type === 'collect_reward' ? <Zap className="h-5 w-5" /> :
                              tx.type === 'withdraw_request' ? <ArrowUpRight className="h-5 w-5" /> :
                              <Shield className="h-5 w-5" />}

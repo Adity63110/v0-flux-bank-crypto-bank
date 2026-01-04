@@ -16,11 +16,12 @@ export async function GET() {
 
     // 2. Fetch current Flux price for display
     const { data: settings } = await supabase
-      .from('settings')
-      .select('flux_price')
+      .from('global_settings')
+      .select('value')
+      .eq('key', 'flux_price')
       .single();
     
-    const fluxPrice = settings?.flux_price || 0.000012;
+    const fluxPrice = settings?.value ? parseFloat(settings.value) : 0.000012;
 
     // 3. Format response
     const leaderboard = users.map((user, index) => {

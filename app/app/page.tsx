@@ -353,7 +353,6 @@ export default function FluxBank() {
                     className="h-11 border-muted-foreground/20 focus-visible:ring-flux"
                     required
                   />
-                  <p className="text-xs text-muted-foreground">{"A new FluxBank will be created if this is your first visit"}</p>
                 </div>
                 <Button type="submit" className="w-full h-11 bg-flux hover:bg-flux/90 text-black font-medium">
                   Sign In

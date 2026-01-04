@@ -120,7 +120,7 @@ export default function DebitCardPage() {
               </div>
             </div>
             <div className="w-full max-w-[400px]">
-              <DebitCardPreview />
+              <DebitCardPreview username={username} />
             </div>
           </div>
         </Reveal>

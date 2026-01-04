@@ -4,7 +4,11 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { Shield, Zap } from "lucide-react"
 import Image from "next/image"
 
-export function DebitCardPreview() {
+interface DebitCardPreviewProps {
+  username?: string
+}
+
+export function DebitCardPreview({ username }: DebitCardPreviewProps) {
   const x = useMotionValue(0)
   const y = useMotionValue(0)
 
@@ -74,7 +78,7 @@ export function DebitCardPreview() {
              <div className="flex justify-between items-end">
                <div>
                  <div className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Card Holder</div>
-                 <div className="text-sm font-medium tracking-wide text-white">USER NAME</div>
+                 <div className="text-sm font-medium tracking-wide text-white">{username || "USER NAME"}</div>
                </div>
                <div className="relative w-16 h-10">
                  <Image src="/visa-logo-card.png" alt="Visa" fill className="object-contain" />

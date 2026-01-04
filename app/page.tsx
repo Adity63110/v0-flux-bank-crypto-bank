@@ -435,7 +435,7 @@ export default function FluxBank() {
               </div>
 
               <div className="w-full max-w-[400px] relative z-10">
-                <DebitCardPreview />
+                <DebitCardPreview username={username} />
               </div>
             </div>
           </Reveal>

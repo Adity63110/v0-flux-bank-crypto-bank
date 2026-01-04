@@ -771,7 +771,7 @@ export default function FluxBank() {
               <div className="grid lg:grid-cols-2 gap-8 items-center p-8">
                 {/* Left Side: Card Preview */}
                 <div className="relative">
-                  <DebitCardPreview />
+                  <DebitCardPreview username={username} />
                 </div>
 
                 {/* Right Side: Details */}

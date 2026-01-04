@@ -31,6 +31,8 @@ export default function FluxBank() {
   const [showBorrowModal, setShowBorrowModal] = useState(false)
   const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null)
   const [isFutureOpen, setIsFutureOpen] = useState(false)
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [authType, setAuthType] = useState<"signin" | "signup" | null>(null)
 
   const [depositAmount, setDepositAmount] = useState("")
   const [withdrawAmount, setWithdrawAmount] = useState("")
@@ -135,16 +137,15 @@ export default function FluxBank() {
                 </Link>
               </div>
             <div className="flex items-center gap-3 flex-1 justify-end">
-              <Link href="/app">
                 <Button 
                   variant="ghost" 
                   size="sm" 
+                  onClick={() => setShowAuthModal(true)}
                   className="relative group p-4 rounded-full border border-flux/20 bg-flux/5 hover:bg-flux/10 transition-all duration-300 shadow-[0_0_15px_rgba(84,210,146,0.2)] hover:shadow-[0_0_25px_rgba(84,210,146,0.4)]"
                 >
                   <div className="absolute inset-0 rounded-full border border-flux/40 animate-pulse group-hover:animate-none opacity-50" />
                   <span className="relative z-10 text-muted-foreground group-hover:text-flux font-medium">Sign In</span>
                 </Button>
-              </Link>
             </div>
           </div>
         </header>
@@ -174,15 +175,14 @@ export default function FluxBank() {
 
             <Reveal direction="up" delay={400}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 animate-fade-in-delay">
-                <Link href="/app">
                   <Button
                     size="lg"
+                    onClick={() => setShowAuthModal(true)}
                     className="bg-flux hover:bg-flux/90 text-black text-lg px-8 h-14 shadow-lg shadow-flux/20 hover:shadow-flux/40 transition-all duration-300 hover:scale-105"
                   >
                     Enter FluxBank
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
-                </Link>
                 <Button
                   size="lg"
                   variant="outline"

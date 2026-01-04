@@ -24,7 +24,7 @@ export async function GET() {
     const fluxPrice = settings?.value ? parseFloat(settings.value) : 0.000012;
 
     // 3. Format response
-    const leaderboard = users.map((user, index) => {
+    const leaderboard = users.map((user: any, index: number) => {
       // Mask username/wallet
       const maskedUser = user.username 
         ? user.username.length > 8 ? `${user.username.slice(0, 4)}...${user.username.slice(-4)}` : user.username

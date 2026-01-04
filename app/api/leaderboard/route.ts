@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/crypto';
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     // 1. Fetch users with balances
